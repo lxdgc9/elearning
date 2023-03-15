@@ -1,18 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { Role } from "../../models/role";
+import { GRole } from "../../models/group-role";
 
-async function delRole(
-  req: Request,
+async function getGRoles(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { id } = req.params;
-
   try {
-    const role = await Role.findByIdAndDelete(id);
+    const groles = await GRole.find({});
 
     res.json({
-      role,
+      groupRoles: groles,
     });
   } catch (err) {
     console.log(err);
@@ -20,4 +18,4 @@ async function delRole(
   }
 }
 
-export { delRole };
+export { getGRoles };

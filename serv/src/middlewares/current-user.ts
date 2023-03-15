@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { Types } from "mongoose";
+import { UnauthorizedError } from "../errors/unauthorized-error";
 
 type UserPayload = {
   id: Types.ObjectId;
@@ -19,12 +20,12 @@ function currUser(req: Request, _res: Response, next: NextFunction): void {
   try {
     const token = req.headers["authorization"]?.split("Bearer ")[1];
     if (!token) {
-      throw new Error();
+      throw new UnauthorizedError("Yêu cầu token");
     }
 
     const decoded = verify(
       token,
-      process.env.ACCESS_TOKEN_SECRET_KEY!
+      process.env.ACCESS_TOKEN_SECRET!
     ) as UserPayload;
 
     req.user = decoded;

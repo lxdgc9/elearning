@@ -1,10 +1,13 @@
-import { NextFunction, Response } from "express";
-import { ReqUser } from "../../@types/req-user";
+import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
 import { Prof } from "../../models/profile";
+import { User } from "../../models/user";
 
 type NewUserDto = {
   username: string;
   password: string;
+  groupRoleId?: Types.ObjectId;
+  roleId?: Types.ObjectId;
   fullName: string;
   gender: string;
   dob: Date;
@@ -13,13 +16,15 @@ type NewUserDto = {
 };
 
 async function newUser(
-  req: ReqUser,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const {
     username,
     password,
+    groupRoleId,
+    roleId,
     fullName,
     gender,
     dob,
@@ -35,10 +40,19 @@ async function newUser(
       email,
       phone,
     });
-    // const user = User.build({
-    //   username,
-    //   password,
-    // });
+    const user = User.build({
+      username,
+      password,
+      profile: prof.id,
+      groupRole: groupRoleId,
+      role: roleId,
+    });
+    await prof.save();
+    await user.save();
+
+    res.status(201).json({
+      user: await User.populate(user, "profile"),
+    });
   } catch (err) {
     console.log(err);
     next(err);

@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
+import { Password } from "../../helpers/password";
 
 interface UserAttrs {
   username: string;
   password: string;
   profile: mongoose.Types.ObjectId;
-  groupRole: mongoose.Types.ObjectId;
+  groupRole?: mongoose.Types.ObjectId;
   role?: mongoose.Types.ObjectId;
-  logs: mongoose.Types.ObjectId[];
+  logs?: mongoose.Types.ObjectId[];
+  hasAccess?: boolean;
 }
 
 type UserDoc = UserAttrs & mongoose.Document;
@@ -36,11 +38,14 @@ const schema = new mongoose.Schema<UserAttrs>(
     groupRole: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "group-role",
-      required: true,
     },
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "role",
+    },
+    hasAccess: {
+      type: Boolean,
+      default: true,
     },
     logs: [
       {
@@ -60,6 +65,14 @@ const schema = new mongoose.Schema<UserAttrs>(
     },
   }
 );
+
+schema.pre("save", async function (fn) {
+  if (this.isModified("password")) {
+    const hashed = await Password.toHash(this.get("password"));
+    this.set("password", hashed);
+  }
+  fn();
+});
 
 schema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);

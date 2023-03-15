@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { NotFoundError } from "../../errors/not-found-error";
 import { Role } from "../../models/role";
 
-async function delRole(
+async function getGRole(
   req: Request,
   res: Response,
   next: NextFunction
@@ -9,10 +10,13 @@ async function delRole(
   const { id } = req.params;
 
   try {
-    const role = await Role.findByIdAndDelete(id);
+    const grole = await Role.findById(id);
+    if (!grole) {
+      throw new NotFoundError("Không Tìm Thấy Group Role");
+    }
 
     res.json({
-      role,
+      role: grole,
     });
   } catch (err) {
     console.log(err);
@@ -20,4 +24,4 @@ async function delRole(
   }
 }
 
-export { delRole };
+export { getGRole };

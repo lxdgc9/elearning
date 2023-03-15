@@ -2,6 +2,12 @@ import { Method } from "./@types/method";
 
 const ROUTE_CFG = {
   API: {
+    AUTH: {
+      LOGIN: {
+        METHOD: Method.POST,
+        PATH: "/api/auth/login",
+      },
+    },
     USERS: {
       GET: {
         METHOD: Method.GET,
@@ -36,6 +42,28 @@ const ROUTE_CFG = {
       DELETE: {
         METHOD: Method.DELETE,
         PATH: "/api/roles/:id",
+      },
+    },
+    GROLE: {
+      GET: {
+        METHOD: Method.GET,
+        PATH: "/api/group-roles",
+      },
+      GET_BY_ID: {
+        METHOD: Method.GET,
+        PATH: "/api/group-roles/:id",
+      },
+      NEW: {
+        METHOD: Method.POST,
+        PATH: "/api/group-roles",
+      },
+      UPDATE: {
+        METHOD: Method.PATCH,
+        PATH: "/api/group-roles/:id",
+      },
+      DELETE: {
+        METHOD: Method.DELETE,
+        PATH: "/api/group-roles/:id",
       },
     },
   },

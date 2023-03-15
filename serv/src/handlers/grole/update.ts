@@ -1,25 +1,26 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
 import { Role } from "../../models/role";
 
 type UpdateRoleDto = {
   name?: string;
-  description?: string;
+  roleIds?: Types.ObjectId[];
 };
 
-async function updateRole(
+async function updateGRole(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, description }: UpdateRoleDto = req.body;
+  const { name, roleIds }: UpdateRoleDto = req.body;
 
   try {
     const role = await Role.findByIdAndUpdate(
       id,
       {
         name,
-        description,
+        roles: roleIds,
       },
       { new: true }
     );
@@ -33,4 +34,4 @@ async function updateRole(
   }
 }
 
-export { updateRole };
+export { updateGRole };

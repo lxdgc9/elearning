@@ -1,18 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { Role } from "../../models/role";
+import { User } from "../../models/user";
 
-async function delRole(
-  req: Request,
+async function getUsers(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { id } = req.params;
-
   try {
-    const role = await Role.findByIdAndDelete(id);
+    const users = await User.find({});
 
     res.json({
-      role,
+      users,
     });
   } catch (err) {
     console.log(err);
@@ -20,4 +18,4 @@ async function delRole(
   }
 }
 
-export { delRole };
+export { getUsers };

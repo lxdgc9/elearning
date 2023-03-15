@@ -3,12 +3,21 @@ version: "3"
 services:
   serv:
     build: ./serv
+    command: yarn dev
+    restart: always
     ports:
       - 3000:3000
     env_file:
       - .env
     environment:
-      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET_KEY}
-      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET_KEY}
+      - MONGO_URI=${MONGO_URI}
+      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET}
     volumes:
       - ./serv:/usr/app:rw
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    name: eln-net

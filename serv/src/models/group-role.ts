@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 interface GRoleAttrs {
   name: string;
-  roles: mongoose.Types.ObjectId[];
-  logs: mongoose.Types.ObjectId[];
+  roles?: mongoose.Types.ObjectId[];
+  logs?: mongoose.Types.ObjectId[];
 }
 
 type GRoleDoc = GRoleAttrs & mongoose.Document;
