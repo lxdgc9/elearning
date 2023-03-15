@@ -6,8 +6,8 @@ import { User } from "../../models/user";
 type NewUserDto = {
   username: string;
   password: string;
-  groupRoleId?: Types.ObjectId;
   roleId?: Types.ObjectId;
+  permId?: Types.ObjectId;
   fullName: string;
   gender: string;
   dob: Date;
@@ -23,8 +23,8 @@ async function newUser(
   const {
     username,
     password,
-    groupRoleId,
     roleId,
+    permId,
     fullName,
     gender,
     dob,
@@ -44,8 +44,8 @@ async function newUser(
       username,
       password,
       profile: prof.id,
-      groupRole: groupRoleId,
       role: roleId,
+      perm: permId,
     });
     await prof.save();
     await user.save();

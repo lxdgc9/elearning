@@ -20,7 +20,7 @@ async function me(
         populate: [
           {
             path: "perms",
-            select: "-_id name desc ",
+            select: "-_id name desc",
           },
         ],
       },

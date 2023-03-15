@@ -9,14 +9,14 @@ type LoginDto = {
   password: string;
 };
 
-function addToSet(item: { name: string }, arr: { roles: { name: string }[] }) {
+function addToSet(item: { name: string }, arr: { perms: { name: string }[] }) {
   const tmpArr: string[] = [];
 
   if (item) {
     tmpArr.push(item.name);
   }
 
-  for (const el of arr.roles) {
+  for (const el of arr.perms) {
     if (!tmpArr.includes(el.name)) {
       tmpArr.push(el?.name);
     }
@@ -61,7 +61,7 @@ async function login(
       profileId: extUser.profile,
       roles: addToSet(
         extUser.perm as unknown as { name: string },
-        extUser.role as unknown as { roles: { name: string }[] }
+        extUser.role as unknown as { perms: { name: string }[] }
       ),
     };
     const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
