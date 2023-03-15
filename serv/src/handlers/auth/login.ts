@@ -34,16 +34,16 @@ async function login(
   try {
     const extUser = await User.findOne({ username }).populate([
       {
-        path: "groupRole",
+        path: "role",
         populate: [
           {
-            path: "roles",
+            path: "perms",
             select: "name",
           },
         ],
       },
       {
-        path: "role",
+        path: "perm",
       },
     ]);
     if (!extUser) {
@@ -60,8 +60,8 @@ async function login(
       id: extUser.id,
       profileId: extUser.profile,
       roles: addToSet(
-        extUser.role as unknown as { name: string },
-        extUser.groupRole as unknown as { roles: { name: string }[] }
+        extUser.perm as unknown as { name: string },
+        extUser.role as unknown as { roles: { name: string }[] }
       ),
     };
     const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET!, {

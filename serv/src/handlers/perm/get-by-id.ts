@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "../../errors/not-found-error";
-import { Role } from "../../models/role";
+import { Perm } from "../../models/perm";
 
-async function getGRole(
+async function getPerm(
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,13 +10,13 @@ async function getGRole(
   const { id } = req.params;
 
   try {
-    const grole = await Role.findById(id);
-    if (!grole) {
-      throw new NotFoundError("Không Tìm Thấy Group Role");
+    const perm = await Perm.findById(id);
+    if (!perm) {
+      throw new NotFoundError("Permission Not Found");
     }
 
     res.json({
-      role: grole,
+      perm,
     });
   } catch (err) {
     console.log(err);
@@ -24,4 +24,4 @@ async function getGRole(
   }
 }
 
-export { getGRole };
+export { getPerm };

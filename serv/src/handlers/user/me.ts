@@ -15,17 +15,17 @@ async function me(
         select: "-_id",
       },
       {
-        path: "groupRole",
+        path: "role",
         select: "-_id",
         populate: [
           {
-            path: "roles",
-            select: "-_id name description ",
+            path: "perms",
+            select: "-_id name desc ",
           },
         ],
       },
       {
-        path: "role",
+        path: "perm",
       },
     ]);
     res.json({

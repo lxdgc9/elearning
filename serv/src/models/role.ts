@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 interface RoleAttrs {
   name: string;
-  description?: string;
+  perms?: mongoose.Types.ObjectId[];
   logs?: mongoose.Types.ObjectId[];
 }
 
@@ -19,15 +19,16 @@ const schema = new mongoose.Schema<RoleAttrs>(
       required: true,
       trim: true,
     },
-    description: {
-      type: String,
-      trim: true,
-    },
+    perms: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "permission",
+      },
+    ],
     logs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "log",
-        required: true,
       },
     ],
   },
@@ -40,7 +41,6 @@ const schema = new mongoose.Schema<RoleAttrs>(
         delete ret.__v;
       },
     },
-    timestamps: true,
   }
 );
 

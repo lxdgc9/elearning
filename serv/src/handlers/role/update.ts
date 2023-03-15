@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
 import { Role } from "../../models/role";
 
 type UpdateRoleDto = {
   name?: string;
-  description?: string;
+  permIds?: Types.ObjectId[];
 };
 
 async function updateRole(
@@ -12,14 +13,14 @@ async function updateRole(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, description }: UpdateRoleDto = req.body;
+  const { name, permIds }: UpdateRoleDto = req.body;
 
   try {
     const role = await Role.findByIdAndUpdate(
       id,
       {
         name,
-        description,
+        permIds,
       },
       { new: true }
     );

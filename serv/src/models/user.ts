@@ -5,8 +5,8 @@ interface UserAttrs {
   username: string;
   password: string;
   profile: mongoose.Types.ObjectId;
-  groupRole?: mongoose.Types.ObjectId;
   role?: mongoose.Types.ObjectId;
+  perm?: mongoose.Types.ObjectId;
   logs?: mongoose.Types.ObjectId[];
   hasAccess?: boolean;
 }
@@ -35,13 +35,13 @@ const schema = new mongoose.Schema<UserAttrs>(
       ref: "profile",
       required: true,
     },
-    groupRole: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "group-role",
-    },
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "role",
+    },
+    perm: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "permission",
     },
     hasAccess: {
       type: Boolean,

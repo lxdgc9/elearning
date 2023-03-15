@@ -8,11 +8,11 @@ function errorHandler(
   _next: NextFunction
 ) {
   if (err instanceof HttpError) {
-    return res.status(err.statusCode).send({ msg: err.message });
+    return res.status(err.statusCode).send({ message: err.message });
   }
 
   res.status(500).send({
-    msg: "Something went wrong",
+    message: "Something went wrong",
   });
 }
 
