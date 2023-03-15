@@ -20,7 +20,7 @@ function currUser(req: Request, _res: Response, next: NextFunction): void {
   try {
     const token = req.headers["authorization"]?.split("Bearer ")[1];
     if (!token) {
-      throw new UnauthorizedError("Yêu cầu token");
+      throw new UnauthorizedError("Yêu Cầu Token");
     }
 
     const decoded = verify(

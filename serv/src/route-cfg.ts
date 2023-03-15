@@ -17,6 +17,10 @@ const ROUTE_CFG = {
         METHOD: Method.GET,
         PATH: "/api/users/:id",
       },
+      CURR_USER: {
+        METHOD: Method.GET,
+        PATH: "/api/users/me",
+      },
       NEW: {
         METHOD: Method.POST,
         PATH: "/api/users",
