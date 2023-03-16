@@ -19,15 +19,10 @@ app.set("port", port);
 
 const sv = createServer(app);
 
-connectDb(process.env.MONGO_URI)
-  .then(() => {
-    sv.listen(port);
-    sv.on("listening", onListening);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+connectDb(process.env.MONGO_URI);
 
+sv.listen(port);
+sv.on("listening", onListening);
 sv.on("error", onError);
 
 function normalizePort(val: string): string | number | boolean {

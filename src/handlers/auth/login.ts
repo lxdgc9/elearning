@@ -39,7 +39,7 @@ async function login(
       throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
     }
 
-    const passMatch = await Password.compare(extUser.password, password);
+    const passMatch = await Password.comparePass(extUser.password, password);
     if (!passMatch) {
       throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
     }
