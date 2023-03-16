@@ -7,7 +7,6 @@ type NewUserDto = {
   username: string;
   password: string;
   roleId?: Types.ObjectId;
-  permId?: Types.ObjectId;
   fullName: string;
   gender: string;
   dob: Date;
@@ -24,7 +23,6 @@ async function newUser(
     username,
     password,
     roleId,
-    permId,
     fullName,
     gender,
     dob,
@@ -45,13 +43,12 @@ async function newUser(
       password,
       profile: prof.id,
       role: roleId,
-      perm: permId,
     });
     await prof.save();
     await user.save();
 
     res.status(201).json({
-      user: await User.populate(user, "profile"),
+      user,
     });
   } catch (err) {
     console.log(err);

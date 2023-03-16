@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "../errors/http-error";
+import { HttpErr } from "../errors/http";
 
 function errorHandler(
   err: Error,
@@ -7,7 +7,7 @@ function errorHandler(
   res: Response,
   _next: NextFunction
 ) {
-  if (err instanceof HttpError) {
+  if (err instanceof HttpErr) {
     return res.status(err.statusCode).send({ message: err.message });
   }
 

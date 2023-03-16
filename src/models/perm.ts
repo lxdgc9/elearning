@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 interface PermAttrs {
   name: string;
-  desc?: string;
+  description?: string;
   logs?: mongoose.Types.ObjectId[];
 }
 
@@ -17,9 +17,10 @@ const schema = new mongoose.Schema<PermAttrs>(
     name: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
     },
-    desc: {
+    description: {
       type: String,
       trim: true,
     },

@@ -7,7 +7,11 @@ async function getRoles(
   next: NextFunction
 ): Promise<void> {
   try {
-    const roles = await Role.find({});
+    const roles = await Role.find({}).populate([
+      {
+        path: "permissions",
+      },
+    ]);
 
     res.json({
       roles,

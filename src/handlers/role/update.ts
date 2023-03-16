@@ -4,7 +4,7 @@ import { Role } from "../../models/role";
 
 type UpdateRoleDto = {
   name?: string;
-  permIds?: Types.ObjectId[];
+  permissionIds?: Types.ObjectId[];
 };
 
 async function updateRole(
@@ -13,14 +13,14 @@ async function updateRole(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, permIds }: UpdateRoleDto = req.body;
+  const { name, permissionIds }: UpdateRoleDto = req.body;
 
   try {
     const role = await Role.findByIdAndUpdate(
       id,
       {
         name,
-        permIds,
+        permissions: permissionIds,
       },
       { new: true }
     );

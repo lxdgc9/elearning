@@ -6,7 +6,6 @@ interface UserAttrs {
   password: string;
   profile: mongoose.Types.ObjectId;
   role?: mongoose.Types.ObjectId;
-  perm?: mongoose.Types.ObjectId;
   logs?: mongoose.Types.ObjectId[];
   hasAccess?: boolean;
 }
@@ -38,10 +37,6 @@ const schema = new mongoose.Schema<UserAttrs>(
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "role",
-    },
-    perm: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "permission",
     },
     hasAccess: {
       type: Boolean,

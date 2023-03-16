@@ -1,28 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
-import { BadRequestError } from "../../errors/bad-request-error";
+import { BadReqErr } from "../../errors/bad-req";
 import { Password } from "../../helpers/password";
+import { ProfDoc } from "../../models/profile";
+import { RoleDoc } from "../../models/role";
 import { User } from "../../models/user";
 
 type LoginDto = {
   username: string;
   password: string;
 };
-
-function addToSet(item: { name: string }, arr: { perms: { name: string }[] }) {
-  const tmpArr: string[] = [];
-
-  if (item) {
-    tmpArr.push(item.name);
-  }
-
-  for (const el of arr.perms) {
-    if (!tmpArr.includes(el.name)) {
-      tmpArr.push(el?.name);
-    }
-  }
-  return tmpArr;
-}
 
 async function login(
   req: Request,
@@ -32,7 +19,10 @@ async function login(
   const { username, password }: LoginDto = req.body;
 
   try {
-    const extUser = await User.findOne({ username }).populate([
+    const extUser = await User.findOne({ username }).populate<{
+      profile: ProfDoc;
+      role: RoleDoc;
+    }>([
       {
         path: "profile",
       },
@@ -40,32 +30,25 @@ async function login(
         path: "role",
         populate: [
           {
-            path: "perms",
-            select: "name",
+            path: "permissions",
           },
         ],
       },
-      {
-        path: "perm",
-      },
     ]);
     if (!extUser) {
-      throw new BadRequestError("Thông tin đăng nhập không hợp lệ");
+      throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
     }
 
     const passMatch = await Password.compare(extUser.password, password);
     if (!passMatch) {
-      throw new BadRequestError("Thông tin đăng nhập không hợp lệ");
+      throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
     }
 
     // Generate token
     const payload = {
       id: extUser.id,
       profileId: extUser.profile,
-      roles: addToSet(
-        extUser.perm as unknown as { name: string },
-        extUser.role as unknown as { perms: { name: string }[] }
-      ),
+      roles: extUser.role.permissions?.map((el) => el.id),
     };
     const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: "3d", // Ttl

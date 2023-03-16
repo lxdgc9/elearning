@@ -3,7 +3,7 @@ import { Perm } from "../../models/perm";
 
 type UpdatePermDto = {
   name?: string;
-  desc?: string;
+  description?: string;
 };
 
 async function updatePerm(
@@ -12,14 +12,14 @@ async function updatePerm(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, desc }: UpdatePermDto = req.body;
+  const { name, description }: UpdatePermDto = req.body;
 
   try {
     const perm = await Perm.findByIdAndUpdate(
       id,
       {
         name,
-        desc,
+        description,
       },
       { new: true }
     );

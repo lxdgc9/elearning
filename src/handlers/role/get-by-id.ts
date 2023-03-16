@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { NotFoundError } from "../../errors/not-found-error";
+import { NotFoundErr } from "../../errors/not-found";
 import { Role } from "../../models/role";
 
 async function getRole(
@@ -10,9 +10,13 @@ async function getRole(
   const { id } = req.params;
 
   try {
-    const role = await Role.findById(id);
+    const role = await Role.findById(id).populate([
+      {
+        path: "permissions",
+      },
+    ]);
     if (!role) {
-      throw new NotFoundError("Role Not Found");
+      throw new NotFoundErr("Role Not Found");
     }
 
     res.json({

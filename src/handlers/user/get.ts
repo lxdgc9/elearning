@@ -7,7 +7,11 @@ async function getUsers(
   next: NextFunction
 ): Promise<void> {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).populate([
+      {
+        path: "profile",
+      },
+    ]);
 
     res.json({
       users,

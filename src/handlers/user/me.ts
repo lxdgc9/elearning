@@ -19,13 +19,10 @@ async function me(
         select: "-_id",
         populate: [
           {
-            path: "perms",
-            select: "-_id name desc",
+            path: "permissions",
+            select: "-_id",
           },
         ],
-      },
-      {
-        path: "perm",
       },
     ]);
     res.json({

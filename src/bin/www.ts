@@ -1,11 +1,8 @@
 #!/usr/bin/env ts-node
 
-import { config } from "dotenv";
 import { createServer } from "http";
 import { app } from "../app";
 import { connectDb } from "../db";
-
-config();
 
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI must be defined");

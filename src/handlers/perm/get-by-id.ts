@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { NotFoundError } from "../../errors/not-found-error";
+import { NotFoundErr } from "../../errors/not-found";
 import { Perm } from "../../models/perm";
 
 async function getPerm(
@@ -12,7 +12,7 @@ async function getPerm(
   try {
     const perm = await Perm.findById(id);
     if (!perm) {
-      throw new NotFoundError("Permission Not Found");
+      throw new NotFoundErr("Permission Not Found");
     }
 
     res.json({

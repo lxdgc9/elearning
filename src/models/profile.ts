@@ -7,6 +7,7 @@ interface ProfAttrs {
   gender: string;
   email?: string;
   phone?: string;
+  avatar?: string;
   logs?: mongoose.Types.ObjectId[];
 }
 
@@ -75,4 +76,4 @@ schema.pre("save", function (next) {
 
 const Prof = mongoose.model<ProfDoc, ProfModel>("profile", schema);
 
-export { Prof };
+export { Prof, ProfDoc };

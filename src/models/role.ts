@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 interface RoleAttrs {
   name: string;
-  perms?: mongoose.Types.ObjectId[];
+  permissions?: mongoose.Types.ObjectId[];
   logs?: mongoose.Types.ObjectId[];
 }
 
@@ -19,7 +19,7 @@ const schema = new mongoose.Schema<RoleAttrs>(
       required: true,
       trim: true,
     },
-    perms: [
+    permissions: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "permission",
@@ -50,4 +50,4 @@ schema.statics.build = (attrs: RoleAttrs) => {
 
 const Role = mongoose.model<RoleDoc, RoleModel>("role", schema);
 
-export { Role };
+export { Role, RoleDoc };
