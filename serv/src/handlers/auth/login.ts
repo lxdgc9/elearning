@@ -34,6 +34,9 @@ async function login(
   try {
     const extUser = await User.findOne({ username }).populate([
       {
+        path: "profile",
+      },
+      {
         path: "role",
         populate: [
           {
@@ -70,6 +73,7 @@ async function login(
 
     res.json({
       accessToken,
+      user: extUser,
     });
   } catch (err) {
     console.log(err);
