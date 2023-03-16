@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import { Prof } from "../../models/profile";
 import { User } from "../../models/user";
 
 type NewUserDto = {
@@ -31,20 +30,18 @@ async function newUser(
   }: NewUserDto = req.body;
 
   try {
-    const prof = Prof.build({
-      fullName,
-      dob,
-      gender,
-      email,
-      phone,
-    });
     const user = User.build({
       username,
       password,
-      profile: prof.id,
+      profile: {
+        fullName,
+        dob,
+        gender,
+        email,
+        phone,
+      },
       role: roleId,
     });
-    await prof.save();
     await user.save();
 
     res.status(201).json({

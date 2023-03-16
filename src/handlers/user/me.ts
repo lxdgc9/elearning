@@ -11,10 +11,6 @@ async function me(
   try {
     const user = await User.findById(id).populate([
       {
-        path: "profile",
-        select: "-_id",
-      },
-      {
         path: "role",
         select: "-_id",
         populate: [
@@ -25,6 +21,7 @@ async function me(
         ],
       },
     ]);
+
     res.json({
       user,
     });

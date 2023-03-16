@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpErr } from "../errors/http";
 
-function errorHandler(
+function errHandler(
   err: Error,
   _req: Request,
   res: Response,
@@ -12,8 +12,8 @@ function errorHandler(
   }
 
   res.status(500).send({
-    message: "Something went wrong",
+    message: "SOMETHING_WENT_WRONG",
   });
 }
 
-export { errorHandler };
+export { errHandler };

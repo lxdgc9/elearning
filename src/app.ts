@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { errorHandler } from "./middlewares/error-handler";
+import { errHandler } from "./middlewares/error-handler";
 import { authRouter } from "./routes/auth";
 import { permRouter } from "./routes/perm";
 import { roleRouter } from "./routes/role";
@@ -19,6 +19,6 @@ app.use(userRouter);
 app.use(roleRouter);
 app.use(permRouter);
 
-app.use(errorHandler);
+app.use(errHandler);
 
 export { app };

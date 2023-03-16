@@ -1,12 +1,11 @@
-import mongoose, { Connection } from "mongoose";
+import { connect } from "mongoose";
 
-async function connectDb(uri: string): Promise<Connection> {
+async function connectDb(uri: string): Promise<void> {
   try {
-    await mongoose.connect(uri, {});
+    await connect(uri);
     console.log("MongoDB connected");
-    return mongoose.connection;
   } catch (err) {
-    console.error("MongoDB connection error:", err);
+    console.log("MongoDB connection error:", err);
     throw err;
   }
 }

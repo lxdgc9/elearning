@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { BadReqErr } from "../../errors/bad-req";
 import { Password } from "../../helpers/password";
-import { ProfDoc } from "../../models/profile";
 import { RoleDoc } from "../../models/role";
 import { User } from "../../models/user";
 
@@ -20,12 +19,8 @@ async function login(
 
   try {
     const extUser = await User.findOne({ username }).populate<{
-      profile: ProfDoc;
       role: RoleDoc;
     }>([
-      {
-        path: "profile",
-      },
       {
         path: "role",
         populate: [

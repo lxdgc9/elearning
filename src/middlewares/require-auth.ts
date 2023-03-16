@@ -3,7 +3,7 @@ import { UnauthorizedErr } from "../errors/unauthorized";
 
 function requireAuth(req: Request, _res: Response, next: NextFunction) {
   if (!req.user) {
-    throw new UnauthorizedErr("Không Được Ủy Quyền");
+    throw new UnauthorizedErr("UNAUTHORIZED");
   }
 
   next();
