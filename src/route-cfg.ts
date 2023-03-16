@@ -25,6 +25,10 @@ const ROUTE_CFG = {
         METHOD: Method.POST,
         PATH: "/api/users",
       },
+      UPDATE_PROF: {
+        METHOD: Method.PATCH,
+        PATH: "/api/users/profile",
+      },
     },
     PERMS: {
       GET: {
