@@ -2,9 +2,8 @@ version: "3"
 
 services:
   serv:
-    build: ./serv
-    command: yarn dev
-    restart: always
+    build: .
+    restart: unless-stopped
     ports:
       - 3001:3000
     env_file:
@@ -14,4 +13,4 @@ services:
       - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET}
       - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET}
     volumes:
-      - ./serv:/usr/app:rw
+      - .:/usr/app:rw

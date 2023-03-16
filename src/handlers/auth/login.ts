@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
-import { Password } from "../../../helpers/password";
 import { BadRequestError } from "../../errors/bad-request-error";
+import { Password } from "../../helpers/password";
 import { User } from "../../models/user";
 
 type LoginDto = {
