@@ -7,8 +7,8 @@ interface UserAttrs {
   password: string;
   profile: {
     fullName: string;
-    dob: Date;
-    gender: string;
+    dob?: Date;
+    gender?: string;
     email?: string;
     phone?: string;
     avatar?: string;
@@ -46,7 +46,6 @@ const schema = new mongoose.Schema<UserAttrs>(
       },
       dob: {
         type: Date,
-        required: true,
       },
       gender: {
         type: String,
@@ -66,7 +65,6 @@ const schema = new mongoose.Schema<UserAttrs>(
       },
       avatar: {
         type: String,
-        required: true,
       },
     },
     role: {

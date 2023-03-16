@@ -16,7 +16,7 @@ async function getPerm(
     }
 
     res.json({
-      perm,
+      permission: perm,
     });
   } catch (err) {
     console.log(err);

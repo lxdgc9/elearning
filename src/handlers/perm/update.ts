@@ -25,7 +25,7 @@ async function updatePerm(
     );
 
     res.json({
-      perm,
+      permission: perm,
     });
   } catch (err) {
     console.log(err);

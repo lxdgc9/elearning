@@ -7,10 +7,6 @@ type NewUserDto = {
   password: string;
   roleId?: Types.ObjectId;
   fullName: string;
-  gender: string;
-  dob: Date;
-  email?: string;
-  phone?: string;
 };
 
 async function newUser(
@@ -18,16 +14,7 @@ async function newUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const {
-    username,
-    password,
-    roleId,
-    fullName,
-    gender,
-    dob,
-    email,
-    phone,
-  }: NewUserDto = req.body;
+  const { username, password, roleId, fullName }: NewUserDto = req.body;
 
   try {
     const user = User.build({
@@ -35,10 +22,6 @@ async function newUser(
       password,
       profile: {
         fullName,
-        dob,
-        gender,
-        email,
-        phone,
       },
       role: roleId,
     });

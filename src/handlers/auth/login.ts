@@ -26,24 +26,24 @@ async function login(
         populate: [
           {
             path: "permissions",
+            select: "-_id name description",
           },
         ],
       },
     ]);
     if (!extUser) {
-      throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
+      throw new BadReqErr("Tài Khoản Không Tồn Tại");
     }
 
     const passMatch = await Password.comparePass(extUser.password, password);
     if (!passMatch) {
-      throw new BadReqErr("Thông tin đăng nhập không hợp lệ");
+      throw new BadReqErr("Mật Khẩu Không Đúng");
     }
 
     // Generate token
     const payload = {
       id: extUser.id,
-      profileId: extUser.profile,
-      roles: extUser.role.permissions?.map((el) => el.id),
+      roles: extUser.role.permissions,
     };
     const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: "3d", // Ttl

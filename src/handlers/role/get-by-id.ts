@@ -16,7 +16,7 @@ async function getRole(
       },
     ]);
     if (!role) {
-      throw new NotFoundErr("Role Not Found");
+      throw new NotFoundErr("NOT_FOUND");
     }
 
     res.json({

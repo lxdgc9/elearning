@@ -12,7 +12,7 @@ async function delPerm(
     const perm = await Perm.findByIdAndDelete(id);
 
     res.json({
-      perm,
+      permission: perm,
     });
   } catch (err) {
     console.log(err);

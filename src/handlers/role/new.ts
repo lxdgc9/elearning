@@ -19,7 +19,7 @@ async function newRole(
       name,
       permissions: permissionIds,
     });
-    role.save();
+    await role.save();
 
     res.status(201).json({
       role,

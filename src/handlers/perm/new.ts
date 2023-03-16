@@ -18,10 +18,10 @@ async function newPerm(
       name,
       description,
     });
-    perm.save();
+    await perm.save();
 
     res.status(201).json({
-      perm,
+      permission: perm,
     });
   } catch (err) {
     console.log(err);

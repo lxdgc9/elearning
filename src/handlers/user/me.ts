@@ -12,11 +12,10 @@ async function me(
     const user = await User.findById(id).populate([
       {
         path: "role",
-        select: "-_id",
         populate: [
           {
             path: "permissions",
-            select: "-_id",
+            select: "-_id name description",
           },
         ],
       },
