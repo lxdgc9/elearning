@@ -4,6 +4,7 @@ import { Role } from "../../models/role";
 
 type NewRoleDto = {
   name: string;
+  description?: string;
   permissionIds?: Types.ObjectId[];
 };
 
@@ -12,11 +13,12 @@ async function newRole(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, permissionIds }: NewRoleDto = req.body;
+  const { name, description, permissionIds }: NewRoleDto = req.body;
 
   try {
     const role = Role.build({
       name,
+      description,
       permissions: permissionIds,
     });
     await role.save();

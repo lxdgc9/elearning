@@ -3,6 +3,7 @@ import { Perm } from "../../models/perm";
 
 type NewPermDto = {
   name: string;
+  group: string;
   description?: string;
 };
 
@@ -11,11 +12,12 @@ async function newPerm(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, description }: NewPermDto = req.body;
+  const { name, group, description }: NewPermDto = req.body;
 
   try {
     const perm = Perm.build({
       name,
+      group,
       description,
     });
     await perm.save();

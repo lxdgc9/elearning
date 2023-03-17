@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 interface RoleAttrs {
   name: string;
+  description?: string;
   permissions?: mongoose.Types.ObjectId[];
   logs?: mongoose.Types.ObjectId[];
 }
@@ -17,6 +18,10 @@ const schema = new mongoose.Schema<RoleAttrs>(
     name: {
       type: String,
       required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
       trim: true,
     },
     permissions: [
@@ -44,10 +49,19 @@ const schema = new mongoose.Schema<RoleAttrs>(
   }
 );
 
+// Remove extra spaces from a string
+schema.pre("save", function (next) {
+  if (this.description) {
+    this.description = this.description.replace(/\s+/g, " ").trim();
+  }
+
+  next();
+});
+
 schema.statics.build = (attrs: RoleAttrs) => {
   return new Role(attrs);
 };
 
 const Role = mongoose.model<RoleDoc, RoleModel>("role", schema);
 
-export { Role, RoleDoc };
+export { Role };

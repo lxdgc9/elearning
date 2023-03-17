@@ -1,10 +1,10 @@
 import { compare, genSalt, hash } from "bcryptjs";
 
 class Password {
-  static async toHash(password: string) {
+  static async toHash(pass: string) {
     const salt = await genSalt(10);
-    const hashedPassword = await hash(password, salt);
-    return hashedPassword;
+    const hashedPass = await hash(pass, salt);
+    return hashedPass;
   }
 
   static async comparePass(storedPass: string, suppliedPass: string) {
