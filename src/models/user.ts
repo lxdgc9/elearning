@@ -107,6 +107,7 @@ schema.pre("save", async function (fn) {
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
   this.profile.fullName = this.profile.fullName.replace(/\s+/g, " ").trim();
+
   next();
 });
 

@@ -1,27 +1,22 @@
 import mongoose from "mongoose";
 
-interface RoleAttrs {
+interface GPermAttrs {
   name: string;
-  description?: string;
   permissions?: mongoose.Types.ObjectId[];
   logs?: mongoose.Types.ObjectId[];
 }
 
-type RoleDoc = RoleAttrs & mongoose.Document;
+type GPermDoc = GPermAttrs & mongoose.Document;
 
-type RoleModel = mongoose.Model<RoleDoc> & {
-  build(attrs: RoleAttrs): RoleDoc;
+type GPermModel = mongoose.Model<GPermDoc> & {
+  build(attrs: GPermAttrs): GPermDoc;
 };
 
-const schema = new mongoose.Schema<RoleAttrs>(
+const schema = new mongoose.Schema<GPermAttrs>(
   {
     name: {
       type: String,
       required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
       trim: true,
     },
     permissions: [
@@ -38,7 +33,7 @@ const schema = new mongoose.Schema<RoleAttrs>(
     ],
   },
   {
-    collection: "Role",
+    collection: "Group Permission",
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -46,22 +41,21 @@ const schema = new mongoose.Schema<RoleAttrs>(
         delete ret.__v;
       },
     },
+    timestamps: true,
   }
 );
 
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
-  if (this.description) {
-    this.description = this.description.replace(/\s+/g, " ").trim();
-  }
+  this.name = this.name.replace(/\s+/g, " ").trim();
 
   next();
 });
 
-schema.statics.build = (attrs: RoleAttrs) => {
-  return new Role(attrs);
+schema.statics.build = (attrs: GPermAttrs) => {
+  return new GPerm(attrs);
 };
 
-const Role = mongoose.model<RoleDoc, RoleModel>("role", schema);
+const GPerm = mongoose.model<GPermDoc, GPermModel>("gperm", schema);
 
-export { Role, RoleDoc };
+export { GPerm };

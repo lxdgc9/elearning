@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 interface PermAttrs {
   name: string;
-  group: string;
+  groupId: mongoose.Types.ObjectId;
   description?: string;
   logs?: mongoose.Types.ObjectId[];
 }
@@ -21,11 +21,10 @@ const schema = new mongoose.Schema<PermAttrs>(
       unique: true,
       trim: true,
     },
-    group: {
-      type: String,
+    groupId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "gperm",
       required: true,
-      unique: true,
-      trim: true,
     },
     description: {
       type: String,
@@ -39,7 +38,7 @@ const schema = new mongoose.Schema<PermAttrs>(
     ],
   },
   {
-    collection: "Group Permission",
+    collection: "Permission",
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -53,8 +52,6 @@ const schema = new mongoose.Schema<PermAttrs>(
 
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
-  this.group = this.group.replace(/\s+/g, " ").trim();
-
   if (this.description) {
     this.description = this.description.replace(/\s+/g, " ").trim();
   }
@@ -66,6 +63,6 @@ schema.statics.build = (attrs: PermAttrs) => {
   return new Perm(attrs);
 };
 
-const Perm = mongoose.model<PermDoc, PermModel>("permission", schema);
+const Perm = mongoose.model<PermDoc, PermModel>("perm", schema);
 
 export { Perm };

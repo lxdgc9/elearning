@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from "mongoose";
+import { GPerm } from "../../models/gperm";
 import { Perm } from "../../models/perm";
 
 type NewPermDto = {
   name: string;
-  group: string;
+  groupId: Types.ObjectId;
   description?: string;
 };
 
@@ -12,15 +14,21 @@ async function newPerm(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, group, description }: NewPermDto = req.body;
+  const { name, groupId, description }: NewPermDto = req.body;
 
   try {
+    // Create permissions
     const perm = Perm.build({
       name,
-      group,
+      groupId,
       description,
     });
     await perm.save();
+
+    // Add permission to group
+    await GPerm.findByIdAndUpdate(groupId, {
+      $addToSet: { permissions: perm.id },
+    });
 
     res.status(201).json({
       permission: perm,

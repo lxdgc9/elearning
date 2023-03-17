@@ -52,6 +52,28 @@ const ROUTE_CFG = {
         PATH: "/api/permissions/:id",
       },
     },
+    GPERMS: {
+      GET: {
+        METHOD: Method.GET,
+        PATH: "/api/group-permissions",
+      },
+      GET_BY_ID: {
+        METHOD: Method.GET,
+        PATH: "/api/group-permissions/:id",
+      },
+      NEW: {
+        METHOD: Method.POST,
+        PATH: "/api/group-permissions",
+      },
+      UPDATE: {
+        METHOD: Method.PATCH,
+        PATH: "/api/group-permissions/:id",
+      },
+      DELETE: {
+        METHOD: Method.DELETE,
+        PATH: "/api/group-permissions/:id",
+      },
+    },
     ROLES: {
       GET: {
         METHOD: Method.GET,
