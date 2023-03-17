@@ -25,6 +25,8 @@ r[CURR_USER.METHOD](
 
 r[GET.METHOD](
   GET.PATH,
+  currUser,
+  requireAuth,
   version({
     v1: getUsers,
   })
@@ -32,6 +34,8 @@ r[GET.METHOD](
 
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
+  currUser,
+  requireAuth,
   version({
     v1: getUser,
   })
@@ -48,6 +52,8 @@ r[MOD_PROF.METHOD](
 
 r[NEW.METHOD](
   NEW.PATH,
+  currUser,
+  requireAuth,
   version({
     v1: newUser,
   })
