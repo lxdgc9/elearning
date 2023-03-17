@@ -25,7 +25,9 @@ sv.listen(port);
 sv.on("listening", onListening);
 sv.on("error", onError);
 
-function normalizePort(val: string): string | number | boolean {
+function normalizePort(
+  val: string
+): string | number | boolean {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -44,7 +46,10 @@ function onError(err: NodeJS.ErrnoException): void {
     throw err;
   }
 
-  const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  const bind =
+    typeof port === "string"
+      ? "Pipe " + port
+      : "Port " + port;
 
   switch (err.code) {
     case "EACCES":
@@ -60,6 +65,9 @@ function onError(err: NodeJS.ErrnoException): void {
 
 function onListening(): void {
   const addr = sv.address();
-  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr?.port;
+  const bind =
+    typeof addr === "string"
+      ? "pipe " + addr
+      : "port " + addr?.port;
   console.log("Listening on " + bind);
 }

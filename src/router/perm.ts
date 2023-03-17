@@ -13,7 +13,13 @@ const r = Router();
 
 const { GET, GET_BY_ID, NEW, MOD, DEL } = API.PERM;
 
-r[GET.METHOD](GET.PATH, currUser, requireAuth, access(GET.ACCESS), getPerms);
+r[GET.METHOD](
+  GET.PATH,
+  currUser,
+  requireAuth,
+  access(GET.ACCESS),
+  getPerms
+);
 
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
@@ -31,8 +37,20 @@ r[NEW.METHOD](
   newPerm
 );
 
-r[MOD.METHOD](MOD.PATH, updatePerm);
+r[MOD.METHOD](
+  MOD.PATH,
+  currUser,
+  requireAuth,
+  access(MOD.ACCESS),
+  updatePerm
+);
 
-r[DEL.METHOD](DEL.PATH, delPerm);
+r[DEL.METHOD](
+  DEL.PATH,
+  currUser,
+  requireAuth,
+  access(DEL.ACCESS),
+  delPerm
+);
 
 export { r as permRouter };

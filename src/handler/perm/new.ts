@@ -14,7 +14,8 @@ async function newPerm(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, groupId, description }: NewPermDto = req.body;
+  const { name, groupId, description }: NewPermDto =
+    req.body;
 
   try {
     // Create permissions

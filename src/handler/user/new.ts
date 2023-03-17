@@ -14,7 +14,12 @@ async function newUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { username, password, roleId, fullName }: NewUserDto = req.body;
+  const {
+    username,
+    password,
+    roleId,
+    fullName,
+  }: NewUserDto = req.body;
 
   try {
     const user = User.build({

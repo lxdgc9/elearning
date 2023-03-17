@@ -18,7 +18,9 @@ async function login(
   const { username, password }: LoginDto = req.body;
 
   try {
-    const extUser = await User.findOne({ username }).populate<{
+    const extUser = await User.findOne({
+      username,
+    }).populate<{
       role: {
         permissions: PermDoc[];
       };
@@ -37,7 +39,10 @@ async function login(
       throw new BadReqErr("USER_NOT_FOUND");
     }
 
-    const passMatch = await Password.comparePass(extUser.password, password);
+    const passMatch = await Password.comparePass(
+      extUser.password,
+      password
+    );
     if (!passMatch) {
       throw new BadReqErr("WRONG_PASSWORD");
     }
@@ -47,9 +52,13 @@ async function login(
       id: extUser.id,
       perms: extUser.role.permissions.map((p) => p.name),
     };
-    const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: "3d", // Ttl
-    });
+    const accessToken = sign(
+      payload,
+      process.env.ACCESS_TOKEN_SECRET!,
+      {
+        expiresIn: "3d", // Ttl
+      }
+    );
 
     res.json({
       accessToken,

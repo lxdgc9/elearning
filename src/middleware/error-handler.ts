@@ -8,7 +8,9 @@ function errHandler(
   _next: NextFunction
 ) {
   if (err instanceof HttpErr) {
-    return res.status(err.statusCode).send({ message: err.message });
+    return res
+      .status(err.statusCode)
+      .send({ message: err.message });
   }
 
   res.status(500).send({

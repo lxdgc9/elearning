@@ -16,7 +16,8 @@ async function updatePerm(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, groupId, description }: UpdatePermDto = req.body;
+  const { name, groupId, description }: UpdatePermDto =
+    req.body;
 
   try {
     const perm = await Perm.findById(id);

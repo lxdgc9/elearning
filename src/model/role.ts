@@ -1,4 +1,10 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import {
+  Document,
+  model,
+  Model,
+  Schema,
+  Types,
+} from "mongoose";
 
 interface RoleAttrs {
   name: string;
@@ -52,7 +58,9 @@ const schema = new Schema<RoleAttrs>(
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
   if (this.description) {
-    this.description = this.description.replace(/\s+/g, " ").trim();
+    this.description = this.description
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   next();

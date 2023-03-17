@@ -10,15 +10,26 @@ import { requireAuth } from "../middleware/require-auth";
 
 const r = Router();
 
-const { GET, GET_BY_ID, NEW, CURR_USER, MOD_PROF } = API.USER;
+const { GET, GET_BY_ID, NEW, CURR_USER, MOD_PROF } =
+  API.USER;
 
-r[CURR_USER.METHOD](CURR_USER.PATH, currUser, requireAuth, me);
+r[CURR_USER.METHOD](
+  CURR_USER.PATH,
+  currUser,
+  requireAuth,
+  me
+);
 
 r[GET.METHOD](GET.PATH, getUsers);
 
 r[GET_BY_ID.METHOD](GET_BY_ID.PATH, getUser);
 
-r[MOD_PROF.METHOD](MOD_PROF.PATH, currUser, requireAuth, updateProf);
+r[MOD_PROF.METHOD](
+  MOD_PROF.PATH,
+  currUser,
+  requireAuth,
+  updateProf
+);
 
 r[NEW.METHOD](NEW.PATH, newUser);
 

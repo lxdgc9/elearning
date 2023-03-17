@@ -1,4 +1,10 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import {
+  Document,
+  model,
+  Model,
+  Schema,
+  Types,
+} from "mongoose";
 
 interface GPermAttrs {
   name: string;

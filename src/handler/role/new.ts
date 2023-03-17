@@ -13,7 +13,8 @@ async function newRole(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, description, permissionIds }: NewRoleDto = req.body;
+  const { name, description, permissionIds }: NewRoleDto =
+    req.body;
 
   try {
     const role = Role.build({

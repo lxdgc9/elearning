@@ -15,7 +15,13 @@ async function updateProf(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.user!;
-  const { fullName, gender, dob, email, phone }: UpdateProfDto = req.body;
+  const {
+    fullName,
+    gender,
+    dob,
+    email,
+    phone,
+  }: UpdateProfDto = req.body;
 
   try {
     const user = await User.findByIdAndUpdate(

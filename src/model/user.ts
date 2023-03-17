@@ -1,4 +1,10 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import {
+  Document,
+  model,
+  Model,
+  Schema,
+  Types,
+} from "mongoose";
 import { Password } from "../helper/password";
 import { Gender } from "../type/gender";
 
@@ -98,7 +104,9 @@ const schema = new Schema<UserAttrs>(
 // Hash password
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
-    const hashed = await Password.toHash(this.get("password"));
+    const hashed = await Password.toHash(
+      this.get("password")
+    );
     this.set("password", hashed);
   }
   fn();
@@ -106,7 +114,9 @@ schema.pre("save", async function (fn) {
 
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
-  this.profile.fullName = this.profile.fullName.replace(/\s+/g, " ").trim();
+  this.profile.fullName = this.profile.fullName
+    .replace(/\s+/g, " ")
+    .trim();
 
   next();
 });

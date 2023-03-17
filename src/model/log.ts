@@ -1,4 +1,10 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import {
+  Document,
+  model,
+  Model,
+  Schema,
+  Types,
+} from "mongoose";
 import { Action } from "../type/action";
 
 interface LogAttrs {
@@ -16,7 +22,12 @@ const logSchema = new Schema<LogAttrs>(
   {
     action: {
       type: String,
-      enum: [Action.GET, Action.NEW, Action.MOD, Action.DEL],
+      enum: [
+        Action.GET,
+        Action.NEW,
+        Action.MOD,
+        Action.DEL,
+      ],
       required: true,
       uppercase: true,
       trim: true,

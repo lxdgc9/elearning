@@ -7,7 +7,10 @@ class Password {
     return hashedPass;
   }
 
-  static async comparePass(storedPass: string, suppliedPass: string) {
+  static async comparePass(
+    storedPass: string,
+    suppliedPass: string
+  ) {
     return await compare(suppliedPass, storedPass);
   }
 }
