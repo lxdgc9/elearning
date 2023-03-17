@@ -4,6 +4,7 @@ import {
   RequestHandler,
   Response,
 } from "express";
+import { BadReqErr } from "../error/bad-req";
 
 function version(payload: Record<string, RequestHandler>) {
   return function (
@@ -13,12 +14,12 @@ function version(payload: Record<string, RequestHandler>) {
     next: NextFunction
   ) {
     try {
-      const version = req.header("x-api-version") || "v1";
-      if (!payload[version]) {
-        throw new Error("VERSION_NOT_FOUND");
+      const ver = req.header("x-api-version") || "v1";
+      if (!payload[ver]) {
+        throw new BadReqErr("VERSION_NOT_FOUND");
       }
 
-      payload[version].call(this, req, res, next);
+      payload[ver].call(this, req, res, next);
     } catch (err) {
       console.log(err);
       next(err);
