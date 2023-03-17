@@ -18,7 +18,9 @@ async function getUsers(
       },
     ]);
 
-    res.json(users);
+    res.json({
+      users,
+    });
   } catch (err) {
     console.log(err);
     next(err);

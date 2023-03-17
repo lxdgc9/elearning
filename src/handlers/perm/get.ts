@@ -9,7 +9,9 @@ async function getPerms(
   try {
     const perms = await Perm.find({});
 
-    res.json(perms);
+    res.json({
+      permissions: perms,
+    });
   } catch (err) {
     console.log(err);
     next(err);

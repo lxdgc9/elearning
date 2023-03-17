@@ -13,7 +13,9 @@ async function getGPerms(
       },
     ]);
 
-    res.json(gperms);
+    res.json({
+      groupPermissions: gperms,
+    });
   } catch (err) {
     console.log(err);
     next(err);
