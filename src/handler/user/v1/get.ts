@@ -1,28 +1,25 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../../model/user";
+import { User } from "../../../model/user";
 
-async function me(
-  req: Request,
+async function getUsers(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { id } = req.user!;
-
   try {
-    const user = await User.findById(id).populate([
+    const users = await User.find({}).populate([
       {
         path: "role",
         populate: [
           {
             path: "permissions",
-            select: "-_id name description",
           },
         ],
       },
     ]);
 
     res.json({
-      user,
+      users,
     });
   } catch (err) {
     console.log(err);
@@ -30,4 +27,4 @@ async function me(
   }
 }
 
-export { me };
+export { getUsers };

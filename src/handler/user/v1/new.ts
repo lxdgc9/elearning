@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import { User } from "../../model/user";
+import { User } from "../../../model/user";
 
 type NewUserDto = {
   username: string;

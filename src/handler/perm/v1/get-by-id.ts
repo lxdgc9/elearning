@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { NotFoundErr } from "../../error/not-found";
-import { Perm } from "../../model/perm";
+import { NotFoundErr } from "../../../error/not-found";
+import { Perm } from "../../../model/perm";
 
 async function getPerm(
   req: Request,

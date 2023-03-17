@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import { GPerm } from "../../model/gperm";
-import { Perm } from "../../model/perm";
+import { GPerm } from "../../../model/gperm";
+import { Perm } from "../../../model/perm";
 
 type NewPermDto = {
   name: string;

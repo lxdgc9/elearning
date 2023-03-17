@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
-import { BadReqErr } from "../../error/bad-req";
-import { Password } from "../../helper/password";
-import { PermDoc } from "../../model/perm";
-import { User } from "../../model/user";
+import { BadReqErr } from "../../../error/bad-req";
+import { Password } from "../../../helper/password";
+import { PermDoc } from "../../../model/perm";
+import { User } from "../../../model/user";
 
 type LoginDto = {
   username: string;

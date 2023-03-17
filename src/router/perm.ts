@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delPerm } from "../handler/perm/delete";
-import { getPerms } from "../handler/perm/get";
-import { getPerm } from "../handler/perm/get-by-id";
-import { newPerm } from "../handler/perm/new";
-import { updatePerm } from "../handler/perm/update";
+import { delPerm } from "../handler/perm/v1/delete";
+import { getPerms } from "../handler/perm/v1/get";
+import { getPerm } from "../handler/perm/v1/get-by-id";
+import { newPerm } from "../handler/perm/v1/new";
+import { updatePerm } from "../handler/perm/v1/update";
 import { access } from "../middleware/access";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
+import { version } from "../middleware/version";
 
 const r = Router();
 
@@ -18,7 +19,9 @@ r[GET.METHOD](
   currUser,
   requireAuth,
   access(GET.ACCESS),
-  getPerms
+  version({
+    v1: getPerms,
+  })
 );
 
 r[GET_BY_ID.METHOD](
@@ -26,7 +29,9 @@ r[GET_BY_ID.METHOD](
   currUser,
   requireAuth,
   access(GET_BY_ID.ACCESS),
-  getPerm
+  version({
+    v1: getPerm,
+  })
 );
 
 r[NEW.METHOD](
@@ -34,7 +39,9 @@ r[NEW.METHOD](
   currUser,
   requireAuth,
   access(GET_BY_ID.ACCESS),
-  newPerm
+  version({
+    v1: newPerm,
+  })
 );
 
 r[MOD.METHOD](
@@ -42,7 +49,9 @@ r[MOD.METHOD](
   currUser,
   requireAuth,
   access(MOD.ACCESS),
-  updatePerm
+  version({
+    v1: updatePerm,
+  })
 );
 
 r[DEL.METHOD](
@@ -50,7 +59,9 @@ r[DEL.METHOD](
   currUser,
   requireAuth,
   access(DEL.ACCESS),
-  delPerm
+  version({
+    v1: delPerm,
+  })
 );
 
 export { r as permRouter };

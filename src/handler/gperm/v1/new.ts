@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { GPerm } from "../../model/gperm";
+import { GPerm } from "../../../model/gperm";
 
 type NewGPermDto = {
   name: string;

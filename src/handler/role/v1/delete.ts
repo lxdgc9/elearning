@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { GPerm } from "../../model/gperm";
+import { Role } from "../../../model/role";
 
-async function delGPerm(
+async function delRole(
   req: Request,
   res: Response,
   next: NextFunction
@@ -9,10 +9,10 @@ async function delGPerm(
   const { id } = req.params;
 
   try {
-    const gperm = await GPerm.findByIdAndDelete(id);
+    const role = await Role.findByIdAndDelete(id);
 
     res.json({
-      groupPermission: gperm,
+      role,
     });
   } catch (err) {
     console.log(err);
@@ -20,4 +20,4 @@ async function delGPerm(
   }
 }
 
-export { delGPerm };
+export { delRole };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { NotFoundErr } from "../../error/not-found";
-import { User } from "../../model/user";
+import { NotFoundErr } from "../../../error/not-found";
+import { User } from "../../../model/user";
 
 async function getUser(
   req: Request,

@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { errHandler } from "./middleware/error-handler";
+import { errHandler } from "./middleware/err-handler";
 import { authRouter } from "./router/auth";
 import { gpermRouter } from "./router/gperm";
 import { permRouter } from "./router/perm";

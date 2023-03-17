@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { Role } from "../../model/role";
+import { GPerm } from "../../../model/gperm";
 
-async function getRoles(
+async function getGPerms(
   _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const roles = await Role.find({}).populate([
+    const gperms = await GPerm.find({}).populate([
       {
         path: "permissions",
       },
     ]);
 
     res.json({
-      roles,
+      groupPermissions: gperms,
     });
   } catch (err) {
     console.log(err);
@@ -22,4 +22,4 @@ async function getRoles(
   }
 }
 
-export { getRoles };
+export { getGPerms };

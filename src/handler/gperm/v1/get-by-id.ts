@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { NotFoundErr } from "../../error/not-found";
-import { Role } from "../../model/role";
+import { NotFoundErr } from "../../../error/not-found";
+import { GPerm } from "../../../model/gperm";
 
-async function getRole(
+async function getGPerm(
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,17 +10,17 @@ async function getRole(
   const { id } = req.params;
 
   try {
-    const role = await Role.findById(id).populate([
+    const gperm = await GPerm.findById(id).populate([
       {
         path: "permissions",
       },
     ]);
-    if (!role) {
-      throw new NotFoundErr("NOT_FOUND");
+    if (!gperm) {
+      throw new NotFoundErr("GROUP_PERMISSION_NOT_FOUND");
     }
 
     res.json({
-      role,
+      groupPermission: gperm,
     });
   } catch (err) {
     console.log(err);
@@ -28,4 +28,4 @@ async function getRole(
   }
 }
 
-export { getRole };
+export { getGPerm };

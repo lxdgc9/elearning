@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../../model/user";
+import { User } from "../../../model/user";
 
 type UpdateProfDto = {
   fullName?: string;

@@ -1,32 +1,32 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import { Role } from "../../model/role";
+import { GPerm } from "../../../model/gperm";
 
-type UpdateRoleDto = {
+type UpdateGPermDto = {
   name?: string;
-  permissionIds?: Types.ObjectId[];
+  permissionsIds?: Types.ObjectId[];
 };
 
-async function updateRole(
+async function updateGPerm(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, permissionIds }: UpdateRoleDto = req.body;
+  const { name, permissionsIds }: UpdateGPermDto = req.body;
 
   try {
-    const role = await Role.findByIdAndUpdate(
+    const gperm = await GPerm.findByIdAndUpdate(
       id,
       {
         name,
-        permissions: permissionIds,
+        permissions: permissionsIds,
       },
       { new: true }
     );
 
     res.json({
-      role,
+      groupPermission: gperm,
     });
   } catch (err) {
     console.log(err);
@@ -34,4 +34,4 @@ async function updateRole(
   }
 }
 
-export { updateRole };
+export { updateGPerm };
