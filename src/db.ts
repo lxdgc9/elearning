@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 
-async function connectDb(uri: string): Promise<void> {
+async function connectDb(uri: string) {
   try {
     await connect(uri);
     console.log("MongoDB connected");
