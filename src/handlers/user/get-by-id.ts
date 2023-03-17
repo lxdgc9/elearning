@@ -13,6 +13,11 @@ async function getUser(
     const user = await User.findById(id).populate([
       {
         path: "role",
+        populate: [
+          {
+            path: "permissions",
+          },
+        ],
       },
     ]);
     if (!user) {

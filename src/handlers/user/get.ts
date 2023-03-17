@@ -10,12 +10,15 @@ async function getUsers(
     const users = await User.find({}).populate([
       {
         path: "role",
+        populate: [
+          {
+            path: "permissions",
+          },
+        ],
       },
     ]);
 
-    res.json({
-      users,
-    });
+    res.json(users);
   } catch (err) {
     console.log(err);
     next(err);

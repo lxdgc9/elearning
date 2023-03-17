@@ -13,9 +13,7 @@ async function getRoles(
       },
     ]);
 
-    res.json({
-      roles,
-    });
+    res.json(roles);
   } catch (err) {
     console.log(err);
     next(err);
