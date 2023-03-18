@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delPerm } from "../handler/perm/v1/delete";
-import { getPerms } from "../handler/perm/v1/get";
-import { getPerm } from "../handler/perm/v1/get-by-id";
-import { newPerm } from "../handler/perm/v1/new";
-import { updatePerm } from "../handler/perm/v1/update";
+import { delSub } from "../handler/subject/v1/delete";
+import { getSubs } from "../handler/subject/v1/get";
+import { getSub } from "../handler/subject/v1/get-by-id";
+import { newSub } from "../handler/subject/v1/new";
+import { updateSub } from "../handler/subject/v1/update";
 import { access } from "../middleware/access";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
@@ -12,7 +12,7 @@ import { version } from "../middleware/version";
 
 const r = Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.PERM;
+const { GET, GET_BY_ID, NEW, MOD, DEL } = API.SUBJECT;
 
 r[GET.METHOD](
   GET.PATH,
@@ -20,7 +20,7 @@ r[GET.METHOD](
   requireAuth,
   access(GET.ACCESS),
   version({
-    v1: getPerms,
+    v1: getSubs,
   })
 );
 
@@ -30,7 +30,7 @@ r[GET_BY_ID.METHOD](
   requireAuth,
   access(GET_BY_ID.ACCESS),
   version({
-    v1: getPerm,
+    v1: getSub,
   })
 );
 
@@ -40,7 +40,7 @@ r[NEW.METHOD](
   requireAuth,
   access(NEW.ACCESS),
   version({
-    v1: newPerm,
+    v1: newSub,
   })
 );
 
@@ -50,7 +50,7 @@ r[MOD.METHOD](
   requireAuth,
   access(MOD.ACCESS),
   version({
-    v1: updatePerm,
+    v1: updateSub,
   })
 );
 
@@ -60,8 +60,8 @@ r[DEL.METHOD](
   requireAuth,
   access(DEL.ACCESS),
   version({
-    v1: delPerm,
+    v1: delSub,
   })
 );
 
-export { r as permRouter };
+export { r as subRouter };

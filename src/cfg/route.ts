@@ -111,6 +111,33 @@ const API = {
       ACCESS: [PERM.DEL],
     },
   },
+  SUBJECT: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/subjects",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/subjects/:id",
+      ACCESS: [],
+    },
+    NEW: {
+      METHOD: Method.POST,
+      PATH: "/api/subjects",
+      ACCESS: [],
+    },
+    MOD: {
+      METHOD: Method.PATCH,
+      PATH: "/api/subjects/:id",
+      ACCESS: [],
+    },
+    DEL: {
+      METHOD: Method.DELETE,
+      PATH: "/api/subjects/:id",
+      ACCESS: [],
+    },
+  },
 };
 
 export { API };
