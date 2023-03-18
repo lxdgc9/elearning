@@ -4,8 +4,6 @@ import { Subject } from "../../../model/subject";
 type NewSubDto = {
   name: string;
   description?: string;
-  type?: string; //
-  rules?: string[]; //
 };
 
 async function newSub(
@@ -13,16 +11,13 @@ async function newSub(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const { name, description, type, rules }: NewSubDto =
-    req.body;
+  const { name, description }: NewSubDto = req.body;
 
   try {
     // Create subject
     const sub = Subject.build({
       name,
       description,
-      type,
-      rules,
     });
     await sub.save();
 

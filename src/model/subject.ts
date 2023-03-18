@@ -9,9 +9,6 @@ import {
 interface SubAttrs {
   name: string;
   description?: string;
-  lesson?: string; //
-  type?: string; //
-  rules?: string[]; //
   teachers?: Types.ObjectId[];
   courses?: Types.ObjectId[];
   logs?: Types.ObjectId[];
@@ -35,23 +32,6 @@ const schema = new Schema<SubAttrs>(
       type: String,
       trim: true,
     },
-    //
-    lesson: {
-      type: String,
-      trim: true,
-    },
-    //
-    type: {
-      type: String,
-      trim: true,
-    },
-    //
-    rules: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
     teachers: [
       {
         type: Schema.Types.ObjectId,

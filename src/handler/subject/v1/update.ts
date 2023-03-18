@@ -4,8 +4,6 @@ import { Subject } from "../../../model/subject";
 type UpdateSubDto = {
   name?: string;
   description?: string;
-  type?: string; //
-  rules?: string[]; //
 };
 
 async function updateSub(
@@ -14,8 +12,7 @@ async function updateSub(
   next: NextFunction
 ): Promise<void> {
   const { id } = req.params;
-  const { name, description, type, rules }: UpdateSubDto =
-    req.body;
+  const { name, description }: UpdateSubDto = req.body;
 
   try {
     const sub = await Subject.findByIdAndUpdate(
@@ -23,8 +20,6 @@ async function updateSub(
       {
         name,
         description,
-        type,
-        rules,
       },
       {
         new: true,
