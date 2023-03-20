@@ -13,6 +13,16 @@ async function getClass(
     const _class = await Class.findById(id).populate([
       {
         path: "users",
+        populate: [
+          {
+            path: "role",
+            populate: [
+              {
+                path: "permissions",
+              },
+            ],
+          },
+        ],
       },
     ]);
     if (!_class) {

@@ -10,6 +10,16 @@ async function getClasses(
     const classes = await Class.find({}).populate([
       {
         path: "users",
+        populate: [
+          {
+            path: "role",
+            populate: [
+              {
+                path: "permissions",
+              },
+            ],
+          },
+        ],
       },
     ]);
 
