@@ -159,6 +159,11 @@ const API = {
       PATH: "/api/classes/alloc-users/:id",
       ACCESS: [],
     },
+    REMOVE_USER: {
+      METHOD: Method.PATCH,
+      PATH: "/api/classes/remove-users/:id",
+      ACCESS: [],
+    },
     MOD: {
       METHOD: Method.PATCH,
       PATH: "/api/classes/:id",
