@@ -5,7 +5,7 @@ async function getPerms(
   _req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
     const perms = await Perm.find({});
 

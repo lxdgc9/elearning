@@ -6,7 +6,7 @@ async function getGPerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
@@ -16,7 +16,7 @@ async function getGPerm(
       },
     ]);
     if (!gperm) {
-      throw new NotFoundErr("GROUP_PERMISSION_NOT_FOUND");
+      throw new NotFoundErr("GPERM_NOT_FOUND");
     }
 
     res.json({

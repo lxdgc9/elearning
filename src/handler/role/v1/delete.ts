@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { Role } from "../../../model/role";
 
-async function delRole(
+async function deleteRole(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
@@ -20,4 +20,4 @@ async function delRole(
   }
 }
 
-export { delRole };
+export { deleteRole };

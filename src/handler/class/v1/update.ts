@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { NotFoundErr } from "../../../error/not-found";
 import { Class } from "../../../model/class";
 
 type UpdateClassDto = {
@@ -10,7 +11,7 @@ async function updateClass(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
   const { name, session }: UpdateClassDto = req.body;
 
@@ -25,6 +26,9 @@ async function updateClass(
         new: true,
       }
     );
+    if (!_class) {
+      throw new NotFoundErr("CLASS_NOT_FOUND");
+    }
 
     res.json({
       class: _class,

@@ -6,13 +6,13 @@ async function getPerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
     const perm = await Perm.findById(id);
     if (!perm) {
-      throw new NotFoundErr("Permission Not Found");
+      throw new NotFoundErr("PERM_NOT_FOUND");
     }
 
     res.json({

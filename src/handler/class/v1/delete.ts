@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { NotFoundErr } from "../../../error/not-found";
 import { Class } from "../../../model/class";
 
-async function delClass(
+async function deleteClass(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
@@ -23,4 +23,5 @@ async function delClass(
     next(err);
   }
 }
-export { delClass };
+
+export { deleteClass };

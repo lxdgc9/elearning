@@ -13,7 +13,7 @@ async function newUser(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const {
     username,
     password,

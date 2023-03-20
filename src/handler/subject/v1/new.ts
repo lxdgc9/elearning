@@ -6,23 +6,23 @@ type NewSubDto = {
   description?: string;
 };
 
-async function newSub(
+async function newSubject(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { name, description }: NewSubDto = req.body;
 
   try {
     // Create subject
-    const sub = Subject.build({
+    const subject = Subject.build({
       name,
       description,
     });
-    await sub.save();
+    await subject.save();
 
     res.status(201).json({
-      subject: sub,
+      subject
     });
   } catch (err) {
     console.log(err);
@@ -30,4 +30,4 @@ async function newSub(
   }
 }
 
-export { newSub };
+export { newSubject };

@@ -5,7 +5,7 @@ async function me(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.user!;
 
   try {

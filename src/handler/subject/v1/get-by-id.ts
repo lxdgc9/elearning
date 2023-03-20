@@ -2,21 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import { NotFoundErr } from "../../../error/not-found";
 import { Subject } from "../../../model/subject";
 
-async function getSub(
+async function getSubject(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
-    const sub = await Subject.findById(id);
-    if (!sub) {
+    const subject = await Subject.findById(id);
+    if (!subject) {
       throw new NotFoundErr("SUBJECT_NOT_FOUND");
     }
 
     res.json({
-      subject: sub,
+      subject
     });
   } catch (err) {
     console.log(err);
@@ -24,4 +24,4 @@ async function getSub(
   }
 }
 
-export { getSub };
+export { getSubject };

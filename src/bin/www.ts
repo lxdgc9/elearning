@@ -28,9 +28,7 @@ sv.listen(port);
 sv.on("listening", onListening);
 sv.on("error", onError);
 
-function normalizePort(
-  val: string
-): string | number | boolean {
+function normalizePort(val: string) {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -44,7 +42,7 @@ function normalizePort(
   return false;
 }
 
-function onError(err: NodeJS.ErrnoException): void {
+function onError(err: NodeJS.ErrnoException) {
   if (err.syscall !== "listen") {
     throw err;
   }
@@ -66,7 +64,7 @@ function onError(err: NodeJS.ErrnoException): void {
   }
 }
 
-function onListening(): void {
+function onListening() {
   const addr = sv.address();
   const bind =
     typeof addr === "string"

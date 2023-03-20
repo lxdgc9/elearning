@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
+import { NotFoundErr } from "../../../error/not-found";
 import { Role } from "../../../model/role";
 
 type UpdateRoleDto = {
@@ -12,7 +13,7 @@ async function updateRole(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
   const {
     name,
@@ -30,6 +31,9 @@ async function updateRole(
       },
       { new: true }
     );
+    if (!role) {
+      throw new NotFoundErr("ROLE_NOT_FOUND");
+    }
 
     res.json({
       role,

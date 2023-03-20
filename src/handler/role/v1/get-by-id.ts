@@ -6,7 +6,7 @@ async function getRole(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
@@ -16,7 +16,7 @@ async function getRole(
       },
     ]);
     if (!role) {
-      throw new NotFoundErr("NOT_FOUND");
+      throw new NotFoundErr("ROLE_NOT_FOUND");
     }
 
     res.json({

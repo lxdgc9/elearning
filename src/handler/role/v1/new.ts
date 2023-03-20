@@ -12,7 +12,7 @@ async function newRole(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { name, description, permissionIds }: NewRoleDto =
     req.body;
 

@@ -6,16 +6,16 @@ type UpdateSubDto = {
   description?: string;
 };
 
-async function updateSub(
+async function updateSubject(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
   const { name, description }: UpdateSubDto = req.body;
 
   try {
-    const sub = await Subject.findByIdAndUpdate(
+    const subject = await Subject.findByIdAndUpdate(
       id,
       {
         name,
@@ -27,7 +27,7 @@ async function updateSub(
     );
 
     res.json({
-      subject: sub,
+      subject
     });
   } catch (err) {
     console.log(err);
@@ -35,4 +35,4 @@ async function updateSub(
   }
 }
 
-export { updateSub };
+export { updateSubject };

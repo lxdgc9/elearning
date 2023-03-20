@@ -14,7 +14,7 @@ async function login(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { username, password }: LoginDto = req.body;
 
   try {

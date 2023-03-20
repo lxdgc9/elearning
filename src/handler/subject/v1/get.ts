@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import { Subject } from "../../../model/subject";
 
-async function getSubs(
+async function getSubjects(
   _req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
-    const subs = await Subject.find({});
+    const subjects = await Subject.find({});
 
     res.json({
-      subjects: subs,
+      subjects
     });
   } catch (err) {
     console.log(err);
@@ -18,4 +18,4 @@ async function getSubs(
   }
 }
 
-export { getSubs };
+export { getSubjects };

@@ -5,7 +5,7 @@ async function getGPerms(
   _req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
     const gperms = await GPerm.find({}).populate([
       {

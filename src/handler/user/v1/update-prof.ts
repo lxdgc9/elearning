@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { NotFoundErr } from "../../../error/not-found";
 import { User } from "../../../model/user";
 
 type UpdateProfDto = {
@@ -13,7 +14,7 @@ async function updateProf(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.user!;
   const {
     fullName,
@@ -47,6 +48,9 @@ async function updateProf(
         ],
       },
     ]);
+    if (!user) {
+      throw new NotFoundErr("USER_NOT_FOUND");
+    }
 
     res.json({
       user,

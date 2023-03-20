@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delPerm } from "../handler/perm/v1/delete";
+import { deletePerm } from "../handler/perm/v1/delete";
 import { getPerms } from "../handler/perm/v1/get";
 import { getPerm } from "../handler/perm/v1/get-by-id";
 import { newPerm } from "../handler/perm/v1/new";
@@ -60,7 +60,7 @@ r[DEL.METHOD](
   requireAuth,
   access(DEL.ACCESS),
   version({
-    v1: delPerm,
+    v1: deletePerm,
   })
 );
 

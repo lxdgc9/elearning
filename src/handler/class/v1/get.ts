@@ -5,7 +5,7 @@ async function getClasses(
   _req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
     const classes = await Class.find({});
 

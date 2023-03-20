@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delSub } from "../handler/subject/v1/delete";
-import { getSubs } from "../handler/subject/v1/get";
-import { getSub } from "../handler/subject/v1/get-by-id";
-import { newSub } from "../handler/subject/v1/new";
-import { updateSub } from "../handler/subject/v1/update";
+import { deleteSubject } from "../handler/subject/v1/delete";
+import { getSubjects } from "../handler/subject/v1/get";
+import { getSubject } from "../handler/subject/v1/get-by-id";
+import { newSubject } from "../handler/subject/v1/new";
+import { updateSubject } from "../handler/subject/v1/update";
 import { access } from "../middleware/access";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
@@ -20,7 +20,7 @@ r[GET.METHOD](
   requireAuth,
   access(GET.ACCESS),
   version({
-    v1: getSubs,
+    v1: getSubjects,
   })
 );
 
@@ -30,7 +30,7 @@ r[GET_BY_ID.METHOD](
   requireAuth,
   access(GET_BY_ID.ACCESS),
   version({
-    v1: getSub,
+    v1: getSubject,
   })
 );
 
@@ -40,7 +40,7 @@ r[NEW.METHOD](
   requireAuth,
   access(NEW.ACCESS),
   version({
-    v1: newSub,
+    v1: newSubject,
   })
 );
 
@@ -50,7 +50,7 @@ r[MOD.METHOD](
   requireAuth,
   access(MOD.ACCESS),
   version({
-    v1: updateSub,
+    v1: updateSubject,
   })
 );
 
@@ -60,7 +60,7 @@ r[DEL.METHOD](
   requireAuth,
   access(DEL.ACCESS),
   version({
-    v1: delSub,
+    v1: deleteSubject,
   })
 );
 

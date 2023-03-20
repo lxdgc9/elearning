@@ -9,7 +9,7 @@ async function newGPerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { name }: NewGPermDto = req.body;
 
   try {

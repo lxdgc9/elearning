@@ -3,17 +3,17 @@ import { NotFoundErr } from "../../../error/not-found";
 import { GPerm } from "../../../model/gperm";
 import { Perm } from "../../../model/perm";
 
-async function delPerm(
+async function deletePerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
 
   try {
     const perm = await Perm.findByIdAndDelete(id);
     if (!perm) {
-      throw new NotFoundErr("PERMISSION_NOT_FOUND");
+      throw new NotFoundErr("PERM_NOT_FOUND");
     }
 
     // Remove permission from group
@@ -30,4 +30,4 @@ async function delPerm(
   }
 }
 
-export { delPerm };
+export { deletePerm };

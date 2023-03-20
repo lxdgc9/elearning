@@ -5,7 +5,7 @@ async function getRoles(
   _req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
     const roles = await Role.find({}).populate([
       {

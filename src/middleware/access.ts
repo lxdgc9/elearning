@@ -6,7 +6,7 @@ function access(perms: string[]) {
     req: Request,
     _res: Response,
     next: NextFunction
-  ): void => {
+  ) => {
     try {
       if (!perms || !perms.length) {
         next();

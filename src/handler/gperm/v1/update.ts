@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
+import { NotFoundErr } from "../../../error/not-found";
 import { GPerm } from "../../../model/gperm";
 
 type UpdateGPermDto = {
@@ -11,7 +12,7 @@ async function updateGPerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
   const { name, permissionsIds }: UpdateGPermDto = req.body;
 
@@ -24,6 +25,9 @@ async function updateGPerm(
       },
       { new: true }
     );
+    if (!gperm) {
+      throw new NotFoundErr("GPERM_NOT_FOUND");
+    }
 
     res.json({
       groupPermission: gperm,

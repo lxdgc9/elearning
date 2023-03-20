@@ -14,7 +14,7 @@ async function updatePerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { id } = req.params;
   const { name, groupId, description }: UpdatePermDto =
     req.body;
@@ -22,7 +22,7 @@ async function updatePerm(
   try {
     const perm = await Perm.findById(id);
     if (!perm) {
-      throw new NotFoundErr("PERMISSION_NOT_FOUND");
+      throw new NotFoundErr("PERM_NOT_FOUND");
     }
 
     // Remove permission from previous group,

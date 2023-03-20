@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delGPerm } from "../handler/gperm/v1/delete";
+import { deleteGPerm } from "../handler/gperm/v1/delete";
 import { getGPerms } from "../handler/gperm/v1/get";
 import { getGPerm } from "../handler/gperm/v1/get-by-id";
 import { newGPerm } from "../handler/gperm/v1/new";
@@ -54,7 +54,7 @@ r[DEL.METHOD](
   currUser,
   requireAuth,
   version({
-    v1: delGPerm,
+    v1: deleteGPerm,
   })
 );
 

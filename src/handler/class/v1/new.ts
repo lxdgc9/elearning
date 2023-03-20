@@ -10,11 +10,10 @@ async function newClass(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { name, session }: NewClassDto = req.body;
 
   try {
-    // Create class
     const _class = Class.build({
       name,
       session,

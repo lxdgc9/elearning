@@ -13,7 +13,7 @@ async function newPerm(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   const { name, groupId, description }: NewPermDto =
     req.body;
 
@@ -28,7 +28,9 @@ async function newPerm(
 
     // Add permission to group
     await GPerm.findByIdAndUpdate(groupId, {
-      $addToSet: { permissions: perm.id },
+      $addToSet: {
+        permissions: perm.id,
+      },
     });
 
     res.status(201).json({

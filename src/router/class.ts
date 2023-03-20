@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delClass } from "../handler/class/v1/delete";
+import { deleteClass } from "../handler/class/v1/delete";
 import { getClasses } from "../handler/class/v1/get";
 import { getClass } from "../handler/class/v1/get-by-id";
 import { newClass } from "../handler/class/v1/new";
@@ -60,7 +60,7 @@ r[DEL.METHOD](
   requireAuth,
   access(DEL.ACCESS),
   version({
-    v1: delClass,
+    v1: deleteClass,
   })
 );
 

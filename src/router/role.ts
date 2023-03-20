@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
-import { delRole } from "../handler/role/v1/delete";
+import { deleteRole } from "../handler/role/v1/delete";
 import { getRoles } from "../handler/role/v1/get";
 import { getRole } from "../handler/role/v1/get-by-id";
 import { newRole } from "../handler/role/v1/new";
@@ -54,7 +54,7 @@ r[DEL.METHOD](
   currUser,
   requireAuth,
   version({
-    v1: delRole,
+    v1: deleteRole,
   })
 );
 
