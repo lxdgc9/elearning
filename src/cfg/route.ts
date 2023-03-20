@@ -156,7 +156,7 @@ const API = {
     },
     ALLOC_USER: {
       METHOD: Method.PATCH,
-      PATH: "/api/classes/:id",
+      PATH: "/api/classes/alloc-users/:id",
       ACCESS: [],
     },
     MOD: {
