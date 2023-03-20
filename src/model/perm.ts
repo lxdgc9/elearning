@@ -49,6 +49,7 @@ const schema = new Schema<PermAttrs>(
       transform(_doc, ret, _options) {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.groupId;
         delete ret.__v;
       },
     },

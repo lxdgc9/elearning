@@ -36,7 +36,6 @@ async function updatePerm(
       });
     }
 
-    // Update this permission
     await perm.updateOne({
       name,
       groupId,
