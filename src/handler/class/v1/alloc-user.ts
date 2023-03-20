@@ -31,7 +31,9 @@ async function allocUser(
     }
 
     await _class.updateOne({
-      users: users.map((u) => u.id),
+      $addToSet: {
+        users: users.map((u) => u.id),
+      },
     });
 
     users.forEach(async (u) => {
