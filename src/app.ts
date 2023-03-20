@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { NotFoundErr } from "./error/not-found";
 import { errHandler } from "./middleware/err-handler";
 import { authRouter } from "./router/auth";
+import { classRouter } from "./router/class";
 import { gpermRouter } from "./router/gperm";
 import { permRouter } from "./router/perm";
 import { roleRouter } from "./router/role";
@@ -23,6 +24,7 @@ app.use(roleRouter);
 app.use(permRouter);
 app.use(gpermRouter);
 app.use(subRouter);
+app.use(classRouter);
 
 // Catch unknown request
 app.all("*", (_req, _res) => {

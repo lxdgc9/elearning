@@ -138,6 +138,33 @@ const API = {
       ACCESS: [],
     },
   },
+  CLASS: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/classes",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
+    NEW: {
+      METHOD: Method.POST,
+      PATH: "/api/classes",
+      ACCESS: [],
+    },
+    MOD: {
+      METHOD: Method.PATCH,
+      PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
+    DEL: {
+      METHOD: Method.DELETE,
+      PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
+  },
 };
 
 export { API };

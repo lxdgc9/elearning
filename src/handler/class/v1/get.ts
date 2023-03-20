@@ -1,0 +1,21 @@
+import { NextFunction, Request, Response } from "express";
+import { Class } from "../../../model/class";
+
+async function getClasses(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const classes = await Class.find({});
+
+    res.json({
+      classes,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+}
+
+export { getClasses };
