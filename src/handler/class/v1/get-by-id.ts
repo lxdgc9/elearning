@@ -10,7 +10,11 @@ async function getClass(
   const { id } = req.params;
 
   try {
-    const _class = await Class.findById(id);
+    const _class = await Class.findById(id).populate([
+      {
+        path: "users",
+      },
+    ]);
     if (!_class) {
       throw new NotFoundErr("CLASS_NOT_FOUND");
     }

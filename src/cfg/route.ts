@@ -154,6 +154,11 @@ const API = {
       PATH: "/api/classes",
       ACCESS: [],
     },
+    ALLOC_USER: {
+      METHOD: Method.PATCH,
+      PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
     MOD: {
       METHOD: Method.PATCH,
       PATH: "/api/classes/:id",

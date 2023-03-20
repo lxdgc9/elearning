@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
+import { allocUser } from "../handler/class/v1/alloc-user";
 import { deleteClass } from "../handler/class/v1/delete";
 import { getClasses } from "../handler/class/v1/get";
 import { getClass } from "../handler/class/v1/get-by-id";
@@ -12,7 +13,8 @@ import { version } from "../middleware/version";
 
 const r = Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.CLASS;
+const { GET, GET_BY_ID, NEW, ALLOC_USER, MOD, DEL } =
+  API.CLASS;
 
 r[GET.METHOD](
   GET.PATH,
@@ -41,6 +43,16 @@ r[NEW.METHOD](
   access(NEW.ACCESS),
   version({
     v1: newClass,
+  })
+);
+
+r[ALLOC_USER.METHOD](
+  ALLOC_USER.PATH,
+  currUser,
+  requireAuth,
+  access(ALLOC_USER.ACCESS),
+  version({
+    v1: allocUser,
   })
 );
 

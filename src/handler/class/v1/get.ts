@@ -7,7 +7,11 @@ async function getClasses(
   next: NextFunction
 ) {
   try {
-    const classes = await Class.find({});
+    const classes = await Class.find({}).populate([
+      {
+        path: "users",
+      },
+    ]);
 
     res.json({
       classes,
