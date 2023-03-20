@@ -37,7 +37,7 @@ async function allocUser(
     users.forEach(async (u) => {
       await User.findByIdAndUpdate(u.id, {
         $addToSet: {
-          class: _class.id,
+          classes: _class.id,
         },
       });
     });
