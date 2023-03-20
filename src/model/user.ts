@@ -20,6 +20,7 @@ interface UserAttrs {
     avatar?: string;
   };
   role?: Types.ObjectId;
+  classes?: Types.ObjectId[];
   logs?: Types.ObjectId[];
   hasAccess?: boolean;
 }
@@ -77,6 +78,12 @@ const schema = new Schema<UserAttrs>(
       type: Schema.Types.ObjectId,
       ref: "role",
     },
+    classes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "class",
+      },
+    ],
     hasAccess: {
       type: Boolean,
       default: true,

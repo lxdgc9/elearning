@@ -4,8 +4,6 @@ import { Class } from "../../../model/class";
 import { User } from "../../../model/user";
 import { BadReqErr } from "../../../error/bad-req";
 import { NotFoundErr } from "../../../error/not-found";
-import { UserByClass } from "../../../model/user-by-class";
-import { ClassByUser } from "../../../model/class-by-user";
 
 type AllocUserDto = {
   userIds: Types.ObjectId[];
@@ -32,30 +30,16 @@ async function allocUser(
       throw new NotFoundErr("CLASS_NOT_FOUND");
     }
 
-    await UserByClass.findOneAndUpdate(
-      {
-        classId: _class.id,
-      },
-      {
-        users: users.map((u) => u.id),
-      },
-      {
-        upsert: true,
-      }
-    );
+    await _class.updateOne({
+      users: users.map((u) => u.id),
+    });
 
     users.forEach(async (u) => {
-      await ClassByUser.findOneAndUpdate(
-        {
-          userId: u.id,
+      await User.findByIdAndUpdate(u.id, {
+        $addToSet: {
+          class: _class.id,
         },
-        {
-          $addToSet: {
-            classes: _class.id,
-          },
-        },
-        { upsert: true }
-      );
+      });
     });
 
     res.json({
