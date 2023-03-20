@@ -64,4 +64,4 @@ r[DEL.METHOD](
   })
 );
 
-export { r as subRouter };
+export { r as subjectRouter };

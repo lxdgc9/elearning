@@ -16,7 +16,7 @@ async function getSubject(
     }
 
     res.json({
-      subject
+      subject,
     });
   } catch (err) {
     console.log(err);

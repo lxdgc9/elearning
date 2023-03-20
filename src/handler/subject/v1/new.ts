@@ -22,7 +22,7 @@ async function newSubject(
     await subject.save();
 
     res.status(201).json({
-      subject
+      subject,
     });
   } catch (err) {
     console.log(err);

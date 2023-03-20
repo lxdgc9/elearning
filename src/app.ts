@@ -8,7 +8,7 @@ import { classRouter } from "./router/class";
 import { gpermRouter } from "./router/gperm";
 import { permRouter } from "./router/perm";
 import { roleRouter } from "./router/role";
-import { subRouter } from "./router/subject";
+import { subjectRouter } from "./router/subject";
 import { userRouter } from "./router/user";
 
 const app = express();
@@ -23,8 +23,8 @@ app.use(userRouter);
 app.use(roleRouter);
 app.use(permRouter);
 app.use(gpermRouter);
-app.use(subRouter);
 app.use(classRouter);
+app.use(subjectRouter);
 
 // Catch unknown request
 app.all("*", (_req, _res) => {

@@ -9,7 +9,7 @@ function errHandler(
 ) {
   if (err instanceof HttpErr) {
     return res
-      .status(err.statusCode)
+      .status(err.code)
       .send({ message: err.message });
   }
 

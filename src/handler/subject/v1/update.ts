@@ -27,7 +27,7 @@ async function updateSubject(
     );
 
     res.json({
-      subject
+      subject,
     });
   } catch (err) {
     console.log(err);

@@ -10,7 +10,7 @@ async function getSubjects(
     const subjects = await Subject.find({});
 
     res.json({
-      subjects
+      subjects,
     });
   } catch (err) {
     console.log(err);
