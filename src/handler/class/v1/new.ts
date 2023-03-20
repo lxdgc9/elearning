@@ -4,6 +4,7 @@ import { Class } from "../../../model/class";
 type NewClassDto = {
   name: string;
   session: string;
+  description?: string;
 };
 
 async function newClass(
@@ -11,12 +12,14 @@ async function newClass(
   res: Response,
   next: NextFunction
 ) {
-  const { name, session }: NewClassDto = req.body;
+  const { name, session, description }: NewClassDto =
+    req.body;
 
   try {
     const _class = Class.build({
       name,
       session,
+      description,
     });
     await _class.save();
 

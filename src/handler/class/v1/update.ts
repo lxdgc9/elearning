@@ -5,6 +5,7 @@ import { Class } from "../../../model/class";
 type UpdateClassDto = {
   name?: string;
   session?: string;
+  description?: string;
 };
 
 async function updateClass(
@@ -13,7 +14,8 @@ async function updateClass(
   next: NextFunction
 ) {
   const { id } = req.params;
-  const { name, session }: UpdateClassDto = req.body;
+  const { name, session, description }: UpdateClassDto =
+    req.body;
 
   try {
     const _class = await Class.findByIdAndUpdate(
@@ -21,6 +23,7 @@ async function updateClass(
       {
         name,
         session,
+        description,
       },
       {
         new: true,

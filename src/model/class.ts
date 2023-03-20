@@ -9,6 +9,7 @@ import {
 interface ClassAttrs {
   name: string;
   session: string;
+  description?: string;
   subjects?: Types.ObjectId[];
   users?: Types.ObjectId[];
   logs?: Types.ObjectId[];
@@ -30,6 +31,10 @@ const schema = new Schema<ClassAttrs>(
     session: {
       type: String,
       required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
       trim: true,
     },
     subjects: [
