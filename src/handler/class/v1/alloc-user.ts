@@ -4,6 +4,8 @@ import { Class } from "../../../model/class";
 import { User } from "../../../model/user";
 import { BadReqErr } from "../../../error/bad-req";
 import { NotFoundErr } from "../../../error/not-found";
+import { UserByClass } from "../../../model/user-by-class";
+import { ClassByUser } from "../../../model/class-by-user";
 
 type AllocUserDto = {
   userIds: Types.ObjectId[];
@@ -25,18 +27,36 @@ async function allocUser(
       throw new BadReqErr("INVALID_USER_IDS");
     }
 
-    const _class = await Class.findByIdAndUpdate(
-      id,
-      {
-        $addToSet: {
-          users: users.map((u) => u.id),
-        },
-      },
-      { new: true }
-    );
+    const _class = await Class.findById(id);
     if (!_class) {
       throw new NotFoundErr("CLASS_NOT_FOUND");
     }
+
+    await UserByClass.findOneAndUpdate(
+      {
+        classId: _class.id,
+      },
+      {
+        users: users.map((u) => u.id),
+      },
+      {
+        upsert: true,
+      }
+    );
+
+    users.forEach(async (u) => {
+      await ClassByUser.findOneAndUpdate(
+        {
+          userId: u.id,
+        },
+        {
+          $addToSet: {
+            classes: _class.id,
+          },
+        },
+        { upsert: true }
+      );
+    });
 
     res.json({
       class: _class,
