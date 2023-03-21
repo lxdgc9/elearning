@@ -25,6 +25,10 @@ const API = {
       METHOD: Method.POST,
       PATH: "/api/users",
     },
+    SET_ROLE: {
+      METHOD: Method.PATCH,
+      PATH: "/api/users/role",
+    },
     MOD_PROF: {
       METHOD: Method.PATCH,
       PATH: "/api/users/profile",

@@ -10,7 +10,6 @@ interface ClassAttrs {
   name: string;
   session: string;
   description?: string;
-  subjects?: Types.ObjectId[];
   users?: Types.ObjectId[];
   logs?: Types.ObjectId[];
 }
@@ -37,12 +36,6 @@ const schema = new Schema<ClassAttrs>(
       type: String,
       trim: true,
     },
-    subjects: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "subject",
-      },
-    ],
     users: [
       {
         type: Schema.Types.ObjectId,
