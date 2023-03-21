@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import { Class } from "../../../model/class";
-import { User } from "../../../model/user";
 import { BadReqErr } from "../../../error/bad-req";
 import { NotFoundErr } from "../../../error/not-found";
+import { Class } from "../../../model/class";
+import { User } from "../../../model/user";
 
 type RemoveUserDto = {
   userIds: Types.ObjectId[];
@@ -31,7 +31,7 @@ async function removeUser(
     }
 
     await _class.updateOne({
-      $pull: {
+      $pullAll: {
         users: users.map((u) => u.id),
       },
     });
