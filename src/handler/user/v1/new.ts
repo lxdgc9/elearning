@@ -91,7 +91,7 @@ async function newUser(
     await user.save();
 
     // fetch user đã tạo
-    const fetchUser = await fetch(
+    const result = await fetch(
       `${req.protocol}://${req.get("host")}/api/users/${
         user.id
       }`,
@@ -101,7 +101,7 @@ async function newUser(
         },
       }
     );
-    const { user: _user } = await fetchUser.json();
+    const { user: _user } = await result.json();
 
     res.status(201).json({
       user: _user,
