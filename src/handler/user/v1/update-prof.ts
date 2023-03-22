@@ -8,6 +8,7 @@ type UpdateProfDto = {
   dob?: Date;
   email?: string;
   phone?: string;
+  address?: string;
 };
 
 async function updateProf(
@@ -22,6 +23,7 @@ async function updateProf(
     dob,
     email,
     phone,
+    address,
   }: UpdateProfDto = req.body;
 
   try {
@@ -34,6 +36,7 @@ async function updateProf(
           dob,
           email,
           phone,
+          address,
         },
       },
       { new: true }

@@ -17,6 +17,7 @@ interface UserAttrs {
     gender?: string;
     email?: string;
     phone?: string;
+    address?: string;
     avatar?: string;
   };
   role?: Types.ObjectId;
@@ -69,6 +70,9 @@ const schema = new Schema<UserAttrs>(
       phone: {
         type: String,
         trim: true,
+      },
+      address: {
+        type: String,
       },
       avatar: {
         type: String,
