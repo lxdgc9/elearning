@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
+import { changePass } from "../handler/user/v1/change-pass";
 import { getUsers } from "../handler/user/v1/get";
 import { getUser } from "../handler/user/v1/get-by-id";
 import { me } from "../handler/user/v1/me";
@@ -19,6 +20,7 @@ const {
   CURR_USER,
   SET_ROLE,
   MOD_PROF,
+  CHANGE_PASS,
 } = API.USER;
 
 r[CURR_USER.METHOD](
@@ -63,6 +65,15 @@ r[MOD_PROF.METHOD](
   requireAuth,
   version({
     v1: updateProf,
+  })
+);
+
+r[CHANGE_PASS.METHOD](
+  CHANGE_PASS.PATH,
+  currUser,
+  requireAuth,
+  version({
+    v1: changePass,
   })
 );
 

@@ -14,7 +14,6 @@ async function newSubject(
   const { name, description }: NewSubDto = req.body;
 
   try {
-    // Create subject
     const subject = Subject.build({
       name,
       description,

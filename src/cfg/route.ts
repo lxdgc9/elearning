@@ -33,6 +33,10 @@ const API = {
       METHOD: Method.PATCH,
       PATH: "/api/users/profile",
     },
+    CHANGE_PASS: {
+      METHOD: Method.PATCH,
+      PATH: "/api/users/password",
+    },
   },
   ROLE: {
     GET: {
@@ -176,6 +180,33 @@ const API = {
     DEL: {
       METHOD: Method.DELETE,
       PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
+  },
+  COURSE: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/courses",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/courses/:id",
+      ACCESS: [],
+    },
+    NEW: {
+      METHOD: Method.POST,
+      PATH: "/api/courses",
+      ACCESS: [],
+    },
+    MOD: {
+      METHOD: Method.PATCH,
+      PATH: "/api/courses/:id",
+      ACCESS: [],
+    },
+    DEL: {
+      METHOD: Method.DELETE,
+      PATH: "/api/courses/:id",
       ACCESS: [],
     },
   },

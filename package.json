@@ -1,13 +1,12 @@
 {
   "name": "eleaning",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc -p .tsconfig.json",
     "start": "node ./dist/bin/www.js",
     "dev": "nodemon ./src/bin/www.ts",
-    "beauty": "prettier --write ."
+    "beauty": "prettier --print-width 60 --write ."
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.1",
