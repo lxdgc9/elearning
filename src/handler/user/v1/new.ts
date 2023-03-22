@@ -7,7 +7,6 @@ import { User } from "../../../model/user";
 type NewUserDto = {
   username: string;
   password: string;
-  roleId?: Types.ObjectId;
   profile?: {
     fullName?: string;
     gender?: string;
@@ -23,6 +22,8 @@ type NewUserDto = {
     bio?: string;
     avatar?: string;
   };
+  roleId?: Types.ObjectId;
+  hasAccess?: boolean;
 };
 
 async function newUser(
@@ -33,7 +34,6 @@ async function newUser(
   const {
     username,
     password,
-    roleId,
     profile: {
       fullName,
       gender,
@@ -49,6 +49,8 @@ async function newUser(
       bio,
       avatar,
     } = {},
+    roleId,
+    hasAccess = true,
   }: NewUserDto = req.body;
 
   try {
@@ -84,11 +86,25 @@ async function newUser(
         avatar,
       },
       role: role.id,
+      hasAccess,
     });
     await user.save();
 
+    // fetch user đã tạo
+    const result = await fetch(
+      `${req.protocol}://${req.get("host")}/api/users/${
+        user.id
+      }`,
+      {
+        headers: {
+          authorization: req.headers.authorization || "",
+        },
+      }
+    );
+    const { user: _user } = await result.json();
+
     res.status(201).json({
-      user,
+      user: _user,
     });
   } catch (err) {
     console.log(err);

@@ -136,8 +136,8 @@ r[NEW.METHOD](
       .withMessage("Số Điện Thoại Không Hợp Lệ")
       .optional({ nullable: true }),
     check("profile.bio")
-      .isEmail()
-      .withMessage("Email Không Hợp Lệ")
+      .isLength({ max: 500 })
+      .withMessage("Mô Tả Bản Thân Quá Giới Hạn 500 Ký Tự")
       .optional({ nullable: true }),
     check("roleId")
       .notEmpty()

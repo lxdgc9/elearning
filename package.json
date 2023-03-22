@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p .tsconfig.json",
+    "build": "tsc",
     "start": "node ./dist/bin/www.js",
-    "dev": "nodemon ./src/bin/www.ts",
+    "dev": "nodemon src/bin/www.ts",
     "beauty": "prettier --print-width 60 --write ."
   },
   "dependencies": {
