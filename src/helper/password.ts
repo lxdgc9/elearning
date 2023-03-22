@@ -2,12 +2,10 @@ import { compare, genSalt, hash } from "bcryptjs";
 
 class Password {
   static async toHash(pass: string) {
-    const salt = await genSalt(10);
-    const hashedPass = await hash(pass, salt);
-    return hashedPass;
+    return await hash(pass, await genSalt(10));
   }
 
-  static async comparePass(
+  static async compare(
     storedPass: string,
     suppliedPass: string
   ) {

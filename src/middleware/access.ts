@@ -21,7 +21,7 @@ function access(perms: string[]) {
         return;
       }
 
-      throw new FobiddenErr("PERMISSION_DENIED");
+      throw new FobiddenErr("Không Có Quyền Truy Cập");
     } catch (err) {
       console.log(err);
       next(err);

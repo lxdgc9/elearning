@@ -1,6 +1,8 @@
 import { Router } from "express";
+import { check } from "express-validator";
 import { API } from "../cfg/route";
 import { login } from "../handler/auth/v1/login";
+import { validReq } from "../middleware/valid-req";
 import { version } from "../middleware/version";
 
 const r = Router();
@@ -9,6 +11,15 @@ const { LOGIN } = API.AUTH;
 
 r[LOGIN.METHOD](
   LOGIN.PATH,
+  [
+    check("username")
+      .notEmpty()
+      .withMessage("Yêu Cầu Tên Tài Khoản"),
+    check("password")
+      .notEmpty()
+      .withMessage("Yêu Cầu Mật Khẩu"),
+  ],
+  validReq,
   version({
     v1: login,
   })

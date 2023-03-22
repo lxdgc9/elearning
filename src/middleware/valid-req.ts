@@ -4,11 +4,10 @@ import { ReqValidateErr } from "../error/req-validate";
 
 function validReq(
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction
 ) {
   const errs = validationResult(req);
-
   if (!errs.isEmpty()) {
     throw new ReqValidateErr(errs.array()[0].msg);
   }

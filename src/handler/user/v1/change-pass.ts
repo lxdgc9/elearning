@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { BadReqErr } from "../../../error/bad-req";
-import { NotFoundErr } from "../../../error/not-found";
 import { Password } from "../../../helper/password";
 import { User } from "../../../model/user";
 
@@ -15,39 +14,30 @@ async function changePass(
   next: NextFunction
 ) {
   const { id } = req.user!;
-  const { currentPassword, newPassword }: ChangePassDto =
-    req.body;
+  const {
+    currentPassword: currPass,
+    newPassword: newPass,
+  }: ChangePassDto = req.body;
 
   try {
-    const user = await User.findById(id).populate([
-      {
-        path: "role",
-        populate: [
-          {
-            path: "permissions",
-            select: "-_id name description",
-          },
-        ],
-      },
-    ]);
-    if (!user) {
-      throw new NotFoundErr("USER_NOT_FOUND");
-    }
+    const user = await User.findById(id);
 
-    const passMatch = await Password.comparePass(
-      user.password,
-      currentPassword
+    // kiểm tra currentPassword
+    const isMatch = await Password.compare(
+      user!.password,
+      currPass
     );
-    if (!passMatch) {
-      throw new BadReqErr("WRONG_PASSWORD");
+    if (!isMatch) {
+      throw new BadReqErr(
+        "Sai Mật Khẩu. Đổi Mật Khẩu Thất Bại"
+      );
     }
 
-    user.password = newPassword;
-    await user.save();
+    // đổi mật khẩu
+    user!.password = newPass;
+    await user!.save();
 
-    res.json({
-      user,
-    });
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
     next(err);

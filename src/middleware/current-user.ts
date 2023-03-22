@@ -25,7 +25,7 @@ function currUser(
     const token =
       req.headers["authorization"]?.split("Bearer ")[1];
     if (!token) {
-      throw new UnauthorizedErr("REQUIRE_TOKEN");
+      throw new UnauthorizedErr("Yêu Cầu Token");
     }
 
     const decoded = verify(

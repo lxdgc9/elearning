@@ -21,7 +21,7 @@ async function getUser(
       },
     ]);
     if (!user) {
-      throw new NotFoundErr("USER_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy người dùng");
     }
 
     res.json({

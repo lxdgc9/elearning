@@ -15,7 +15,6 @@ async function me(
         populate: [
           {
             path: "permissions",
-            select: "-_id name description",
           },
         ],
       },

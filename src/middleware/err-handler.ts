@@ -3,9 +3,9 @@ import { HttpErr } from "../error/http";
 
 function errHandler(
   err: Error,
-  _req: Request,
+  req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) {
   if (err instanceof HttpErr) {
     return res
@@ -14,7 +14,7 @@ function errHandler(
   }
 
   res.status(500).send({
-    message: "SOMETHING_WENT_WRONG",
+    message: "Có Gì Đó Sai Sai",
   });
 }
 

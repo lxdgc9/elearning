@@ -9,6 +9,7 @@ type UpdateProfDto = {
   email?: string;
   phone?: string;
   address?: string;
+  bio?: string;
 };
 
 async function updateProf(
@@ -24,6 +25,7 @@ async function updateProf(
     email,
     phone,
     address,
+    bio,
   }: UpdateProfDto = req.body;
 
   try {
@@ -37,6 +39,7 @@ async function updateProf(
           email,
           phone,
           address,
+          bio,
         },
       },
       { new: true }
@@ -52,7 +55,7 @@ async function updateProf(
       },
     ]);
     if (!user) {
-      throw new NotFoundErr("USER_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy người dùng");
     }
 
     res.json({

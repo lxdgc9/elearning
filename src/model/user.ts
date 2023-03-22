@@ -11,13 +11,19 @@ import { Gender } from "../type/gender";
 interface UserAttrs {
   username: string;
   password: string;
-  profile: {
-    fullName: string;
+  profile?: {
+    fullName?: string;
     dob?: Date;
     gender?: string;
     email?: string;
     phone?: string;
-    address?: string;
+    address?: {
+      province?: Types.ObjectId;
+      district?: Types.ObjectId;
+      ward?: Types.ObjectId;
+      street?: string;
+    };
+    bio?: string;
     avatar?: string;
   };
   role?: Types.ObjectId;
@@ -48,7 +54,6 @@ const schema = new Schema<UserAttrs>(
     profile: {
       fullName: {
         type: String,
-        required: true,
         uppercase: true,
         trim: true,
       },
@@ -72,9 +77,27 @@ const schema = new Schema<UserAttrs>(
         trim: true,
       },
       address: {
-        type: String,
+        province: {
+          type: Schema.Types.ObjectId,
+          ref: "province",
+        },
+        district: {
+          type: Schema.Types.ObjectId,
+          ref: "district",
+        },
+        ward: {
+          type: Schema.Types.ObjectId,
+          ref: "ward",
+        },
+        street: {
+          type: Schema.Types.ObjectId,
+          ref: "street",
+        },
       },
       avatar: {
+        type: String,
+      },
+      bio: {
         type: String,
       },
     },
@@ -101,6 +124,7 @@ const schema = new Schema<UserAttrs>(
   },
   {
     collection: "User",
+    timestamps: true,
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -125,9 +149,16 @@ schema.pre("save", async function (fn) {
 
 // Remove extra spaces from a string
 schema.pre("save", function (next) {
-  this.profile.fullName = this.profile.fullName
-    .replace(/\s+/g, " ")
-    .trim();
+  let {
+    profile: { fullName = undefined, bio = undefined } = {},
+  }: UserAttrs = this;
+
+  if (fullName) {
+    fullName = fullName.replace(/\s+/g, " ").trim();
+  }
+  if (bio) {
+    bio = bio.replace(/\s+/g, " ").trim();
+  }
 
   next();
 });

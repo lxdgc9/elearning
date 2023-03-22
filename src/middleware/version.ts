@@ -14,9 +14,10 @@ function version(payload: Record<string, RequestHandler>) {
     next: NextFunction
   ) {
     try {
+      // kiểm tra phiên bản API
       const ver = req.header("x-api-version") || "v1";
       if (!payload[ver]) {
-        throw new BadReqErr("VERSION_NOT_FOUND");
+        throw new BadReqErr("Phiên Bản API Không Tồn Tại");
       }
 
       payload[ver].call(this, req, res, next);

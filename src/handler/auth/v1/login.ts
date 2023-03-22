@@ -18,6 +18,7 @@ async function login(
   const { username, password }: LoginDto = req.body;
 
   try {
+    // kiểm tra username
     const extUser = await User.findOne({
       username,
     }).populate<{
@@ -36,18 +37,19 @@ async function login(
       },
     ]);
     if (!extUser) {
-      throw new BadReqErr("USER_NOT_FOUND");
+      throw new BadReqErr("Tài Khoản Không Tồn Tại");
     }
 
-    const passMatch = await Password.comparePass(
+    // kiểm tra password
+    const isMatch = await Password.compare(
       extUser.password,
       password
     );
-    if (!passMatch) {
-      throw new BadReqErr("WRONG_PASSWORD");
+    if (!isMatch) {
+      throw new BadReqErr("Sai Mật Khẩu");
     }
 
-    // Generate token
+    // tạo token
     const payload = {
       id: extUser.id,
       perms: extUser.role.permissions.map((p) => p.name),

@@ -7,7 +7,7 @@ function requireAuth(
   next: NextFunction
 ) {
   if (!req.user) {
-    throw new UnauthorizedErr("UNAUTHORIZED");
+    throw new UnauthorizedErr("Không Được Ủy Quyền");
   }
 
   next();

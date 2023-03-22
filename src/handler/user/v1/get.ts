@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import { NotFoundErr } from "../../../error/not-found";
 import { User } from "../../../model/user";
 
 async function getUsers(
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
@@ -17,6 +18,9 @@ async function getUsers(
         ],
       },
     ]);
+    if (!users.length) {
+      throw new NotFoundErr("Danh Sách Người Dùng Trống");
+    }
 
     res.json({
       users,

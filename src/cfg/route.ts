@@ -12,30 +12,37 @@ const API = {
     GET: {
       METHOD: Method.GET,
       PATH: "/api/users",
+      ACCESS: [],
     },
     GET_BY_ID: {
       METHOD: Method.GET,
       PATH: "/api/users/:id",
+      ACCESS: [],
     },
     CURR_USER: {
       METHOD: Method.GET,
       PATH: "/api/users/me",
+      ACCESS: [],
     },
     NEW: {
       METHOD: Method.POST,
       PATH: "/api/users",
+      ACCESS: [],
     },
     SET_ROLE: {
       METHOD: Method.PATCH,
       PATH: "/api/users/role",
+      ACCESS: [],
     },
     MOD_PROF: {
       METHOD: Method.PATCH,
       PATH: "/api/users/profile",
+      ACCESS: [],
     },
     CHANGE_PASS: {
       METHOD: Method.PATCH,
       PATH: "/api/users/password",
+      ACCESS: [],
     },
   },
   ROLE: {
@@ -207,6 +214,42 @@ const API = {
     DEL: {
       METHOD: Method.DELETE,
       PATH: "/api/courses/:id",
+      ACCESS: [],
+    },
+  },
+  PROVINCE: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/provinces",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/provinces/:id",
+      ACCESS: [],
+    },
+  },
+  DISTRICT: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/districts",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/districts/:id",
+      ACCESS: [],
+    },
+  },
+  WARD: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/wards",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: Method.GET,
+      PATH: "/api/wards/:id",
       ACCESS: [],
     },
   },
