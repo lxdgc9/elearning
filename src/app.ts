@@ -6,14 +6,12 @@ import { errHandler } from "./middleware/err-handler";
 import { authRouter } from "./router/auth";
 import { classRouter } from "./router/class";
 import { courseRouter } from "./router/course";
-import { districtRouter } from "./router/district";
 import { gpermRouter } from "./router/gperm";
 import { permRouter } from "./router/perm";
 import { provinRouter } from "./router/province";
 import { roleRouter } from "./router/role";
 import { subjectRouter } from "./router/subject";
 import { userRouter } from "./router/user";
-import { wardRouter } from "./router/ward";
 
 const app = express();
 
@@ -30,8 +28,6 @@ app.use(classRouter);
 app.use(subjectRouter);
 app.use(courseRouter);
 app.use(provinRouter);
-app.use(districtRouter);
-app.use(wardRouter);
 
 app.all("*", (_req, _res) => {
   throw new NotFoundErr("Yêu Cầu Không Tồn Tại");

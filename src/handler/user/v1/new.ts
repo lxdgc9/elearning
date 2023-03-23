@@ -14,9 +14,9 @@ type NewUserDto = {
     email?: string;
     phone?: string;
     address?: {
-      proviceId?: Types.ObjectId;
-      districtId?: Types.ObjectId;
-      wardId?: Types.ObjectId;
+      proviceId?: string;
+      districtId?: string;
+      wardId?: string;
       street?: string;
     };
     bio?: string;

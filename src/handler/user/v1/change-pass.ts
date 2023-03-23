@@ -22,7 +22,7 @@ async function changePass(
   try {
     const user = await User.findById(id);
 
-    // kiểm tra currentPassword
+    // kiểm tra currPass
     const isMatch = await Password.compare(
       user!.password,
       currPass
@@ -37,7 +37,7 @@ async function changePass(
     user!.password = newPass;
     await user!.save();
 
-    res.sendStatus(200);
+    res.json({});
   } catch (err) {
     console.log(err);
     next(err);

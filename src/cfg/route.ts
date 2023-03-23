@@ -223,35 +223,6 @@ const API = {
       PATH: "/api/provinces",
       ACCESS: [],
     },
-    GET_BY_ID: {
-      METHOD: Method.GET,
-      PATH: "/api/provinces/:id",
-      ACCESS: [],
-    },
-  },
-  DISTRICT: {
-    GET: {
-      METHOD: Method.GET,
-      PATH: "/api/districts",
-      ACCESS: [],
-    },
-    GET_BY_ID: {
-      METHOD: Method.GET,
-      PATH: "/api/districts/:id",
-      ACCESS: [],
-    },
-  },
-  WARD: {
-    GET: {
-      METHOD: Method.GET,
-      PATH: "/api/wards",
-      ACCESS: [],
-    },
-    GET_BY_ID: {
-      METHOD: Method.GET,
-      PATH: "/api/wards/:id",
-      ACCESS: [],
-    },
   },
 };
 

@@ -18,9 +18,9 @@ interface UserAttrs {
     email?: string;
     phone?: string;
     address?: {
-      province?: Types.ObjectId;
-      district?: Types.ObjectId;
-      ward?: Types.ObjectId;
+      province?: String;
+      district?: String;
+      ward?: String;
       street?: string;
     };
     bio?: string;
@@ -78,20 +78,16 @@ const schema = new Schema<UserAttrs>(
       },
       address: {
         province: {
-          type: Schema.Types.ObjectId,
-          ref: "province",
+          type: String,
         },
         district: {
-          type: Schema.Types.ObjectId,
-          ref: "district",
+          type: String,
         },
         ward: {
-          type: Schema.Types.ObjectId,
-          ref: "ward",
+          type: String,
         },
         street: {
-          type: Schema.Types.ObjectId,
-          ref: "street",
+          type: String,
         },
       },
       avatar: {
