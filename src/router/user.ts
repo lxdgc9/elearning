@@ -6,6 +6,7 @@ import { getUsers } from "../handler/user/v1/get";
 import { getUser } from "../handler/user/v1/get-by-id";
 import { me } from "../handler/user/v1/me";
 import { newUser } from "../handler/user/v1/new";
+import { newManyUser } from "../handler/user/v1/new-many";
 import { setRole } from "../handler/user/v1/set-role";
 import { updateProf } from "../handler/user/v1/update-prof";
 import { access } from "../middleware/access";
@@ -20,6 +21,7 @@ const {
   GET,
   GET_BY_ID,
   NEW,
+  NEW_MANY,
   CURR_USER,
   SET_ROLE,
   MOD_PROF,
@@ -102,10 +104,10 @@ r[NEW.METHOD](
         minLength: 6,
         minLowercase: 1,
         minUppercase: 1,
-        minSymbols: 1,
+        minSymbols: 0,
       })
       .withMessage(
-        "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường Và Ký Tự Đặc Biệt"
+        "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường"
       ),
     check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
@@ -135,10 +137,6 @@ r[NEW.METHOD](
       .isNumeric()
       .withMessage("Số Điện Thoại Không Hợp Lệ")
       .optional({ nullable: true }),
-    check("bio")
-      .isLength({ max: 500 })
-      .withMessage("Mô Tả Bản Thân Quá Giới Hạn 500 Ký Tự")
-      .optional({ nullable: true }),
     check("roleId")
       .notEmpty()
       .withMessage("Yêu Cầu Vai Trò Người Dùng"),
@@ -147,6 +145,63 @@ r[NEW.METHOD](
   version({
     v1: newUser,
   })
+);
+
+r[NEW_MANY.METHOD](
+  NEW_MANY.PATH,
+  currUser,
+  requireAuth,
+  access(NEW_MANY.ACCESS),
+  [
+    check("users.*.username")
+      .notEmpty()
+      .withMessage("Yêu Cầu Tên Tài Khoản"),
+    check("users.*.password")
+      .notEmpty()
+      .withMessage("Yêu Cầu Mật Khẩu")
+      .isStrongPassword({
+        minLength: 6,
+        minLowercase: 1,
+        minUppercase: 1,
+        minSymbols: 0,
+      })
+      .withMessage(
+        "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường"
+      ),
+    check("users.*.fullName")
+      .isAlpha("vi-VN", { ignore: " " })
+      .withMessage(
+        "Tên Người Dùng Chỉ Bao Gồm Ký Tự Trong Bảng Chữ Cái Tiếng Việt"
+      )
+      .optional({ nullable: true }),
+    check("users.*.dob")
+      .isAfter("1900-01-01")
+      .withMessage("Ngày Sinh Phải Từ Năm 1900 Trở Về Sau")
+      .isBefore(
+        new Date(Date.now() - 378683424000).toString()
+      ) // yêu cầu đủ 12 tuổi
+      .withMessage("Người Dùng Phải Đủ 12 Tuổi")
+      .optional({ nullable: true }),
+    check("users.*.gender")
+      .isIn(["male", "female", "other"])
+      .withMessage("Giới Tính Không Hợp Lệ")
+      .optional({ nullable: true }),
+    check("users.*.email")
+      .isEmail()
+      .withMessage("Email Không Hợp Lệ")
+      .optional({ nullable: true }),
+    check("users.*.phone")
+      .isLength({ min: 10, max: 11 })
+      .withMessage("Số Điện Thoại Có Độ Dài Không Hợp Lệ")
+      .isNumeric()
+      .withMessage("Số Điện Thoại Không Hợp Lệ")
+      .optional({ nullable: true }),
+    check("users.*.roleId")
+      .notEmpty()
+      .withMessage("Yêu Cầu Vai Trò Người Dùng"),
+  ],
+  validReq,
+  newManyUser
 );
 
 export { r as userRouter };

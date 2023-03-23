@@ -16,8 +16,6 @@ type NewUserDto = {
   districtId?: string;
   wardId?: string;
   street?: string;
-  bio?: string;
-  avatar?: string;
   roleId?: Types.ObjectId;
   hasAccess?: boolean;
 };
@@ -39,8 +37,6 @@ async function newUser(
     districtId,
     wardId,
     street,
-    bio,
-    avatar,
     roleId,
     hasAccess,
   }: NewUserDto = req.body;
@@ -74,8 +70,6 @@ async function newUser(
           wardId,
           street,
         },
-        bio,
-        avatar,
       },
       role: role.id,
       hasAccess,

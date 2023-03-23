@@ -29,6 +29,11 @@ const API = {
       PATH: "/api/users",
       ACCESS: [],
     },
+    NEW_MANY: {
+      METHOD: Method.POST,
+      PATH: "/api/users/many",
+      ACCESS: [],
+    },
     SET_ROLE: {
       METHOD: Method.PATCH,
       PATH: "/api/users/role",
