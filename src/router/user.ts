@@ -107,13 +107,13 @@ r[NEW.METHOD](
       .withMessage(
         "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường Và Ký Tự Đặc Biệt"
       ),
-    check("profile.fullName")
+    check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
         "Tên Người Dùng Chỉ Bao Gồm Ký Tự Trong Bảng Chữ Cái Tiếng Việt"
       )
       .optional({ nullable: true }),
-    check("profile.dob")
+    check("dob")
       .isAfter("1900-01-01")
       .withMessage("Ngày Sinh Phải Từ Năm 1900 Trở Về Sau")
       .isBefore(
@@ -121,21 +121,21 @@ r[NEW.METHOD](
       ) // yêu cầu đủ 12 tuổi
       .withMessage("Người Dùng Phải Đủ 12 Tuổi")
       .optional({ nullable: true }),
-    check("profile.gender")
+    check("gender")
       .isIn(["male", "female", "other"])
       .withMessage("Giới Tính Không Hợp Lệ")
       .optional({ nullable: true }),
-    check("profile.email")
+    check("email")
       .isEmail()
       .withMessage("Email Không Hợp Lệ")
       .optional({ nullable: true }),
-    check("profile.phone")
+    check("phone")
       .isLength({ min: 10, max: 11 })
       .withMessage("Số Điện Thoại Có Độ Dài Không Hợp Lệ")
       .isNumeric()
       .withMessage("Số Điện Thoại Không Hợp Lệ")
       .optional({ nullable: true }),
-    check("profile.bio")
+    check("bio")
       .isLength({ max: 500 })
       .withMessage("Mô Tả Bản Thân Quá Giới Hạn 500 Ký Tự")
       .optional({ nullable: true }),

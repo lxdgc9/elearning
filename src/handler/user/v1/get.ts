@@ -8,16 +8,15 @@ async function getUsers(
   next: NextFunction
 ) {
   try {
-    const users = await User.find({}).populate([
-      {
-        path: "role",
-        populate: [
-          {
-            path: "permissions",
-          },
-        ],
-      },
-    ]);
+    const users = await User.find({})
+      .select("-logs -classes")
+      .populate([
+        {
+          path: "role",
+          select: "name description",
+        },
+      ])
+      .sort({ createdAt: -1 });
     if (!users.length) {
       throw new NotFoundErr("Danh Sách Người Dùng Trống");
     }

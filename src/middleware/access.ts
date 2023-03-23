@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { FobiddenErr } from "../error/forbidden";
 
 function access(perms: string[]) {
-  return (
+  return async (
     req: Request,
     _res: Response,
     next: NextFunction

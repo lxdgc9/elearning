@@ -7,21 +7,17 @@ import { User } from "../../../model/user";
 type NewUserDto = {
   username: string;
   password: string;
-  profile?: {
-    fullName?: string;
-    gender?: string;
-    dob?: Date;
-    email?: string;
-    phone?: string;
-    address?: {
-      proviceId?: string;
-      districtId?: string;
-      wardId?: string;
-      street?: string;
-    };
-    bio?: string;
-    avatar?: string;
-  };
+  fullName?: string;
+  gender?: string;
+  dob?: Date;
+  email?: string;
+  phone?: string;
+  provinceId?: string;
+  districtId?: string;
+  wardId?: string;
+  street?: string;
+  bio?: string;
+  avatar?: string;
   roleId?: Types.ObjectId;
   hasAccess?: boolean;
 };
@@ -34,23 +30,19 @@ async function newUser(
   const {
     username,
     password,
-    profile: {
-      fullName,
-      gender,
-      dob,
-      email,
-      phone,
-      address: {
-        proviceId = undefined,
-        districtId = undefined,
-        wardId = undefined,
-        street = undefined,
-      } = {},
-      bio,
-      avatar,
-    } = {},
+    fullName,
+    gender,
+    dob,
+    email,
+    phone,
+    provinceId,
+    districtId,
+    wardId,
+    street,
+    bio,
+    avatar,
     roleId,
-    hasAccess = true,
+    hasAccess,
   }: NewUserDto = req.body;
 
   try {
@@ -77,9 +69,9 @@ async function newUser(
         email,
         phone,
         address: {
-          province: proviceId,
-          district: districtId,
-          ward: wardId,
+          provinceId,
+          districtId,
+          wardId,
           street,
         },
         bio,
@@ -90,20 +82,19 @@ async function newUser(
     });
     await user.save();
 
-    // fetch user đã tạo
-    const result = await fetch(
-      `${req.protocol}://${req.get("host")}/api/users/${
-        user.id
-      }`,
-      {
-        headers: {
-          authorization: req.headers.authorization || "",
-        },
-      }
-    );
-    const { user: _user } = await result.json();
+    // fetch user
+    const _user = await User.findById(user.id)
+      .select("-logs -classes")
+      .populate<{
+        role: {
+          name: string;
+        };
+      }>("role");
 
     res.status(201).json({
+      message: `Tạo người dùng ${
+        _user!.profile!.fullName
+      } với vai trò ${_user!.role!.name} thành công`,
       user: _user,
     });
   } catch (err) {

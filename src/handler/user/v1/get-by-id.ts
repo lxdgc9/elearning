@@ -10,16 +10,20 @@ async function getUser(
   const { id } = req.params;
 
   try {
-    const user = await User.findById(id).populate([
-      {
-        path: "role",
-        populate: [
-          {
-            path: "permissions",
-          },
-        ],
-      },
-    ]);
+    const user = await User.findById(id)
+      .select("-logs -classes")
+      .populate([
+        {
+          path: "role",
+          select: "name description permissions",
+          populate: [
+            {
+              path: "permissions",
+              select: "name description",
+            },
+          ],
+        },
+      ]);
     if (!user) {
       throw new NotFoundErr("Không tìm thấy người dùng");
     }

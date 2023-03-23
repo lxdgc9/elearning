@@ -18,9 +18,9 @@ interface UserAttrs {
     email?: string;
     phone?: string;
     address?: {
-      province?: String;
-      district?: String;
-      ward?: String;
+      provinceId?: String;
+      districtId?: String;
+      wardId?: String;
       street?: string;
     };
     bio?: string;
@@ -77,13 +77,13 @@ const schema = new Schema<UserAttrs>(
         trim: true,
       },
       address: {
-        province: {
+        provinceId: {
           type: String,
         },
-        district: {
+        districtId: {
           type: String,
         },
-        ward: {
+        wardId: {
           type: String,
         },
         street: {
@@ -132,7 +132,10 @@ const schema = new Schema<UserAttrs>(
   }
 );
 
-// Hash password
+// tạo index cho user, mới nhất đứng đầu
+schema.index({ createdAt: -1 });
+
+// mã hóa mật khẩu trước khi lưu
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
     const hashed = await Password.toHash(
@@ -143,15 +146,16 @@ schema.pre("save", async function (fn) {
   fn();
 });
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa
 schema.pre("save", function (next) {
   let {
     profile: { fullName = undefined, bio = undefined } = {},
-  }: UserAttrs = this;
+  } = this;
 
   if (fullName) {
     fullName = fullName.replace(/\s+/g, " ").trim();
   }
+
   if (bio) {
     bio = bio.replace(/\s+/g, " ").trim();
   }

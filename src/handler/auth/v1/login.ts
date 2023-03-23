@@ -19,7 +19,7 @@ async function login(
 
   try {
     // kiểm tra username
-    const extUser = await User.findOne({
+    const user = await User.findOne({
       username,
     }).populate<{
       role: {
@@ -28,21 +28,22 @@ async function login(
     }>([
       {
         path: "role",
+        select: "permissions",
         populate: [
           {
             path: "permissions",
-            select: "-_id name description",
+            select: "name description",
           },
         ],
       },
     ]);
-    if (!extUser) {
+    if (!user) {
       throw new BadReqErr("Tài Khoản Không Tồn Tại");
     }
 
     // kiểm tra password
     const isMatch = await Password.compare(
-      extUser.password,
+      user.password,
       password
     );
     if (!isMatch) {
@@ -51,8 +52,8 @@ async function login(
 
     // tạo token
     const payload = {
-      id: extUser.id,
-      perms: extUser.role.permissions.map((p) => p.name),
+      id: user.id,
+      perms: user.role.permissions.map((p) => p.name),
     };
     const accessToken = sign(
       payload,
@@ -64,7 +65,7 @@ async function login(
 
     res.json({
       accessToken,
-      user: extUser,
+      user: user,
     });
   } catch (err) {
     console.log(err);
