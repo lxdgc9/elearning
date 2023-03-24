@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "start": "node ./dist/bin/www.js",
-    "dev": "nodemon src/bin/www.ts",
+    "start": "node src/bin/www.js",
+    "dev": "nodemon src/bin/www.js",
     "beauty": "prettier --print-width 60 --write ."
   },
   "dependencies": {
