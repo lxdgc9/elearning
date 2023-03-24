@@ -7,6 +7,7 @@ const r = Router();
 
 const { GET } = API.PROVINCE;
 
+// lấy danh mục hành chính từ API có sẵn
 r[GET.METHOD](
   GET.PATH,
   version({
@@ -14,4 +15,4 @@ r[GET.METHOD](
   })
 );
 
-export { r as provinRouter };
+export { r as provRouter };
