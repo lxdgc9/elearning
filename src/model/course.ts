@@ -10,7 +10,7 @@ interface CourseAttrs {
   title: string; // tên khóa học
   author: Types.ObjectId; // tác giả
   subject?: Types.ObjectId; // môn học đại diện
-  classes?: Types.ObjectId[]; // danh sách lớp được try cập
+  classes?: Types.ObjectId[]; // danh sách lớp được truy cập
   description?: string; // mô tả
   content?: Types.ObjectId[]; // nội dung: danh sách bài giảng
   publish?: boolean; // chế độ khóa/công khai

@@ -31,6 +31,7 @@ const {
   CHANGE_PASS,
 } = API.USER;
 
+// fetch user từ token
 r[CURR_USER.METHOD](
   CURR_USER.PATH,
   currUser,
@@ -42,6 +43,7 @@ r[CURR_USER.METHOD](
   })
 );
 
+// lấy danh sách user
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -53,6 +55,7 @@ r[GET.METHOD](
   })
 );
 
+// lấy thông tin chi tiết user
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -64,6 +67,7 @@ r[GET_BY_ID.METHOD](
   })
 );
 
+// gán role vào nhiều user
 r[SET_ROLE.METHOD](
   SET_ROLE.PATH,
   currUser,
@@ -75,6 +79,7 @@ r[SET_ROLE.METHOD](
   })
 );
 
+// enable/disable user
 r[ACCESS.METHOD](
   ACCESS.PATH,
   currUser,
@@ -86,6 +91,7 @@ r[ACCESS.METHOD](
   })
 );
 
+// cập nhật hồ sơ cá nhân
 r[MOD_PROF.METHOD](
   MOD_PROF.PATH,
   currUser,
@@ -97,6 +103,7 @@ r[MOD_PROF.METHOD](
   })
 );
 
+// đổi mật khẩu
 r[CHANGE_PASS.METHOD](
   CHANGE_PASS.PATH,
   currUser,
@@ -108,6 +115,7 @@ r[CHANGE_PASS.METHOD](
   })
 );
 
+// tạo user
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -117,10 +125,10 @@ r[NEW.METHOD](
   [
     check("username")
       .notEmpty()
-      .withMessage("Yêu Cầu Tên Tài Khoản"),
+      .withMessage("Yêu cầu tên tài khoản"),
     check("password")
       .notEmpty()
-      .withMessage("Yêu Cầu Mật Khẩu")
+      .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
         minLength: 6,
         minLowercase: 1,
@@ -128,39 +136,40 @@ r[NEW.METHOD](
         minSymbols: 0,
       })
       .withMessage(
-        "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường"
+        "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
     check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
-        "Tên Người Dùng Chỉ Bao Gồm Ký Tự Trong Bảng Chữ Cái Tiếng Việt"
+        "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
     check("dob")
       .isAfter("1900-01-01")
-      .withMessage("Ngày Sinh Phải Từ Năm 1900 Trở Về Sau")
+      .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
         new Date(Date.now() - 378683424000).toString()
       ) // yêu cầu đủ 12 tuổi
-      .withMessage("Người Dùng Phải Đủ 12 Tuổi")
+      .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
     check("gender")
+      .toLowerCase()
       .isIn(["male", "female", "other"])
-      .withMessage("Giới Tính Không Hợp Lệ")
+      .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
     check("email")
       .isEmail()
-      .withMessage("Email Không Hợp Lệ")
+      .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
     check("phone")
       .isLength({ min: 10, max: 11 })
-      .withMessage("Số Điện Thoại Có Độ Dài Không Hợp Lệ")
+      .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
-      .withMessage("Số Điện Thoại Không Hợp Lệ")
+      .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
     check("roleId")
       .notEmpty()
-      .withMessage("Yêu Cầu Vai Trò Người Dùng"),
+      .withMessage("Yêu cầu vai trò người dùng"),
   ],
   validReq,
   version({
@@ -168,6 +177,7 @@ r[NEW.METHOD](
   })
 );
 
+// tạo nhiều user
 r[NEW_MANY.METHOD](
   NEW_MANY.PATH,
   currUser,
@@ -177,10 +187,10 @@ r[NEW_MANY.METHOD](
   [
     check("users.*.username")
       .notEmpty()
-      .withMessage("Yêu Cầu Tên Tài Khoản"),
+      .withMessage("Yêu cầu tên tài khoản"),
     check("users.*.password")
       .notEmpty()
-      .withMessage("Yêu Cầu Mật Khẩu")
+      .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
         minLength: 6,
         minLowercase: 1,
@@ -188,39 +198,40 @@ r[NEW_MANY.METHOD](
         minSymbols: 0,
       })
       .withMessage(
-        "Mật Khẩu Phải Ít Nhất 6 Ký Tự Gồm Ký Tự Viết Hoa, Viết Thường"
+        "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
     check("users.*.fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
-        "Tên Người Dùng Chỉ Bao Gồm Ký Tự Trong Bảng Chữ Cái Tiếng Việt"
+        "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
     check("users.*.dob")
       .isAfter("1900-01-01")
-      .withMessage("Ngày Sinh Phải Từ Năm 1900 Trở Về Sau")
+      .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
         new Date(Date.now() - 378683424000).toString()
       ) // yêu cầu đủ 12 tuổi
-      .withMessage("Người Dùng Phải Đủ 12 Tuổi")
+      .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
     check("users.*.gender")
+      .toLowerCase()
       .isIn(["male", "female", "other"])
-      .withMessage("Giới Tính Không Hợp Lệ")
+      .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
     check("users.*.email")
       .isEmail()
-      .withMessage("Email Không Hợp Lệ")
+      .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
     check("users.*.phone")
       .isLength({ min: 10, max: 11 })
-      .withMessage("Số Điện Thoại Có Độ Dài Không Hợp Lệ")
+      .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
-      .withMessage("Số Điện Thoại Không Hợp Lệ")
+      .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
     check("users.*.roleId")
       .notEmpty()
-      .withMessage("Yêu Cầu Vai Trò Người Dùng"),
+      .withMessage("Yêu cầu vai trò người dùng"),
   ],
   validReq,
   newManyUser

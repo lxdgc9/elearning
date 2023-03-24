@@ -1,4 +1,4 @@
-// Middlware này sẽ kiểm tra hasAccess đã giải mã trong jwt
+// Middleware này sẽ kiểm tra hasAccess đã giải mã trong jwt
 // nếu hasAccess = false, tức người dùng bị block quyền
 // truy cập, mọi thao tác với api endpoint đều vô nghĩa.
 //

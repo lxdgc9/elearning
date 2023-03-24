@@ -1,4 +1,4 @@
-// Middlware này giải mã jwt từ client
+// Middleware này giải mã jwt từ client
 // lưu trữ thông tin giải mã qua session truyền đến các
 // middleware tiếp theo xử lý
 

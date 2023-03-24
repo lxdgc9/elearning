@@ -1,3 +1,8 @@
+// Middleware này bắt lỗi từ express-validator
+// thông báo lỗi đầu tiên gặp phải
+//
+// Doc: https://express-validator.github.io/docs
+
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { ReqValidateErr } from "../error/req-validate";

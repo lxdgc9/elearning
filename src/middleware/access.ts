@@ -1,4 +1,4 @@
-// Middlware này bao gồm danh sách quyền hạn (permissions)
+// Middleware này bao gồm danh sách quyền hạn (permissions)
 // Nếu permission của người dùng tồn tại trong danh sách này
 // thì người dùng sẽ được thông qua các middleware tiếp theo
 //
@@ -18,14 +18,14 @@ function access(perms: string[]) {
   ) => {
     try {
       // danh sách permission rỗng xem như người dùng
-      // thông qua middlware này
+      // thông qua middleware này
       if (!perms || !perms.length) {
         next();
         return;
       }
 
       // kiểm tra permission trong jwt với danh sách
-      // permission được cung cấp theo từng endpoint
+      // permission được cung cấp theo API endpoint
       if (
         req.user!.perms &&
         req.user!.perms.some((p) => perms.includes(p))

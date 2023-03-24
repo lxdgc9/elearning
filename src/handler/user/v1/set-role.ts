@@ -23,7 +23,7 @@ async function setRole(
       _id: { $in: userIds },
     });
     if (extUsers.length > 0) {
-      throw new BadReqErr("");
+      throw new BadReqErr("Người dùng không hợp lệ");
     }
 
     // kiểm tra roleId
