@@ -13,8 +13,9 @@ function errHandler(
       .send({ message: err.message });
   }
 
+  // lỗi xảy ra ngoài ràng buộc
   res.status(500).send({
-    message: "Có Gì Đó Sai Sai",
+    message: "Có gì đó sai sai!!!",
   });
 }
 

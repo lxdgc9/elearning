@@ -7,10 +7,10 @@ import {
 } from "mongoose";
 
 interface SubAttrs {
-  name: string;
-  description?: string;
-  teachers?: Types.ObjectId[];
-  courses?: Types.ObjectId[];
+  name: string; // tên môn học
+  description?: string; // mô tả
+  teachers?: Types.ObjectId[]; // các giáo viên bộ môn
+  courses?: Types.ObjectId[]; // các khóa học
   logs?: Types.ObjectId[];
 }
 
@@ -64,14 +64,14 @@ const schema = new Schema<SubAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
+  this.name = this.name.replace(/\s+/g, " ").trim();
   if (this.description) {
     this.description = this.description
       .replace(/\s+/g, " ")
       .trim();
   }
-
   next();
 });
 

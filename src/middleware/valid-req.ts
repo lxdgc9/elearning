@@ -11,7 +11,6 @@ function validReq(
   if (!errs.isEmpty()) {
     throw new ReqValidateErr(errs.array()[0].msg);
   }
-
   next();
 }
 

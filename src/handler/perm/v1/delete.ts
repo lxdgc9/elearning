@@ -13,10 +13,11 @@ async function deletePerm(
   try {
     const perm = await Perm.findByIdAndDelete(id);
     if (!perm) {
-      throw new NotFoundErr("PERM_NOT_FOUND");
+      throw new NotFoundErr("Không Tìm Thấy Quyền");
     }
 
-    // Remove permission from group
+    // khi xóa thành công 'permission',
+    // tiến hành xóa 'permission' khỏi 'group permission'
     await GPerm.findByIdAndUpdate(perm.groupId, {
       $pull: { permissions: perm.id },
     });

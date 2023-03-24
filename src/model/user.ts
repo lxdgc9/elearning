@@ -9,27 +9,27 @@ import { Password } from "../helper/password";
 import { Gender } from "../type/gender";
 
 interface UserAttrs {
-  username: string;
-  password: string;
+  username: string; // tên tài khoản
+  password: string; // mật khẩu
   profile?: {
-    fullName?: string;
-    dob?: Date;
-    gender?: string;
+    fullName?: string; // họ và tên
+    dob?: Date; // ngày sinh
+    gender?: string; // giới tính
     email?: string;
-    phone?: string;
+    phone?: string; // số điện thoại
     address?: {
-      provinceId?: String;
-      districtId?: String;
-      wardId?: String;
-      street?: string;
+      provinceId?: String; // mã tỉnh, thành phố
+      districtId?: String; // mã quận, huyện
+      wardId?: String; // mã phường, xã
+      street?: string; // tên đường
     };
-    bio?: string;
-    avatar?: string;
+    bio?: string; // mô tả bản thân
+    avatar?: string; // ảnh đại diện
   };
-  role?: Types.ObjectId;
-  classes?: Types.ObjectId[];
+  role?: Types.ObjectId; // vai trò
+  classes?: Types.ObjectId[]; // lớp học trực thuộc
+  hasAccess?: boolean; // trạng thái tài khoản
   logs?: Types.ObjectId[];
-  hasAccess?: boolean;
 }
 
 type UserDoc = UserAttrs & Document;
@@ -146,7 +146,7 @@ schema.pre("save", async function (fn) {
   fn();
 });
 
-// xóa khoảng trắng thừa
+// xóa khoảng trắng thừa trong họ tên và mô tả bản thân
 schema.pre("save", function (next) {
   let {
     profile: { fullName = undefined, bio = undefined } = {},
@@ -155,11 +155,9 @@ schema.pre("save", function (next) {
   if (fullName) {
     fullName = fullName.replace(/\s+/g, " ").trim();
   }
-
   if (bio) {
     bio = bio.replace(/\s+/g, " ").trim();
   }
-
   next();
 });
 

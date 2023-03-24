@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { NotFoundErr } from "../../../error/not-found";
 import { Class } from "../../../model/class";
 
 async function getClasses(
@@ -22,6 +23,9 @@ async function getClasses(
         ],
       },
     ]);
+    if (!classes.length) {
+      throw new NotFoundErr("Danh sách lớp học trống");
+    }
 
     res.json({
       classes,

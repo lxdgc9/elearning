@@ -7,10 +7,10 @@ import {
 } from "mongoose";
 
 interface ClassAttrs {
-  name: string;
-  session: string;
-  description?: string;
-  users?: Types.ObjectId[];
+  name: string; // tên lớp
+  session: string; // niên khóa
+  description?: string; // mô tả
+  users?: Types.ObjectId[]; // danh sách thành viên
   logs?: Types.ObjectId[];
 }
 
@@ -62,10 +62,9 @@ const schema = new Schema<ClassAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa trong tên
 schema.pre("save", function (next) {
   this.name = this.name.replace(/\s+/g, " ").trim();
-
   next();
 });
 

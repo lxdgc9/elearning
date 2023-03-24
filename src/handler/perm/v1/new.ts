@@ -18,7 +18,6 @@ async function newPerm(
     req.body;
 
   try {
-    // Create permissions
     const perm = Perm.build({
       name,
       groupId,
@@ -26,7 +25,7 @@ async function newPerm(
     });
     await perm.save();
 
-    // Add permission to group
+    // thêm 'permission' vào 'group'
     await GPerm.findByIdAndUpdate(groupId, {
       $addToSet: {
         permissions: perm.id,

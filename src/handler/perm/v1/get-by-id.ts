@@ -12,7 +12,7 @@ async function getPerm(
   try {
     const perm = await Perm.findById(id);
     if (!perm) {
-      throw new NotFoundErr("PERM_NOT_FOUND");
+      throw new NotFoundErr("Không Tìm Thấy Quyền");
     }
 
     res.json({

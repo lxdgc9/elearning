@@ -7,9 +7,9 @@ import {
 } from "mongoose";
 
 interface RoleAttrs {
-  name: string;
-  description?: string;
-  permissions?: Types.ObjectId[];
+  name: string; // tên vai trò
+  description?: string; // mô tả
+  permissions?: Types.ObjectId[]; // danh sách quyền hạn
   logs?: Types.ObjectId[];
 }
 
@@ -55,14 +55,14 @@ const schema = new Schema<RoleAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// khóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
+  this.name = this.name.replace(/\s+/g, " ").trim();
   if (this.description) {
     this.description = this.description
       .replace(/\s+/g, " ")
       .trim();
   }
-
   next();
 });
 

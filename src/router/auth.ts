@@ -9,15 +9,16 @@ const r = Router();
 
 const { LOGIN } = API.AUTH;
 
+// đăng nhập
 r[LOGIN.METHOD](
   LOGIN.PATH,
   [
     check("username")
       .notEmpty()
-      .withMessage("Yêu Cầu Tên Tài Khoản"),
+      .withMessage("Yêu cầu tên tài khoản"),
     check("password")
       .notEmpty()
-      .withMessage("Yêu Cầu Mật Khẩu"),
+      .withMessage("Yêu cầu mật khẩu"),
   ],
   validReq,
   version({

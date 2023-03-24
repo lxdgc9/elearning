@@ -13,10 +13,9 @@ async function deleteCourse(
   try {
     const course = await Course.findByIdAndDelete(id);
     if (!course) {
-      throw new NotFoundErr("COURSE_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy khóa học");
     }
 
-    // Remove course from subjet
     await Subject.findByIdAndUpdate(course.subject, {
       $pull: { courses: course.id },
     });

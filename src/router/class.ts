@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { API } from "../cfg/route";
 import { allocUser } from "../handler/class/v1/alloc-user";
-import { removeUser } from "../handler/class/v1/remove-user";
 import { deleteClass } from "../handler/class/v1/delete";
 import { getClasses } from "../handler/class/v1/get";
 import { getClass } from "../handler/class/v1/get-by-id";
 import { newClass } from "../handler/class/v1/new";
+import { removeUser } from "../handler/class/v1/remove-user";
 import { updateClass } from "../handler/class/v1/update";
 import { access } from "../middleware/access";
+import { active } from "../middleware/active";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { version } from "../middleware/version";
-import { active } from "../middleware/active";
 
 const r = Router();
 
@@ -25,6 +25,7 @@ const {
   DEL,
 } = API.CLASS;
 
+// lấy danh sách lớp
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -36,6 +37,7 @@ r[GET.METHOD](
   })
 );
 
+// lấy thông tin chi tiết lớp
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -47,6 +49,7 @@ r[GET_BY_ID.METHOD](
   })
 );
 
+// tạo mới lớp
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -58,6 +61,7 @@ r[NEW.METHOD](
   })
 );
 
+// phân bổ người dùng vào lớp
 r[ALLOC_USER.METHOD](
   ALLOC_USER.PATH,
   currUser,
@@ -69,6 +73,7 @@ r[ALLOC_USER.METHOD](
   })
 );
 
+// phân bổ người dùng ra khỏi lớp
 r[REMOVE_USER.METHOD](
   REMOVE_USER.PATH,
   currUser,
@@ -80,6 +85,7 @@ r[REMOVE_USER.METHOD](
   })
 );
 
+// cập nhật thông tin lớp
 r[MOD.METHOD](
   MOD.PATH,
   currUser,
@@ -91,6 +97,7 @@ r[MOD.METHOD](
   })
 );
 
+// xóa lớp
 r[DEL.METHOD](
   DEL.PATH,
   currUser,

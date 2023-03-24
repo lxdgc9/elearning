@@ -30,7 +30,7 @@ app.use(courseRouter);
 app.use(provinRouter);
 
 app.all("*", (_req, _res) => {
-  throw new NotFoundErr("Yêu Cầu Không Tồn Tại");
+  throw new NotFoundErr("Yêu cầu không tồn tại");
 });
 
 app.use(errHandler);

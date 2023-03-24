@@ -75,7 +75,6 @@ r[SET_ROLE.METHOD](
   })
 );
 
-
 r[ACCESS.METHOD](
   ACCESS.PATH,
   currUser,

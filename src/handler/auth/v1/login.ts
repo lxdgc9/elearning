@@ -44,7 +44,7 @@ async function login(
         },
       ]);
     if (!user) {
-      throw new BadReqErr("Tài Khoản Không Tồn Tại");
+      throw new BadReqErr("Tài khoản không tồn tại");
     }
 
     // kiểm tra password
@@ -53,7 +53,7 @@ async function login(
       password
     );
     if (!isMatch) {
-      throw new BadReqErr("Sai Mật Khẩu");
+      throw new BadReqErr("Sai mật khẩu");
     }
 
     // tạo token
@@ -66,7 +66,7 @@ async function login(
       payload,
       process.env.ACCESS_TOKEN_SECRET!,
       {
-        expiresIn: "3d", // Ttl
+        expiresIn: "3d", // token hết hạn sau 3 ngày
       }
     );
 

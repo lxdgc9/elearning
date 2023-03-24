@@ -7,8 +7,8 @@ import {
 } from "mongoose";
 
 interface GPermAttrs {
-  name: string;
-  permissions?: Types.ObjectId[];
+  name: string; // tên nhóm quyền
+  permissions?: Types.ObjectId[]; // danh sách quyền hạn
   logs?: Types.ObjectId[];
 }
 
@@ -51,10 +51,9 @@ const schema = new Schema<GPermAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa trong tên
 schema.pre("save", function (next) {
   this.name = this.name.replace(/\s+/g, " ").trim();
-
   next();
 });
 

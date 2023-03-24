@@ -7,9 +7,9 @@ import {
 } from "mongoose";
 
 interface PermAttrs {
-  name: string;
-  groupId: Types.ObjectId;
-  description?: string;
+  name: string; // tên quyền hạn (sign)
+  groupId: Types.ObjectId; // thuộc nhóm quyền nào
+  description?: string; // mô tả quyền hạn
   logs?: Types.ObjectId[];
 }
 
@@ -57,14 +57,14 @@ const schema = new Schema<PermAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
+  this.name = this.name.replace(/\s+/g, " ").trim();
   if (this.description) {
     this.description = this.description
       .replace(/\s+/g, " ")
       .trim();
   }
-
   next();
 });
 

@@ -8,6 +8,12 @@ const API = {
       PATH: "/api/auth/login",
     },
   },
+  PROVINCE: {
+    GET: {
+      METHOD: Method.GET,
+      PATH: "/api/provinces",
+    },
+  },
   USER: {
     GET: {
       METHOD: Method.GET,
@@ -224,13 +230,6 @@ const API = {
     DEL: {
       METHOD: Method.DELETE,
       PATH: "/api/courses/:id",
-      ACCESS: [],
-    },
-  },
-  PROVINCE: {
-    GET: {
-      METHOD: Method.GET,
-      PATH: "/api/provinces",
       ACCESS: [],
     },
   },

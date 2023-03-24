@@ -1,4 +1,8 @@
+# folders
 node_modules/
 dist/
 
+# files
+
+# dotfiles
 .env

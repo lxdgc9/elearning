@@ -8,8 +8,8 @@ import {
 import { Action } from "../type/action";
 
 interface LogAttrs {
-  action: Action;
-  modBy: Types.ObjectId;
+  action: Action; // loại thao tác của người dùng
+  modBy: Types.ObjectId; // chỉnh sửa bởi ai
 }
 
 type LogDoc = LogAttrs & Document;

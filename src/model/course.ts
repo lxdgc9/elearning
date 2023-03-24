@@ -7,11 +7,13 @@ import {
 } from "mongoose";
 
 interface CourseAttrs {
-  name: string;
-  author: Types.ObjectId;
-  subject: Types.ObjectId;
-  description?: string;
-  sections?: Types.ObjectId[];
+  title: string; // tên khóa học
+  author: Types.ObjectId; // tác giả
+  subject?: Types.ObjectId; // môn học đại diện
+  classes?: Types.ObjectId[]; // danh sách lớp được try cập
+  description?: string; // mô tả
+  content?: Types.ObjectId[]; // nội dung: danh sách bài giảng
+  publish?: boolean; // chế độ khóa/công khai
   logs?: Types.ObjectId[];
 }
 
@@ -23,7 +25,7 @@ type CourseModel = Model<CourseDoc> & {
 
 const schema = new Schema<CourseAttrs>(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       unique: true,
@@ -43,12 +45,23 @@ const schema = new Schema<CourseAttrs>(
       ref: "subject",
       required: true,
     },
-    sections: [
+    classes: [
       {
         type: Schema.Types.ObjectId,
-        ref: "section",
+        ref: "class",
+        required: true,
       },
     ],
+    content: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "lesson",
+      },
+    ],
+    publish: {
+      type: Boolean,
+      default: false,
+    },
     logs: [
       {
         type: Schema.Types.ObjectId,
@@ -70,14 +83,14 @@ const schema = new Schema<CourseAttrs>(
   }
 );
 
-// Remove extra spaces from a string
+// xóa khoảng trắng thừa trong tiêu đề và mô tả
 schema.pre("save", function (next) {
+  this.title = this.title.replace(/\s+/g, " ").trim();
   if (this.description) {
     this.description = this.description
       .replace(/\s+/g, " ")
       .trim();
   }
-
   next();
 });
 

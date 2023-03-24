@@ -5,9 +5,11 @@ import { Course } from "../../../model/course";
 import { Subject } from "../../../model/subject";
 
 type NewCourseDto = {
-  name: string;
+  title: string;
   description?: string;
-  subjectId: Types.ObjectId;
+  subjectId?: Types.ObjectId;
+  classesId?: Types.ObjectId;
+  publish?: boolean;
 };
 
 async function newCourse(
@@ -15,18 +17,19 @@ async function newCourse(
   res: Response,
   next: NextFunction
 ) {
-  const { name, description, subjectId }: NewCourseDto =
+  const { title, description, subjectId }: NewCourseDto =
     req.body;
 
   try {
     const course = Course.build({
-      name,
+      title,
       description,
       author: req.user!.id,
       subject: subjectId,
     });
     await course.save();
 
+    // kiểm tra giáo viên có trực thuộc môn học hay không
     const subject = await Subject.findByIdAndUpdate(
       subjectId,
       {
@@ -36,7 +39,9 @@ async function newCourse(
       }
     );
     if (!subject) {
-      throw new BadReqErr("INVALID_SUBJECT");
+      throw new BadReqErr(
+        "Môn học của khóa học không hợp lệ"
+      );
     }
 
     res.status(201).json({
