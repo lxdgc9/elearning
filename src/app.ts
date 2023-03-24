@@ -15,11 +15,7 @@ import { userRouter } from "./router/user";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 

@@ -39,11 +39,11 @@ async function newManyUser(
     }
 
     // kiểm tra roleId
-    const role = await Role.find({
-      _id: { $in: users.map((u) => u.roleId) },
-    });
-    if (!role) {
-      throw new Error("Không Tìm Thấy Vai Trò");
+    const roles = await Role.find({}).select("_id");
+    const extRoleIds = roles.map((r) => r.id);
+    const roleIds = users.map((u) => u.roleId);
+    if (roleIds.some((r) => !extRoleIds.includes(r))) {
+      throw new BadReqErr("Không Tìm Thấy Vai Trò");
     }
 
     // tạo nhiều user
