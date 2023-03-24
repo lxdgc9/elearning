@@ -44,6 +44,11 @@ const API = {
       PATH: "/api/users/profile",
       ACCESS: [],
     },
+    ACCESS: {
+      METHOD: Method.PATCH,
+      PATH: "/api/users/access/:id",
+      ACCESS: [],
+    },
     CHANGE_PASS: {
       METHOD: Method.PATCH,
       PATH: "/api/users/password",

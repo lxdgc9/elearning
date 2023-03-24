@@ -11,6 +11,7 @@ import { access } from "../middleware/access";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { version } from "../middleware/version";
+import { active } from "../middleware/active";
 
 const r = Router();
 
@@ -28,6 +29,7 @@ r[GET.METHOD](
   GET.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET.ACCESS),
   version({
     v1: getClasses,
@@ -38,6 +40,7 @@ r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET_BY_ID.ACCESS),
   version({
     v1: getClass,
@@ -48,6 +51,7 @@ r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
+  active,
   access(NEW.ACCESS),
   version({
     v1: newClass,
@@ -58,6 +62,7 @@ r[ALLOC_USER.METHOD](
   ALLOC_USER.PATH,
   currUser,
   requireAuth,
+  active,
   access(ALLOC_USER.ACCESS),
   version({
     v1: allocUser,
@@ -68,6 +73,7 @@ r[REMOVE_USER.METHOD](
   REMOVE_USER.PATH,
   currUser,
   requireAuth,
+  active,
   access(ALLOC_USER.ACCESS),
   version({
     v1: removeUser,
@@ -78,6 +84,7 @@ r[MOD.METHOD](
   MOD.PATH,
   currUser,
   requireAuth,
+  active,
   access(MOD.ACCESS),
   version({
     v1: updateClass,
@@ -88,6 +95,7 @@ r[DEL.METHOD](
   DEL.PATH,
   currUser,
   requireAuth,
+  active,
   access(DEL.ACCESS),
   version({
     v1: deleteClass,

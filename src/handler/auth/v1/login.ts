@@ -21,22 +21,28 @@ async function login(
     // kiểm tra username
     const user = await User.findOne({
       username,
-    }).populate<{
-      role: {
-        permissions: PermDoc[];
-      };
-    }>([
-      {
-        path: "role",
-        select: "permissions",
-        populate: [
-          {
-            path: "permissions",
-            select: "name description",
-          },
-        ],
-      },
-    ]);
+    })
+      .select("-logs")
+      .populate<{
+        role: {
+          permissions: PermDoc[];
+        };
+      }>([
+        {
+          path: "role",
+          select: "permissions",
+          populate: [
+            {
+              path: "permissions",
+              select: "name description",
+            },
+          ],
+        },
+        {
+          path: "classes",
+          select: "name session description",
+        },
+      ]);
     if (!user) {
       throw new BadReqErr("Tài Khoản Không Tồn Tại");
     }
@@ -54,6 +60,7 @@ async function login(
     const payload = {
       id: user.id,
       perms: user.role.permissions.map((p) => p.name),
+      hasAccess: user.hasAccess,
     };
     const accessToken = sign(
       payload,

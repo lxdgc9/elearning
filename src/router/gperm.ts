@@ -5,6 +5,7 @@ import { getGPerms } from "../handler/gperm/v1/get";
 import { getGPerm } from "../handler/gperm/v1/get-by-id";
 import { newGPerm } from "../handler/gperm/v1/new";
 import { updateGPerm } from "../handler/gperm/v1/update";
+import { active } from "../middleware/active";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { version } from "../middleware/version";
@@ -17,6 +18,7 @@ r[GET.METHOD](
   GET.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: getGPerms,
   })
@@ -26,6 +28,7 @@ r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: getGPerm,
   })
@@ -35,6 +38,7 @@ r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: newGPerm,
   })
@@ -44,6 +48,7 @@ r[MOD.METHOD](
   MOD.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: updateGPerm,
   })
@@ -53,6 +58,7 @@ r[DEL.METHOD](
   DEL.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: deleteGPerm,
   })

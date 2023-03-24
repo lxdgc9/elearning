@@ -5,6 +5,7 @@ import { getRoles } from "../handler/role/v1/get";
 import { getRole } from "../handler/role/v1/get-by-id";
 import { newRole } from "../handler/role/v1/new";
 import { updateRole } from "../handler/role/v1/update";
+import { active } from "../middleware/active";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { version } from "../middleware/version";
@@ -17,6 +18,7 @@ r[GET.METHOD](
   GET.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: getRoles,
   })
@@ -26,6 +28,7 @@ r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: getRole,
   })
@@ -35,6 +38,7 @@ r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: newRole,
   })
@@ -44,6 +48,7 @@ r[MOD.METHOD](
   MOD.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: updateRole,
   })
@@ -53,6 +58,7 @@ r[DEL.METHOD](
   DEL.PATH,
   currUser,
   requireAuth,
+  active,
   version({
     v1: deleteRole,
   })

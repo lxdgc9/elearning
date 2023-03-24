@@ -9,16 +9,24 @@ async function me(
   const { id } = req.user!;
 
   try {
-    const user = await User.findById(id).populate([
-      {
-        path: "role",
-        populate: [
-          {
-            path: "permissions",
-          },
-        ],
-      },
-    ]);
+    const user = await User.findById(id)
+      .select("-logs")
+      .populate([
+        {
+          path: "role",
+          select: "permissions",
+          populate: [
+            {
+              path: "permissions",
+              select: "name description",
+            },
+          ],
+        },
+        {
+          path: "classes",
+          select: "name session description",
+        },
+      ]);
 
     res.json({
       user,

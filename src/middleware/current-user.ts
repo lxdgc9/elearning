@@ -6,6 +6,7 @@ import { UnauthorizedErr } from "../error/unauthorized";
 type UserPayload = {
   id: Types.ObjectId;
   perms: string[];
+  hasAccess: boolean;
 };
 
 declare global {

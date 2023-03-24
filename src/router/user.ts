@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { API } from "../cfg/route";
+import { accessUser } from "../handler/user/v1/access";
 import { changePass } from "../handler/user/v1/change-pass";
 import { getUsers } from "../handler/user/v1/get";
 import { getUser } from "../handler/user/v1/get-by-id";
@@ -10,6 +11,7 @@ import { newManyUser } from "../handler/user/v1/new-many";
 import { setRole } from "../handler/user/v1/set-role";
 import { updateProf } from "../handler/user/v1/update-prof";
 import { access } from "../middleware/access";
+import { active } from "../middleware/active";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { validReq } from "../middleware/valid-req";
@@ -24,6 +26,7 @@ const {
   NEW_MANY,
   CURR_USER,
   SET_ROLE,
+  ACCESS,
   MOD_PROF,
   CHANGE_PASS,
 } = API.USER;
@@ -32,6 +35,7 @@ r[CURR_USER.METHOD](
   CURR_USER.PATH,
   currUser,
   requireAuth,
+  active,
   access(CURR_USER.ACCESS),
   version({
     v1: me,
@@ -42,6 +46,7 @@ r[GET.METHOD](
   GET.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET.ACCESS),
   version({
     v1: getUsers,
@@ -52,6 +57,7 @@ r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET_BY_ID.ACCESS),
   version({
     v1: getUser,
@@ -62,9 +68,22 @@ r[SET_ROLE.METHOD](
   SET_ROLE.PATH,
   currUser,
   requireAuth,
+  active,
   access(SET_ROLE.ACCESS),
   version({
     v1: setRole,
+  })
+);
+
+
+r[ACCESS.METHOD](
+  ACCESS.PATH,
+  currUser,
+  requireAuth,
+  active,
+  access(ACCESS.ACCESS),
+  version({
+    v1: accessUser,
   })
 );
 
@@ -72,6 +91,7 @@ r[MOD_PROF.METHOD](
   MOD_PROF.PATH,
   currUser,
   requireAuth,
+  active,
   access(MOD_PROF.ACCESS),
   version({
     v1: updateProf,
@@ -82,6 +102,7 @@ r[CHANGE_PASS.METHOD](
   CHANGE_PASS.PATH,
   currUser,
   requireAuth,
+  active,
   access(CHANGE_PASS.ACCESS),
   version({
     v1: changePass,
@@ -92,6 +113,7 @@ r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
+  active,
   access(NEW.ACCESS),
   [
     check("username")
@@ -151,6 +173,7 @@ r[NEW_MANY.METHOD](
   NEW_MANY.PATH,
   currUser,
   requireAuth,
+  active,
   access(NEW_MANY.ACCESS),
   [
     check("users.*.username")

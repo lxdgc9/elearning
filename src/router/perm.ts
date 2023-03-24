@@ -6,6 +6,7 @@ import { getPerm } from "../handler/perm/v1/get-by-id";
 import { newPerm } from "../handler/perm/v1/new";
 import { updatePerm } from "../handler/perm/v1/update";
 import { access } from "../middleware/access";
+import { active } from "../middleware/active";
 import { currUser } from "../middleware/current-user";
 import { requireAuth } from "../middleware/require-auth";
 import { version } from "../middleware/version";
@@ -18,6 +19,7 @@ r[GET.METHOD](
   GET.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET.ACCESS),
   version({
     v1: getPerms,
@@ -28,6 +30,7 @@ r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
   requireAuth,
+  active,
   access(GET_BY_ID.ACCESS),
   version({
     v1: getPerm,
@@ -38,6 +41,7 @@ r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
+  active,
   access(NEW.ACCESS),
   version({
     v1: newPerm,
@@ -48,6 +52,7 @@ r[MOD.METHOD](
   MOD.PATH,
   currUser,
   requireAuth,
+  active,
   access(MOD.ACCESS),
   version({
     v1: updatePerm,
@@ -58,6 +63,7 @@ r[DEL.METHOD](
   DEL.PATH,
   currUser,
   requireAuth,
+  active,
   access(DEL.ACCESS),
   version({
     v1: deletePerm,
