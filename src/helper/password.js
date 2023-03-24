@@ -1,4 +1,4 @@
-// Password helper giúp hash mật khẩu và so sánh mật khẩu
+// Password helper hash mật khẩu và so sánh mật khẩu
 
 const { compare, genSalt, hash } = require("bcryptjs");
 
