@@ -17,15 +17,10 @@ const schema = new mongoose.Schema(
         ref: "perm",
       },
     ],
-    logs: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "log",
-      },
-    ],
   },
   {
     collection: "Role",
+    timestamps: true,
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -36,13 +31,12 @@ const schema = new mongoose.Schema(
   }
 );
 
-// khóa khoảng trắng thừa trong tên và mô tả
+// Xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
-  this.name = this.name.replace(/\s+/g, " ").trim();
-  if (this.description) {
-    this.description = this.description
-      .replace(/\s+/g, " ")
-      .trim();
+  const { name, description } = this;
+  name = name.replace(/\s+/g, " ").trim();
+  if (description) {
+    description = description.replace(/\s+/g, " ").trim();
   }
   next();
 });

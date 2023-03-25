@@ -23,7 +23,12 @@ async function deleteMembers(req, res, next) {
         populate: [
           {
             path: "role",
-            select: "name description",
+            populate: [
+              {
+                path: "permissions",
+                select: "name description",
+              },
+            ],
           },
         ],
       },
