@@ -56,10 +56,10 @@ const schema = new mongoose.Schema(
           type: String,
         },
       },
-      avatar: {
+      bio: {
         type: String,
       },
-      bio: {
+      avatar: {
         type: String,
       },
     },
@@ -106,12 +106,11 @@ schema.pre("save", async function (fn) {
   fn();
 });
 
-// xóa khoảng trắng thừa trong họ tên và mô tả bản thân
+// Xóa khoảng trắng thừa trong họ tên và mô tả bản thân
 schema.pre("save", function (next) {
   let {
-    profile: { fullName = undefined, bio = undefined } = {},
+    profile: { fullName, bio },
   } = this;
-
   if (fullName) {
     fullName = fullName.replace(/\s+/g, " ").trim();
   }

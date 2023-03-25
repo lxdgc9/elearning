@@ -43,19 +43,14 @@ const API = {
       PATH: "/api/users/many",
       ACCESS: [],
     },
-    SET_ROLE: {
-      METHOD: PATCH,
-      PATH: "/api/users/role",
-      ACCESS: [],
-    },
-    UPDATE_PROF: {
+    UPDATE_PROFILE: {
       METHOD: PATCH,
       PATH: "/api/users/profile",
       ACCESS: [],
     },
     SET_STATE: {
       METHOD: PATCH,
-      PATH: "/api/users/access/:id",
+      PATH: "/api/users/state/:id",
       ACCESS: [],
     },
     CHANGE_PASSWORD: {

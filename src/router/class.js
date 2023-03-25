@@ -41,7 +41,7 @@ r[GET.METHOD](
   })
 );
 
-// Lấy thông tin chi tiết lớp
+// Lấy chi tiết thông tin lớp
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,

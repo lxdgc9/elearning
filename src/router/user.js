@@ -2,16 +2,12 @@ const express = require("express");
 const route = require("../cfg/route");
 const valid = require("express-validator");
 const uploader = require("../helper/uploader");
-
-// Middlewares
 const access = require("../middleware/access");
 const active = require("../middleware/active");
 const version = require("../middleware/version");
 const validReq = require("../middleware/valid-req");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
-
-// Handlers
 const accessUser = require("../handler/user/v1/access");
 const changePass = require("../handler/user/v1/change-pass");
 const getUsers = require("../handler/user/v1/get");
@@ -30,13 +26,12 @@ const {
   NEW,
   NEW_MANY,
   CURRENT_USER,
-  SET_ROLE,
-  SET_STATE: ACCESS,
-  UPDATE_PROF: MOD_PROF,
-  CHANGE_PASSWORD: CHANGE_PASS,
+  SET_STATE,
+  UPDATE_PROF,
+  CHANGE_PASSWORD,
 } = route.API.USER;
 
-// fetch user từ token
+// Lấy chi tiết thông tin người dùng từ token
 r[CURRENT_USER.METHOD](
   CURRENT_USER.PATH,
   currUser,
@@ -48,7 +43,7 @@ r[CURRENT_USER.METHOD](
   })
 );
 
-// lấy danh sách user
+// Lấy danh sách người dùng
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -60,7 +55,7 @@ r[GET.METHOD](
   })
 );
 
-// lấy thông tin chi tiết user
+// Lấy chi tiết thông tin người dùng
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -72,56 +67,44 @@ r[GET_BY_ID.METHOD](
   })
 );
 
-// gán role vào nhiều user
-r[SET_ROLE.METHOD](
-  SET_ROLE.PATH,
+// Chặn người dùng truy cập
+r[SET_STATE.METHOD](
+  SET_STATE.PATH,
   currUser,
   requireAuth,
   active,
-  access(SET_ROLE.ACCESS),
-  version({
-    v1: setRole,
-  })
-);
-
-// enable/disable user
-r[ACCESS.METHOD](
-  ACCESS.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(ACCESS.ACCESS),
+  access(SET_STATE.ACCESS),
   version({
     v1: accessUser,
   })
 );
 
-// cập nhật hồ sơ cá nhân
-r[MOD_PROF.METHOD](
-  MOD_PROF.PATH,
+// Cập nhật hồ sơ cá nhân
+r[UPDATE_PROFILE.METHOD](
+  UPDATE_PROFILE.PATH,
   currUser,
   requireAuth,
   active,
-  access(MOD_PROF.ACCESS),
+  access(UPDATE_PROFILE.ACCESS),
   uploader.single("avatar"),
   version({
     v1: updateProf,
   })
 );
 
-// đổi mật khẩu
-r[CHANGE_PASS.METHOD](
-  CHANGE_PASS.PATH,
+// Đổi mật khẩu
+r[CHANGE_PASSWORD.METHOD](
+  CHANGE_PASSWORD.PATH,
   currUser,
   requireAuth,
   active,
-  access(CHANGE_PASS.ACCESS),
+  access(CHANGE_PASSWORD.ACCESS),
   version({
     v1: changePass,
   })
 );
 
-// tạo user
+// Tạo người dùng
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -191,7 +174,7 @@ r[NEW.METHOD](
   })
 );
 
-// Tạo nhiều user
+// Tạo nhiều người dùng
 r[NEW_MANY.METHOD](
   NEW_MANY.PATH,
   currUser,
