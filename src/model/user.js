@@ -77,12 +77,6 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    logs: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "log",
-      },
-    ],
   },
   {
     collection: "User",
@@ -98,10 +92,10 @@ const schema = new mongoose.Schema(
   }
 );
 
-// tạo index cho user, mới nhất đứng đầu
+// Tạo index cho user, mới nhất đứng đầu
 schema.index({ createdAt: -1 });
 
-// mã hóa mật khẩu trước khi lưu
+// Mã hóa mật khẩu trước khi lưu
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
     const hashed = await Password.toHash(

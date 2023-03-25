@@ -1,6 +1,7 @@
 const express = require("express");
 const route = require("../cfg/route");
 const valid = require("express-validator");
+const uploader = require("../helper/uploader");
 
 // Middlewares
 const access = require("../middleware/access");
@@ -28,20 +29,20 @@ const {
   GET_BY_ID,
   NEW,
   NEW_MANY,
-  CURR_USER,
+  CURRENT_USER,
   SET_ROLE,
-  ACCESS,
-  MOD_PROF,
-  CHANGE_PASS,
+  SET_STATE: ACCESS,
+  UPDATE_PROF: MOD_PROF,
+  CHANGE_PASSWORD: CHANGE_PASS,
 } = route.API.USER;
 
 // fetch user từ token
-r[CURR_USER.METHOD](
-  CURR_USER.PATH,
+r[CURRENT_USER.METHOD](
+  CURRENT_USER.PATH,
   currUser,
   requireAuth,
   active,
-  access(CURR_USER.ACCESS),
+  access(CURRENT_USER.ACCESS),
   version({
     v1: me,
   })
@@ -102,6 +103,7 @@ r[MOD_PROF.METHOD](
   requireAuth,
   active,
   access(MOD_PROF.ACCESS),
+  uploader.single("avatar"),
   version({
     v1: updateProf,
   })

@@ -28,7 +28,7 @@ const API = {
       PATH: "/api/users/:id",
       ACCESS: [],
     },
-    CURR_USER: {
+    CURRENT_USER: {
       METHOD: GET,
       PATH: "/api/users/me",
       ACCESS: [],
@@ -48,17 +48,17 @@ const API = {
       PATH: "/api/users/role",
       ACCESS: [],
     },
-    MOD_PROF: {
+    UPDATE_PROF: {
       METHOD: PATCH,
       PATH: "/api/users/profile",
       ACCESS: [],
     },
-    ACCESS: {
+    SET_STATE: {
       METHOD: PATCH,
       PATH: "/api/users/access/:id",
       ACCESS: [],
     },
-    CHANGE_PASS: {
+    CHANGE_PASSWORD: {
       METHOD: PATCH,
       PATH: "/api/users/password",
       ACCESS: [],
