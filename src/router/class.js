@@ -192,6 +192,21 @@ r[UPDATE.METHOD](
       .param("id")
       .isMongoId()
       .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("name")
+      .isLength({ min: 1 })
+      .withMessage("Tên lớp không được trống")
+      .optional({ nullable: true }),
+    valid
+      .check("session")
+      .isLength({ min: 1 })
+      .withMessage("Niên khóa không được trống")
+      .optional({ nullable: true }),
+    valid
+      .check("description")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
   ],
   validReq,
   version({

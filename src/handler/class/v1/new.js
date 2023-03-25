@@ -38,8 +38,29 @@ async function newClass(req, res, next) {
     });
     await _class.save();
 
+    // Lấy thông tin chi tiết lớp học đã tạo trả về client
+    const classDetail = await Class.findById(
+      _class.id
+    ).populate([
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            populate: [
+              {
+                path: "permissions",
+                select: "name description",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+
     res.status(201).json({
-      class: _class,
+      class: classDetail,
     });
   } catch (err) {
     console.log(err);
