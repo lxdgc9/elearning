@@ -212,7 +212,7 @@ const API = {
     },
     GET_BY_CLASS_ID: {
       METHOD: GET,
-      PATH: "/api/channels/class/:id",
+      PATH: "/api/channels/class/:classId",
       ACCESS: [],
     },
     GET_BY_ID: {

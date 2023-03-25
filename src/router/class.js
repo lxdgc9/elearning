@@ -6,16 +6,16 @@ const BadReqErr = require("../error/bad-req");
 const active = require("../middleware/active");
 const access = require("../middleware/access");
 const version = require("../middleware/version");
+const validReq = require("../middleware/valid-req");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
 const getClasses = require("../handler/class/v1/get");
 const getClass = require("../handler/class/v1/get-by-id");
 const newClass = require("../handler/class/v1/new");
 const addMembers = require("../handler/class/v1/add-members");
+const deleteMembers = require("../handler/class/v1/delete-members");
 const updateClass = require("../handler/class/v1/update");
 const deleteClass = require("../handler/class/v1/delete");
-const deleteMembers = require("../handler/class/v1/delete-members");
-const validReq = require("../middleware/valid-req");
 
 const r = express.Router();
 
@@ -92,7 +92,7 @@ r[NEW.METHOD](
           );
           if (!isValid) {
             throw new BadReqErr(
-              "Danh sách thành viên không hợp lệ"
+              "Tồn tại thành viên không hợp lệ trong danh sách"
             );
           }
         }

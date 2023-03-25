@@ -17,6 +17,9 @@ const deleteClass = require("../handler/class/v1/delete");
 const deleteMembers = require("../handler/class/v1/delete-members");
 const validReq = require("../middleware/valid-req");
 const getChannels = require("../handler/channel/v1/get");
+const newChannel = require("../handler/channel/v1/new");
+const getChannel = require("../handler/channel/v1/get-by-id");
+const getByClass = require("../handler/channel/v1/get-by-class-id");
 
 const r = express.Router();
 
@@ -50,8 +53,15 @@ r[GET_BY_CLASS_ID.METHOD](
   requireAuth,
   active,
   access(GET_BY_CLASS_ID.ACCESS),
+  [
+    valid
+      .param("classId")
+      .isMongoId()
+      .withMessage("Không tìm thấy lớp học"),
+  ],
+  validReq,
   version({
-    v1: getClasses,
+    v1: getByClass,
   })
 );
 
@@ -66,11 +76,11 @@ r[GET_BY_ID.METHOD](
     valid
       .param("id")
       .isMongoId()
-      .withMessage("Không tìm thấy lớp học"),
+      .withMessage("Không tìm thấy kênh"),
   ],
   validReq,
   version({
-    v1: getClass,
+    v1: getChannel,
   })
 );
 
@@ -81,9 +91,42 @@ r[NEW.METHOD](
   requireAuth,
   active,
   access(NEW.ACCESS),
+  [
+    valid
+      .check("name")
+      .notEmpty()
+      .withMessage("Tên cầu tên kênh"),
+    valid
+      .check("classId")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("description")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+    valid
+      .check("memberIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại thành viên không hợp lệ trong danh sách"
+            );
+          }
+        }
+        return true;
+      })
+      .optional({ nullable: true }),
+  ],
   validReq,
   version({
-    v1: newClass,
+    v1: newChannel,
   })
 );
 

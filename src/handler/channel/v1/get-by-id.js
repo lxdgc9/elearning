@@ -8,10 +8,16 @@ async function getChannel(req, res, next) {
     ).populate([
       {
         path: "members",
+        select: "profile role",
         populate: [
           {
             path: "role",
-            select: "name description",
+            populate: [
+              {
+                path: "permissions",
+                select: "name description",
+              },
+            ],
           },
         ],
       },

@@ -16,7 +16,9 @@ async function newChannel(req, res, next) {
     // Kiểm tra người tạo có phải là thành viên trong lớp
     // hay không
     if (!_class.members.includes(req.user.id)) {
-      throw new BadReqErr("Bạn không trực thuộc lớp này");
+      throw new BadReqErr(
+        `Bạn không trực thuộc lớp ${_class.name}`
+      );
     }
 
     // Đảm bảo danh sách thành viên phải bao gồm người tạo
@@ -41,11 +43,12 @@ async function newChannel(req, res, next) {
     }
     if (!flag) {
       throw new BadReqErr(
-        "Danh sách thành viên không hợp lệ"
+        `Tồn tại thành viên không thuộc lớp ${_class.name}`
       );
     }
 
-    // Khi thông tin đầu vào hợp lệ, tiến hành tạo kênh
+    // Khi thông tin đầu vào hợp lệ, tiến hành tạo kênh,
+    // người tạo chính là chủ sở hữu của kênh
     const channel = Channel.build({
       name,
       owner: req.user.id,
@@ -55,8 +58,29 @@ async function newChannel(req, res, next) {
     });
     await channel.save();
 
+    // Lấy thông tin chi tiết kênh đã tạo trả về client
+    const channelDetail = await Channel.findById(
+      channel.id
+    ).populate([
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            populate: [
+              {
+                path: "permissions",
+                select: "name description",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+
     res.status(201).json({
-      channel,
+      channel: channelDetail,
     });
   } catch (err) {
     console.log(err);
