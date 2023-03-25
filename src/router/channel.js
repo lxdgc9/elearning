@@ -1,28 +1,27 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const route = require("../cfg/route");
 const valid = require("express-validator");
-// Middlewares
+const BadReqErr = require("../error/bad-req");
 const active = require("../middleware/active");
 const access = require("../middleware/access");
 const version = require("../middleware/version");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
-// Routes
 const getClasses = require("../handler/class/v1/get");
 const getClass = require("../handler/class/v1/get-by-id");
-// const addMembers = require("../handler/class/v1/alloc-user");
-// const deleteMembers = require("../handler/class/v1/remove-user");
+const newClass = require("../handler/class/v1/new");
+const addMembers = require("../handler/class/v1/add-members");
 const updateClass = require("../handler/class/v1/update");
 const deleteClass = require("../handler/class/v1/delete");
-const newChannel = require("../handler/channel/v1/new");
+const deleteMembers = require("../handler/class/v1/delete-members");
 const validReq = require("../middleware/valid-req");
-const { default: mongoose } = require("mongoose");
-const BadReqErr = require("../error/bad-req");
 
 const r = express.Router();
 
 const {
   GET,
+  GET_BY_CLASS_ID,
   GET_BY_ID,
   NEW,
   ADD_MEMBERS,
@@ -43,6 +42,18 @@ r[GET.METHOD](
   })
 );
 
+// Lấy danh sách kênh của một lớp
+r[GET_BY_CLASS_ID.METHOD](
+  GET_BY_CLASS_ID.PATH,
+  currUser,
+  requireAuth,
+  active,
+  access(GET_BY_CLASS_ID.ACCESS),
+  version({
+    v1: getClasses,
+  })
+);
+
 // Lấy chi tiết thông tin kênh
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
@@ -50,12 +61,19 @@ r[GET_BY_ID.METHOD](
   requireAuth,
   active,
   access(GET_BY_ID.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Không tìm thấy lớp học"),
+  ],
+  validReq,
   version({
     v1: getClass,
   })
 );
 
-// Tạo mới kênh
+// Tạo mới lớp
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -66,17 +84,11 @@ r[NEW.METHOD](
     valid
       .check("name")
       .notEmpty()
-      .withMessage("Tên cầu tên kênh"),
+      .withMessage("Tên cầu tên lớp"),
     valid
-      .check("classId")
+      .check("session")
       .notEmpty()
-      .withMessage("Yêu cầu lớp học")
-      .custom((v) => {
-        if (!mongoose.Types.ObjectId.isValid(v)) {
-          throw new BadReqErr("Lớp học không hợp lệ");
-        }
-        return true;
-      }),
+      .withMessage("Tên cầu niên khóa"),
     valid
       .check("description")
       .isLength({ max: 255 })
@@ -85,7 +97,7 @@ r[NEW.METHOD](
     valid
       .check("memberIds")
       .isArray()
-      .withMessage("Yêu cầu danh sách thành viên")
+      .withMessage("Danh sách thành viên không hợp lệ")
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
@@ -98,57 +110,137 @@ r[NEW.METHOD](
           }
         }
         return true;
+      })
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  version({
+    v1: newClass,
+  })
+);
+
+// Thêm thành viên vào lớp
+r[ADD_MEMBERS.METHOD](
+  ADD_MEMBERS.PATH,
+  currUser,
+  requireAuth,
+  active,
+  access(ADD_MEMBERS.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("memberIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại thành viên không hợp lệ trong danh sách"
+            );
+          }
+          return true;
+        }
+        throw new BadReqErr("Danh sách thành viên rỗng");
       }),
   ],
   validReq,
   version({
-    v1: newChannel,
+    v1: addMembers,
   })
 );
 
-// Thêm thành viên vào kênh
-// r[ADD_MEMBERS.METHOD](
-//   ADD_MEMBERS.PATH,
-//   currUser,
-//   requireAuth,
-//   active,
-//   access(ADD_MEMBERS.ACCESS),
-//   version({
-//     v1: allocUser,
-//   })
-// );
+// Xóa thành viên khỏi lớp
+r[DELETE_MEMBERS.METHOD](
+  DELETE_MEMBERS.PATH,
+  currUser,
+  requireAuth,
+  active,
+  access(ADD_MEMBERS.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("memberIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại thành viên không hợp lệ trong danh sách"
+            );
+          }
+          return true;
+        }
+        throw new BadReqErr("Danh sách thành viên rỗng");
+      }),
+  ],
+  validReq,
+  version({
+    v1: deleteMembers,
+  })
+);
 
-// Xóa thành viên khỏi kênh
-// r[DELETE_MEMBERS.METHOD](
-//   DELETE_MEMBERS.PATH,
-//   currUser,
-//   requireAuth,
-//   active,
-//   access(ADD_MEMBERS.ACCESS),
-//   version({
-//     v1: removeUser,
-//   })
-// );
-
-// Cập nhật thông tin kênh
+// Cập nhật thông tin lớp
 r[UPDATE.METHOD](
   UPDATE.PATH,
   currUser,
   requireAuth,
   active,
   access(UPDATE.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("name")
+      .isLength({ min: 1 })
+      .withMessage("Tên lớp không được trống")
+      .optional({ nullable: true }),
+    valid
+      .check("session")
+      .isLength({ min: 1 })
+      .withMessage("Niên khóa không được trống")
+      .optional({ nullable: true }),
+    valid
+      .check("description")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+  ],
+  validReq,
   version({
     v1: updateClass,
   })
 );
 
-// xóa kênh
+// Xóa lớp
 r[DELETE.METHOD](
   DELETE.PATH,
   currUser,
   requireAuth,
   active,
   access(DELETE.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+  ],
+  validReq,
   version({
     v1: deleteClass,
   })

@@ -31,6 +31,7 @@ const schema = new mongoose.Schema(
   },
   {
     collection: "Class",
+    timestamps: true,
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -38,7 +39,6 @@ const schema = new mongoose.Schema(
         delete ret.__v;
       },
     },
-    timestamps: true,
   }
 );
 

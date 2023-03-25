@@ -1,18 +1,15 @@
 const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
-// Errors
 const NotFoundErr = require("./error/not-found");
-// Middlewares
 const errHandler = require("./middleware/err-handler");
-// Routes
 const authRouter = require("./router/auth");
+const provRouter = require("./router/province");
 const classRouter = require("./router/class");
 const channelRouter = require("./router/channel");
 const courseRouter = require("./router/course");
 const gpermRouter = require("./router/gperm");
 const permRouter = require("./router/perm");
-const provRouter = require("./router/province");
 const roleRouter = require("./router/role");
 const subjectRouter = require("./router/subject");
 const userRouter = require("./router/user");

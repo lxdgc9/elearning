@@ -1,8 +1,6 @@
 const express = require("express");
 const route = require("../cfg/route");
-// Middlewares
 const version = require("../middleware/version");
-// Handlers
 const getProvinces = require("../handler/province/v1/get");
 
 const r = express.Router();

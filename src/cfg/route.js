@@ -210,6 +210,11 @@ const API = {
       PATH: "/api/channels",
       ACCESS: [],
     },
+    GET_BY_CLASS_ID: {
+      METHOD: GET,
+      PATH: "/api/channels/class/:id",
+      ACCESS: [],
+    },
     GET_BY_ID: {
       METHOD: GET,
       PATH: "/api/channels/:id",
@@ -220,19 +225,19 @@ const API = {
       PATH: "/api/channels",
       ACCESS: [],
     },
+    UPDATE: {
+      METHOD: PATCH,
+      PATH: "/api/channels/:id",
+      ACCESS: [],
+    },
     ADD_MEMBERS: {
       METHOD: PATCH,
-      PATH: "/api/channels/alloc-users/:id",
+      PATH: "/api/channels/add-members/:id",
       ACCESS: [],
     },
     DELETE_MEMBERS: {
       METHOD: PATCH,
-      PATH: "/api/channels/remove-users/:id",
-      ACCESS: [],
-    },
-    UPDATE: {
-      METHOD: PATCH,
-      PATH: "/api/channels/:id",
+      PATH: "/api/channels/remove-members/:id",
       ACCESS: [],
     },
     DELETE: {

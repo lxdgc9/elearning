@@ -7,6 +7,10 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
     classId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "class",
@@ -24,6 +28,7 @@ const schema = new mongoose.Schema(
   },
   {
     collection: "Channel",
+    timestamps: true,
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
@@ -31,7 +36,6 @@ const schema = new mongoose.Schema(
         delete ret.__v;
       },
     },
-    timestamps: true,
   }
 );
 
