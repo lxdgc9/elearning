@@ -188,6 +188,11 @@ const API = {
       PATH: "/api/classes",
       ACCESS: [],
     },
+    UPDATE: {
+      METHOD: PATCH,
+      PATH: "/api/classes/:id",
+      ACCESS: [],
+    },
     ADD_MEMBERS: {
       METHOD: PATCH,
       PATH: "/api/classes/add-members/:id",
@@ -196,11 +201,6 @@ const API = {
     DELETE_MEMBERS: {
       METHOD: PATCH,
       PATH: "/api/classes/remove-members/:id",
-      ACCESS: [],
-    },
-    UPDATE: {
-      METHOD: PATCH,
-      PATH: "/api/classes/:id",
       ACCESS: [],
     },
     DELETE: {

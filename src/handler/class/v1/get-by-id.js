@@ -8,6 +8,7 @@ async function getClass(req, res, next) {
     ).populate([
       {
         path: "members",
+        select: "profile role",
         populate: [
           {
             path: "role",

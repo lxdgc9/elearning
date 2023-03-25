@@ -6,6 +6,7 @@ async function getClasses(req, res, next) {
     const classes = await Class.find({}).populate([
       {
         path: "members",
+        select: "profile role",
         populate: [
           {
             path: "role",

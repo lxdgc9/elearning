@@ -3,12 +3,12 @@ const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
 
 async function addMembers(req, res, next) {
-  const { classId } = req.params;
+  const { id } = req.params;
   const { memberIds } = req.body;
 
   try {
     // Kiểm tra lớp học có hợp lệ hay không
-    const _class = await Class.findById(classId);
+    const _class = await Class.findById(id);
     if (!_class) {
       throw new BadReqErr("Không tồn tại lớp học");
     }
@@ -30,11 +30,26 @@ async function addMembers(req, res, next) {
 
     // Sau khi đầu vào hợp lệ, tiến hành thêm thành viên
     const userIds = users.map((u) => u.id);
-    await _class.updateOne({
-      $addToSet: {
-        members: userIds,
+    const _classUpdated = await Class.findByIdAndUpdate(
+      _class.id,
+      {
+        $addToSet: {
+          members: userIds,
+        },
       },
-    });
+      { new: true }
+    ).populate([
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            select: "name description",
+          },
+        ],
+      },
+    ]);
 
     // Tiến hành thêm danh sách lớp học trực thuộc cho
     // người dùng
@@ -47,7 +62,7 @@ async function addMembers(req, res, next) {
     }
 
     res.json({
-      class: _class,
+      class: _classUpdated,
     });
   } catch (err) {
     console.log(err);

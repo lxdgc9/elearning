@@ -106,6 +106,33 @@ r[ADD_MEMBERS.METHOD](
   requireAuth,
   active,
   access(ADD_MEMBERS.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("memberIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Danh sách thành viên không hợp lệ"
+            );
+          }
+          return true;
+        }
+        throw new BadReqErr(
+          "Yêu cầu ít nhất một thành viên"
+        );
+      }),
+  ],
+  validReq,
   version({
     v1: addMembers,
   })
