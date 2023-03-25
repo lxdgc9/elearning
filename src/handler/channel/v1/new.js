@@ -48,6 +48,7 @@ async function newChannel(req, res, next) {
     // Khi thông tin đầu vào hợp lệ, tiến hành tạo kênh
     const channel = Channel.build({
       name,
+      owner: req.user.id,
       classId,
       description,
       members: memberIds,

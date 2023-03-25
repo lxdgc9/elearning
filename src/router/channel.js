@@ -16,6 +16,7 @@ const updateClass = require("../handler/class/v1/update");
 const deleteClass = require("../handler/class/v1/delete");
 const deleteMembers = require("../handler/class/v1/delete-members");
 const validReq = require("../middleware/valid-req");
+const getChannels = require("../handler/channel/v1/get");
 
 const r = express.Router();
 
@@ -38,7 +39,7 @@ r[GET.METHOD](
   active,
   access(GET.ACCESS),
   version({
-    v1: getClasses,
+    v1: getChannels,
   })
 );
 
@@ -73,53 +74,20 @@ r[GET_BY_ID.METHOD](
   })
 );
 
-// Tạo mới lớp
+// Tạo mới kênh
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
   requireAuth,
   active,
   access(NEW.ACCESS),
-  [
-    valid
-      .check("name")
-      .notEmpty()
-      .withMessage("Tên cầu tên lớp"),
-    valid
-      .check("session")
-      .notEmpty()
-      .withMessage("Tên cầu niên khóa"),
-    valid
-      .check("description")
-      .isLength({ max: 255 })
-      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
-      .optional({ nullable: true }),
-    valid
-      .check("memberIds")
-      .isArray()
-      .withMessage("Danh sách thành viên không hợp lệ")
-      .custom((v) => {
-        if (v.length > 0) {
-          const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
-          );
-          if (!isValid) {
-            throw new BadReqErr(
-              "Danh sách thành viên không hợp lệ"
-            );
-          }
-        }
-        return true;
-      })
-      .optional({ nullable: true }),
-  ],
   validReq,
   version({
     v1: newClass,
   })
 );
 
-// Thêm thành viên vào lớp
+// Thêm thành viên vào kênh
 r[ADD_MEMBERS.METHOD](
   ADD_MEMBERS.PATH,
   currUser,
@@ -156,7 +124,7 @@ r[ADD_MEMBERS.METHOD](
   })
 );
 
-// Xóa thành viên khỏi lớp
+// Xóa thành viên khỏi kênh
 r[DELETE_MEMBERS.METHOD](
   DELETE_MEMBERS.PATH,
   currUser,
@@ -193,7 +161,7 @@ r[DELETE_MEMBERS.METHOD](
   })
 );
 
-// Cập nhật thông tin lớp
+// Cập nhật thông tin kênh
 r[UPDATE.METHOD](
   UPDATE.PATH,
   currUser,
@@ -227,7 +195,7 @@ r[UPDATE.METHOD](
   })
 );
 
-// Xóa lớp
+// Xóa kênh
 r[DELETE.METHOD](
   DELETE.PATH,
   currUser,
