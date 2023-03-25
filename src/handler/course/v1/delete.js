@@ -1,12 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Course } = require("../../../model/course");
-const { Subject } = require("../../../model/subject");
+const NotFoundErr = require("../../../error/not-found");
+const Course = require("../../../model/course");
+const Subject = require("../../../model/subject");
 
 async function deleteCourse(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const course = await Course.findByIdAndDelete(id);
+    const course = await Course.findByIdAndDelete(
+      req.params.id
+    );
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");
     }
@@ -24,4 +24,4 @@ async function deleteCourse(req, res, next) {
   }
 }
 
-module.exports = { deleteCourse };
+module.exports = deleteCourse;

@@ -1,6 +1,6 @@
-const { model, Schema } = require("mongoose");
+const mongoose = require("mongoose");
 
-const schema = new Schema(
+const schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -9,7 +9,7 @@ const schema = new Schema(
       trim: true,
     },
     groupId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "gperm",
       required: true,
     },
@@ -19,7 +19,7 @@ const schema = new Schema(
     },
     logs: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "log",
       },
     ],
@@ -53,6 +53,6 @@ schema.statics.build = (attrs) => {
   return new Perm(attrs);
 };
 
-const Perm = model("perm", schema);
+const Perm = mongoose.model("perm", schema);
 
-module.exports = { Perm };
+module.exports = Perm;

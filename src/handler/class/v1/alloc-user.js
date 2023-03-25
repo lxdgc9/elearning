@@ -1,10 +1,9 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
+const User = require("../../../model/user");
 
 async function allocUser(req, res, next) {
-  const { id } = req.params;
   const { userIds } = req.body;
 
   try {
@@ -12,12 +11,14 @@ async function allocUser(req, res, next) {
       _id: { $in: userIds },
     });
     if (users.length !== userIds.length) {
-      throw new BadReqErr("INVALID_USER_IDS");
+      throw new BadReqErr(
+        "Danh sách người dùng không hợp lệ"
+      );
     }
 
-    const _class = await Class.findById(id);
+    const _class = await Class.findById(req.params.id);
     if (!_class) {
-      throw new NotFoundErr("CLASS_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy lớp học");
     }
 
     await _class.updateOne({
@@ -43,4 +44,4 @@ async function allocUser(req, res, next) {
   }
 }
 
-module.exports = { allocUser };
+module.exports = allocUser;

@@ -1,10 +1,10 @@
-const { Role } = require("../../../model/role");
+const Role = require("../../../model/role");
 
 async function deleteRole(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const role = await Role.findByIdAndDelete(id);
+    const role = await Role.findByIdAndDelete(
+      req.params.id
+    );
 
     res.json({
       role,
@@ -15,4 +15,4 @@ async function deleteRole(req, res, next) {
   }
 }
 
-module.exports = { deleteRole };
+module.exports = deleteRole;

@@ -1,13 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { GPerm } = require("../../../model/gperm");
+const NotFoundErr = require("../../../error/not-found");
+const GPerm = require("../../../model/gperm");
 
 async function updateGPerm(req, res, next) {
-  const { id } = req.params;
   const { name, permissionsIds } = req.body;
 
   try {
     const gperm = await GPerm.findByIdAndUpdate(
-      id,
+      req.params.id,
       {
         name,
         permissions: permissionsIds,
@@ -27,4 +26,4 @@ async function updateGPerm(req, res, next) {
   }
 }
 
-module.exports = { updateGPerm };
+module.exports = updateGPerm;

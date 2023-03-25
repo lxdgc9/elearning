@@ -3,15 +3,15 @@
 //
 // Doc: https://express-validator.github.io/docs
 
-const { validationResult } = require("express-validator");
-const { ReqValidateErr } = require("../error/req-validate");
+const valid = require("express-validator");
+const ReqValidateErr = require("../error/req-validate");
 
 function validReq(req, res, next) {
-  const errs = validationResult(req);
+  const errs = valid.validationResult(req);
   if (!errs.isEmpty()) {
     throw new ReqValidateErr(errs.array()[0].msg);
   }
   next();
 }
 
-module.exports = { validReq };
+module.exports = validReq;

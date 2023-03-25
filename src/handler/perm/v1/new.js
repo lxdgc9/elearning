@@ -1,5 +1,5 @@
-const { GPerm } = require("../../../model/gperm");
-const { Perm } = require("../../../model/perm");
+const GPerm = require("../../../model/gperm");
+const Perm = require("../../../model/perm");
 
 async function newPerm(req, res, next) {
   const { name, groupId, description } = req.body;
@@ -12,7 +12,7 @@ async function newPerm(req, res, next) {
     });
     await perm.save();
 
-    // thêm 'permission' vào 'group'
+    // Thêm 'permission' vào 'group'
     await GPerm.findByIdAndUpdate(groupId, {
       $addToSet: {
         permissions: perm.id,
@@ -28,4 +28,4 @@ async function newPerm(req, res, next) {
   }
 }
 
-module.exports = { newPerm };
+module.exports = newPerm;

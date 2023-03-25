@@ -1,6 +1,6 @@
-const { model, Schema } = require("mongoose");
+const mongoose = require("mongoose");
 
-const schema = new Schema(
+const schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -14,19 +14,19 @@ const schema = new Schema(
     },
     teachers: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "user",
       },
     ],
     courses: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "course",
       },
     ],
     logs: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "log",
       },
     ],
@@ -59,6 +59,6 @@ schema.statics.build = (attrs) => {
   return new Subject(attrs);
 };
 
-const Subject = model("subject", schema);
+const Subject = mongoose.model("subject", schema);
 
-module.exports = { Subject };
+module.exports = Subject;

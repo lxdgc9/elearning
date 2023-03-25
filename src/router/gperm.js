@@ -1,26 +1,20 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const {
-  deleteGPerm,
-} = require("../handler/gperm/v1/delete");
-const { getGPerms } = require("../handler/gperm/v1/get");
-const {
-  getGPerm,
-} = require("../handler/gperm/v1/get-by-id");
-const { newGPerm } = require("../handler/gperm/v1/new");
-const {
-  updateGPerm,
-} = require("../handler/gperm/v1/update");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const active = require("../middleware/active");
+const version = require("../middleware/version");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+// Routes
+const getGPerms = require("../handler/gperm/v1/get");
+const getGPerm = require("../handler/gperm/v1/get-by-id");
+const newGPerm = require("../handler/gperm/v1/new");
+const updateGPerm = require("../handler/gperm/v1/update");
+const deleteGPerm = require("../handler/gperm/v1/delete");
 
-const r = Router();
+const r = express.Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.GPERM;
+const { GET, GET_BY_ID, NEW, MOD, DEL } = route.API.GPERM;
 
 r[GET.METHOD](
   GET.PATH,
@@ -72,6 +66,4 @@ r[DEL.METHOD](
   })
 );
 
-module.exports = {
-  gpermRouter: r,
-};
+module.exports = r;

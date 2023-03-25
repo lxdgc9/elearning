@@ -1,31 +1,27 @@
-const { Router } = require("express");
-const { check } = require("express-validator");
-const { API } = require("../cfg/route");
-const { accessUser } = require("../handler/user/v1/access");
-const {
-  changePass,
-} = require("../handler/user/v1/change-pass");
-const { getUsers } = require("../handler/user/v1/get");
-const { getUser } = require("../handler/user/v1/get-by-id");
-const { me } = require("../handler/user/v1/me");
-const { newUser } = require("../handler/user/v1/new");
-const {
-  newManyUser,
-} = require("../handler/user/v1/new-many");
-const { setRole } = require("../handler/user/v1/set-role");
-const {
-  updateProf,
-} = require("../handler/user/v1/update-prof");
-const { access } = require("../middleware/access");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { validReq } = require("../middleware/valid-req");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+const valid = require("express-validator");
 
-const r = Router();
+// Middlewares
+const access = require("../middleware/access");
+const active = require("../middleware/active");
+const version = require("../middleware/version");
+const validReq = require("../middleware/valid-req");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+
+// Handlers
+const accessUser = require("../handler/user/v1/access");
+const changePass = require("../handler/user/v1/change-pass");
+const getUsers = require("../handler/user/v1/get");
+const getUser = require("../handler/user/v1/get-by-id");
+const me = require("../handler/user/v1/me");
+const newUser = require("../handler/user/v1/new");
+const newManyUser = require("../handler/user/v1/new-many");
+const setRole = require("../handler/user/v1/set-role");
+const updateProf = require("../handler/user/v1/update-prof");
+
+const r = express.Router();
 
 const {
   GET,
@@ -37,7 +33,7 @@ const {
   ACCESS,
   MOD_PROF,
   CHANGE_PASS,
-} = API.USER;
+} = route.API.USER;
 
 // fetch user từ token
 r[CURR_USER.METHOD](
@@ -131,10 +127,12 @@ r[NEW.METHOD](
   active,
   access(NEW.ACCESS),
   [
-    check("username")
+    valid
+      .check("username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    check("password")
+    valid
+      .check("password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
@@ -146,13 +144,15 @@ r[NEW.METHOD](
       .withMessage(
         "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
-    check("fullName")
+    valid
+      .check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
         "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
-    check("dob")
+    valid
+      .check("dob")
       .isAfter("1900-01-01")
       .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
@@ -160,22 +160,26 @@ r[NEW.METHOD](
       ) // yêu cầu đủ 12 tuổi
       .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
-    check("gender")
+    valid
+      .check("gender")
       .toLowerCase()
       .isIn(["male", "female", "other"])
       .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
-    check("email")
+    valid
+      .check("email")
       .isEmail()
       .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
-    check("phone")
+    valid
+      .check("phone")
       .isLength({ min: 10, max: 11 })
       .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
       .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
-    check("roleId")
+    valid
+      .check("roleId")
       .notEmpty()
       .withMessage("Yêu cầu vai trò người dùng"),
   ],
@@ -185,7 +189,7 @@ r[NEW.METHOD](
   })
 );
 
-// tạo nhiều user
+// Tạo nhiều user
 r[NEW_MANY.METHOD](
   NEW_MANY.PATH,
   currUser,
@@ -193,10 +197,12 @@ r[NEW_MANY.METHOD](
   active,
   access(NEW_MANY.ACCESS),
   [
-    check("users.*.username")
+    valid
+      .check("users.*.username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    check("users.*.password")
+    valid
+      .check("users.*.password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
@@ -208,36 +214,42 @@ r[NEW_MANY.METHOD](
       .withMessage(
         "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
-    check("users.*.fullName")
+    valid
+      .check("users.*.fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
         "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
-    check("users.*.dob")
+    valid
+      .check("users.*.dob")
       .isAfter("1900-01-01")
       .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
         new Date(Date.now() - 378683424000).toString()
-      ) // yêu cầu đủ 12 tuổi
+      ) // Yêu cầu đủ 12 tuổi
       .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
-    check("users.*.gender")
+    valid
+      .check("users.*.gender")
       .toLowerCase()
       .isIn(["male", "female", "other"])
       .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
-    check("users.*.email")
+    valid
+      .check("users.*.email")
       .isEmail()
       .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
-    check("users.*.phone")
+    valid
+      .check("users.*.phone")
       .isLength({ min: 10, max: 11 })
       .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
       .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
-    check("users.*.roleId")
+    valid
+      .check("users.*.roleId")
       .notEmpty()
       .withMessage("Yêu cầu vai trò người dùng"),
   ],
@@ -245,6 +257,4 @@ r[NEW_MANY.METHOD](
   newManyUser
 );
 
-module.exports = {
-  userRouter: r,
-};
+module.exports = r;

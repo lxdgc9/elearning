@@ -1,4 +1,4 @@
-const { HttpErr } = require("./http");
+const HttpErr = require("./http");
 
 class ReqValidateErr extends HttpErr {
   constructor(msg) {
@@ -7,4 +7,4 @@ class ReqValidateErr extends HttpErr {
   }
 }
 
-module.exports = { ReqValidateErr };
+module.exports = ReqValidateErr;

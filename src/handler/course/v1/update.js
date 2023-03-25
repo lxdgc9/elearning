@@ -1,14 +1,12 @@
-const { Types } = require("mongoose");
-const { NotFoundErr } = require("../../../error/not-found");
-const { Course } = require("../../../model/course");
-const { Subject } = require("../../../model/subject");
+const NotFoundErr = require("../../../error/not-found");
+const Course = require("../../../model/course");
+const Subject = require("../../../model/subject");
 
 async function updateCourse(req, res, next) {
-  const { id } = req.params;
   const { name, subjectId, description } = req.body;
 
   try {
-    const course = await Course.findById(id);
+    const course = await Course.findById(req.params.id);
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");
     }
@@ -38,4 +36,4 @@ async function updateCourse(req, res, next) {
   }
 }
 
-module.exports = { updateCourse };
+module.exports = updateCourse;

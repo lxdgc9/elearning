@@ -1,11 +1,9 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Perm } = require("../../../model/perm");
+const NotFoundErr = require("../../../error/not-found");
+const Perm = require("../../../model/perm");
 
 async function getPerm(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const perm = await Perm.findById(id);
+    const perm = await Perm.findById(req.params.id);
     if (!perm) {
       throw new NotFoundErr("Không Tìm Thấy Quyền");
     }
@@ -19,4 +17,4 @@ async function getPerm(req, res, next) {
   }
 }
 
-module.exports = { getPerm };
+module.exports = getPerm;

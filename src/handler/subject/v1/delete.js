@@ -1,11 +1,11 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Subject } = require("../../../model/subject");
+const NotFoundErr = require("../../../error/not-found");
+const Subject = require("../../../model/subject");
 
 async function deleteSubject(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const subject = await Subject.findByIdAndDelete(id);
+    const subject = await Subject.findByIdAndDelete(
+      req.params.id
+    );
     if (!subject) {
       throw new NotFoundErr("Không tìm thấy môn học");
     }
@@ -19,4 +19,4 @@ async function deleteSubject(req, res, next) {
   }
 }
 
-module.exports = { deleteSubject };
+module.exports = deleteSubject;

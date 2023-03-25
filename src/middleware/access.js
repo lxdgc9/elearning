@@ -1,5 +1,5 @@
-// Middleware này bao gồm danh sách quyền hạn (permissions)
-// Nếu permission của người dùng tồn tại trong danh sách này
+// Middleware này bao gồm danh sách quyền hạn (permissions),
+// nếu permission của người dùng tồn tại trong danh sách này
 // thì người dùng sẽ được thông qua các middleware tiếp theo
 //
 // Permission của user sẽ nằm trong jwt được giải mã nhằm
@@ -7,19 +7,19 @@
 // bảo mật, hệ thống sẽ giảm thời gian sống của accessToken và
 // yêu cầu refreshToken sau khi hết hạn
 
-const { FobiddenErr } = require("../error/forbidden");
+const FobiddenErr = require("../error/forbidden");
 
 function access(perms) {
   return async (req, res, next) => {
     try {
-      // danh sách permission rỗng xem như người dùng
+      // Danh sách permission rỗng xem như người dùng
       // thông qua middleware này
       if (!perms || !perms.length) {
         next();
         return;
       }
 
-      // kiểm tra permission trong jwt với danh sách
+      // Kiểm tra permission trong jwt với danh sách
       // permission được cung cấp theo API endpoint
       if (
         req.user.perms &&
@@ -29,7 +29,7 @@ function access(perms) {
         return;
       }
 
-      // thông báo sẽ hiện nếu user không có permission
+      // Thông báo sẽ hiện nếu user không có permission
       throw new FobiddenErr("Không có quyền truy cập");
     } catch (err) {
       console.log(err);
@@ -38,4 +38,4 @@ function access(perms) {
   };
 }
 
-module.exports = { access };
+module.exports = access;

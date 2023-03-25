@@ -1,11 +1,11 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Role } = require("../../../model/role");
+const NotFoundErr = require("../../../error/not-found");
+const Role = require("../../../model/role");
 
 async function getRole(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const role = await Role.findById(id).populate([
+    const role = await Role.findById(
+      req.params.id
+    ).populate([
       {
         path: "permissions",
       },
@@ -23,4 +23,4 @@ async function getRole(req, res, next) {
   }
 }
 
-module.exports = { getRole };
+module.exports = getRole;

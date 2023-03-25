@@ -1,15 +1,15 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const {
-  getProvinces,
-} = require("../handler/province/v1/get");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const version = require("../middleware/version");
+// Handlers
+const getProvinces = require("../handler/province/v1/get");
 
-const r = Router();
+const r = express.Router();
 
-const { GET } = API.PROVINCE;
+const { GET } = route.API.PROVINCE;
 
-// lấy danh mục hành chính từ API có sẵn
+// Lấy danh mục hành chính từ API có sẵn
 r[GET.METHOD](
   GET.PATH,
   version({
@@ -17,6 +17,4 @@ r[GET.METHOD](
   })
 );
 
-module.exports = {
-  provRouter: r,
-};
+module.exports = r;

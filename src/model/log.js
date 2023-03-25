@@ -1,7 +1,9 @@
-const { model, Schema } = require("mongoose");
-const { GET, NEW, MOD, DEL } = require("../type/action");
+const mongoose = require("mongoose");
+const action = require("../type/action");
 
-const logSchema = new Schema(
+const { GET, NEW, MOD, DEL } = action;
+
+const logSchema = new mongoose.Schema(
   {
     action: {
       type: String,
@@ -11,7 +13,7 @@ const logSchema = new Schema(
       trim: true,
     },
     modBy: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
@@ -33,6 +35,6 @@ logSchema.statics.build = (attrs) => {
   return new Log(attrs);
 };
 
-const Log = model("log", logSchema);
+const Log = mongoose.model("log", logSchema);
 
-module.exports = { Log };
+module.exports = Log;

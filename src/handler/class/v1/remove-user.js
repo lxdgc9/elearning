@@ -1,10 +1,9 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
+const User = require("../../../model/user");
 
 async function removeUser(req, res, next) {
-  const { id } = req.params;
   const { userIds } = req.body;
 
   try {
@@ -17,7 +16,7 @@ async function removeUser(req, res, next) {
       );
     }
 
-    const _class = await Class.findById(id);
+    const _class = await Class.findById(req.params.id);
     if (!_class) {
       throw new NotFoundErr("Lớp học không hợp lệ");
     }
@@ -45,4 +44,4 @@ async function removeUser(req, res, next) {
   }
 }
 
-module.exports = { removeUser };
+module.exports = removeUser;

@@ -1,12 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { GPerm } = require("../../../model/gperm");
-const { Perm } = require("../../../model/perm");
+const NotFoundErr = require("../../../error/not-found");
+const GPerm = require("../../../model/gperm");
+const Perm = require("../../../model/perm");
 
 async function deletePerm(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const perm = await Perm.findByIdAndDelete(id);
+    const perm = await Perm.findByIdAndDelete(
+      req.params.id
+    );
     if (!perm) {
       throw new NotFoundErr("Không Tìm Thấy Quyền");
     }
@@ -26,4 +26,4 @@ async function deletePerm(req, res, next) {
   }
 }
 
-module.exports = { deletePerm };
+module.exports = deletePerm;

@@ -1,11 +1,11 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { GPerm } = require("../../../model/gperm");
+const NotFoundErr = require("../../../error/not-found");
+const GPerm = require("../../../model/gperm");
 
 async function deleteGPerm(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const gperm = await GPerm.findByIdAndDelete(id);
+    const gperm = await GPerm.findByIdAndDelete(
+      req.params.id
+    );
     if (!gperm) {
       throw new NotFoundErr("Không tìm thấy nhóm quyền");
     }
@@ -19,4 +19,4 @@ async function deleteGPerm(req, res, next) {
   }
 }
 
-module.exports = { deleteGPerm };
+module.exports = deleteGPerm;

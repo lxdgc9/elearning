@@ -1,4 +1,4 @@
-const { Role } = require("../../../model/role");
+const Role = require("../../../model/role");
 
 async function newRole(req, res, next) {
   const { name, description, permissionIds } = req.body;
@@ -20,4 +20,4 @@ async function newRole(req, res, next) {
   }
 }
 
-module.exports = { newRole };
+module.exports = newRole;

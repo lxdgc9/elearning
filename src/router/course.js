@@ -1,28 +1,23 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const {
-  deleteCourse,
-} = require("../handler/course/v1/delete");
-const { getCourses } = require("../handler/course/v1/get");
-const {
-  getCourse,
-} = require("../handler/course/v1/get-by-id");
-const { newCourse } = require("../handler/course/v1/new");
-const {
-  updateCourse,
-} = require("../handler/course/v1/update");
-const { access } = require("../middleware/access");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const active = require("../middleware/active");
+const access = require("../middleware/access");
+const version = require("../middleware/version");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+// Routes
+const getCourses = require("../handler/course/v1/get");
+const getCourse = require("../handler/course/v1/get-by-id");
+const newCourse = require("../handler/course/v1/new");
+const updateCourse = require("../handler/course/v1/update");
+const deleteCourse = require("../handler/course/v1/delete");
 
-const r = Router();
+const r = express.Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.COURSE;
+const { GET, GET_BY_ID, NEW, MOD, DEL } = route.API.COURSE;
 
+// Lấy danh sách khóa học
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -34,6 +29,7 @@ r[GET.METHOD](
   })
 );
 
+// Lấy thông tin chi tiết khóa học
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -45,6 +41,7 @@ r[GET_BY_ID.METHOD](
   })
 );
 
+// Tạo khóa học
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -56,6 +53,7 @@ r[NEW.METHOD](
   })
 );
 
+// Cập nhật khóa học
 r[MOD.METHOD](
   MOD.PATH,
   currUser,
@@ -67,6 +65,7 @@ r[MOD.METHOD](
   })
 );
 
+// Xóa khóa học
 r[DEL.METHOD](
   DEL.PATH,
   currUser,
@@ -78,6 +77,4 @@ r[DEL.METHOD](
   })
 );
 
-module.exports = {
-  courseRouter: r,
-};
+module.exports = r;

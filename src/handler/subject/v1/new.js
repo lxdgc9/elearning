@@ -1,4 +1,4 @@
-const { Subject } = require("../../../model/subject");
+const Subject = require("../../../model/subject");
 
 async function newSubject(req, res, next) {
   const { name, description } = req.body;
@@ -19,4 +19,4 @@ async function newSubject(req, res, next) {
   }
 }
 
-module.exports = { newSubject };
+module.exports = newSubject;

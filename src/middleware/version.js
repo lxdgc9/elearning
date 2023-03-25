@@ -12,18 +12,18 @@
 // Xem ví dụ tương tự:
 // Github: https://docs.github.com/en/rest/overview/api-versions
 
-const { BadReqErr } = require("../error/bad-req");
+const BadReqErr = require("../error/bad-req");
 
 function version(payload) {
   return function (req, res, next) {
     try {
-      // kiểm tra phiên bản API
+      // Kiểm tra phiên bản API
       const ver = req.header("x-api-version") || "v1";
       if (!payload[ver]) {
         throw new BadReqErr("Phiên bản API không tồn tại");
       }
 
-      // thực thi handler tương ứng version
+      // Thực thi handler tương ứng version
       payload[ver].call(this, req, res, next);
     } catch (err) {
       console.log(err);
@@ -32,4 +32,4 @@ function version(payload) {
   };
 }
 
-module.exports = { version };
+module.exports = version;

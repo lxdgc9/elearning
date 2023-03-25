@@ -1,12 +1,12 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { Role } = require("../../../model/role");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const Role = require("../../../model/role");
+const User = require("../../../model/user");
 
 async function newManyUser(req, res, next) {
   const { users } = req.body;
 
   try {
-    // kiểm tra username
+    // Kiểm tra username
     const extUsers = await User.find({
       username: { $in: users.map((u) => u.username) },
     });
@@ -14,7 +14,7 @@ async function newManyUser(req, res, next) {
       throw new BadReqErr("Tên Người Dùng Đã Tồn Tại");
     }
 
-    // kiểm tra roleId
+    // Kiểm tra roleId
     const roles = await Role.find({}).select("_id");
     const extRoleIds = roles.map((r) => r.id);
     const roleIds = users.map((u) => u.roleId);
@@ -22,7 +22,7 @@ async function newManyUser(req, res, next) {
       throw new BadReqErr("Không Tìm Thấy Vai Trò");
     }
 
-    // tạo nhiều user
+    // Tạo nhiều user
     let flag = true;
     let userList = [];
     for await (const {
@@ -66,7 +66,7 @@ async function newManyUser(req, res, next) {
         flag = false;
       }
     }
-    // tiến hành tạo lưu những user đã tạo
+    // Tiến hành tạo lưu những user đã tạo
     if (flag) {
       userList.forEach(async (u) => {
         console.log(u);
@@ -85,4 +85,4 @@ async function newManyUser(req, res, next) {
   }
 }
 
-module.exports = { newManyUser };
+module.exports = newManyUser;

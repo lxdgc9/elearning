@@ -1,13 +1,13 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
 
 async function deleteClass(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const _class = await Class.findByIdAndDelete(id);
+    const _class = await Class.findByIdAndDelete(
+      req.params.id
+    );
     if (!_class) {
-      throw new NotFoundErr("CLASS_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy lớp học");
     }
 
     res.json({
@@ -19,4 +19,4 @@ async function deleteClass(req, res, next) {
   }
 }
 
-module.exports = { deleteClass };
+module.exports = deleteClass;

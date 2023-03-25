@@ -1,4 +1,4 @@
-const { Subject } = require("../../../model/subject");
+const Subject = require("../../../model/subject");
 
 async function getSubjects(req, res, next) {
   try {
@@ -13,4 +13,4 @@ async function getSubjects(req, res, next) {
   }
 }
 
-module.exports = { getSubjects };
+module.exports = getSubjects;

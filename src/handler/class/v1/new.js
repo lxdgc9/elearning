@@ -1,4 +1,4 @@
-const { Class } = require("../../../model/class");
+const Class = require("../../../model/class");
 
 async function newClass(req, res, next) {
   const { name, session, description } = req.body;
@@ -20,4 +20,4 @@ async function newClass(req, res, next) {
   }
 }
 
-module.exports = { newClass };
+module.exports = newClass;

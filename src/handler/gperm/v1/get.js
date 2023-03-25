@@ -1,4 +1,4 @@
-const { GPerm } = require("../../../model/gperm");
+const GPerm = require("../../../model/gperm");
 
 async function getGPerms(req, res, next) {
   try {
@@ -17,4 +17,4 @@ async function getGPerms(req, res, next) {
   }
 }
 
-module.exports = { getGPerms };
+module.exports = getGPerms;

@@ -1,5 +1,5 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
 
 async function getClasses(_req, res, next) {
   try {
@@ -31,4 +31,4 @@ async function getClasses(_req, res, next) {
   }
 }
 
-module.exports = { getClasses };
+module.exports = getClasses;

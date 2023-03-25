@@ -1,4 +1,4 @@
-const { GPerm } = require("../../../model/gperm");
+const GPerm = require("../../../model/gperm");
 
 async function newGPerm(req, res, next) {
   const { name } = req.body;
@@ -18,4 +18,4 @@ async function newGPerm(req, res, next) {
   }
 }
 
-module.exports = { newGPerm };
+module.exports = newGPerm;

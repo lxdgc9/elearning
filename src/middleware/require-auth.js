@@ -1,6 +1,4 @@
-const {
-  UnauthorizedErr,
-} = require("../error/unauthorized");
+const UnauthorizedErr = require("../error/unauthorized");
 
 function requireAuth(req, res, next) {
   if (!req.user) {
@@ -9,4 +7,4 @@ function requireAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth };
+module.exports = requireAuth;

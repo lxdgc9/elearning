@@ -1,31 +1,21 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const {
-  allocUser,
-} = require("../handler/class/v1/alloc-user");
-const {
-  deleteClass,
-} = require("../handler/class/v1/delete");
-const { getClasses } = require("../handler/class/v1/get");
-const {
-  getClass,
-} = require("../handler/class/v1/get-by-id");
-const { newClass } = require("../handler/class/v1/new");
-const {
-  removeUser,
-} = require("../handler/class/v1/remove-user");
-const {
-  updateClass,
-} = require("../handler/class/v1/update");
-const { access } = require("../middleware/access");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const active = require("../middleware/active");
+const access = require("../middleware/access");
+const version = require("../middleware/version");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+// Routes
+const getClasses = require("../handler/class/v1/get");
+const getClass = require("../handler/class/v1/get-by-id");
+const newClass = require("../handler/class/v1/new");
+const allocUser = require("../handler/class/v1/alloc-user");
+const removeUser = require("../handler/class/v1/remove-user");
+const updateClass = require("../handler/class/v1/update");
+const deleteClass = require("../handler/class/v1/delete");
 
-const r = Router();
+const r = express.Router();
 
 const {
   GET,
@@ -35,9 +25,9 @@ const {
   REMOVE_USER,
   MOD,
   DEL,
-} = API.CLASS;
+} = route.API.CLASS;
 
-// lấy danh sách lớp
+// Lấy danh sách lớp
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -49,7 +39,7 @@ r[GET.METHOD](
   })
 );
 
-// lấy thông tin chi tiết lớp
+// Lấy thông tin chi tiết lớp
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -61,7 +51,7 @@ r[GET_BY_ID.METHOD](
   })
 );
 
-// tạo mới lớp
+// Tạo mới lớp
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -73,7 +63,7 @@ r[NEW.METHOD](
   })
 );
 
-// phân bổ người dùng vào lớp
+// Phân bổ người dùng vào lớp
 r[ALLOC_USER.METHOD](
   ALLOC_USER.PATH,
   currUser,
@@ -85,7 +75,7 @@ r[ALLOC_USER.METHOD](
   })
 );
 
-// phân bổ người dùng ra khỏi lớp
+// Phân bổ người dùng ra khỏi lớp
 r[REMOVE_USER.METHOD](
   REMOVE_USER.PATH,
   currUser,
@@ -97,7 +87,7 @@ r[REMOVE_USER.METHOD](
   })
 );
 
-// cập nhật thông tin lớp
+// Cập nhật thông tin lớp
 r[MOD.METHOD](
   MOD.PATH,
   currUser,
@@ -121,6 +111,4 @@ r[DEL.METHOD](
   })
 );
 
-module.exports = {
-  classRouter: r,
-};
+module.exports = r;

@@ -4,7 +4,7 @@
 //
 // Tất hiên, middleware này sẽ yêu cầu giải mã jwt(currUser)
 
-const { FobiddenErr } = require("../error/forbidden");
+const FobiddenErr = require("../error/forbidden");
 
 function active(req, res, next) {
   if (!req.user.hasAccess) {
@@ -13,4 +13,4 @@ function active(req, res, next) {
   next();
 }
 
-module.exports = { active };
+module.exports = active;

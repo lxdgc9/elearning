@@ -1,22 +1,24 @@
-const { Router } = require("express");
-const { check } = require("express-validator");
-const { API } = require("../cfg/route");
-const { login } = require("../handler/auth/v1/login");
-const { validReq } = require("../middleware/valid-req");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+const valid = require("express-validator");
+const login = require("../handler/auth/v1/login");
+const validReq = require("../middleware/valid-req");
+const version = require("../middleware/version");
 
-const r = Router();
+const r = express.Router();
 
-const { LOGIN } = API.AUTH;
+const { LOGIN } = route.API.AUTH;
 
-// đăng nhập
+// Login
 r[LOGIN.METHOD](
   LOGIN.PATH,
   [
-    check("username")
+    valid
+      .check("username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    check("password")
+    valid
+      .check("password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu"),
   ],
@@ -26,6 +28,4 @@ r[LOGIN.METHOD](
   })
 );
 
-module.exports = {
-  authRouter: r,
-};
+module.exports = r;

@@ -1,18 +1,11 @@
-const {
-  NextFunction,
-  Request,
-  Response,
-} = require("express");
-const { NotFoundErr } = require("../../../error/not-found");
-const { Course } = require("../../../model/course");
+const NotFoundErr = require("../../../error/not-found");
+const Course = require("../../../model/course");
 
 async function getCourse(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const course = await Course.findById(id);
+    const course = await Course.findById(req.params.id);
     if (!course) {
-      throw new NotFoundErr("COURSE_NOT_FOUND");
+      throw new NotFoundErr("Không tìm thấy khóa học");
     }
 
     res.json({
@@ -24,4 +17,4 @@ async function getCourse(req, res, next) {
   }
 }
 
-module.exports = { getCourse };
+module.exports = getCourse;

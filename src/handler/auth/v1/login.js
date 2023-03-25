@@ -1,13 +1,13 @@
-const { sign } = require("jsonwebtoken");
-const { BadReqErr } = require("../../../error/bad-req");
-const { Password } = require("../../../helper/password");
-const { User } = require("../../../model/user");
+const jwt = require("jsonwebtoken");
+const BadReqErr = require("../../../error/bad-req");
+const Password = require("../../../helper/password");
+const User = require("../../../model/user");
 
 async function login(req, res, next) {
   const { username, password } = req.body;
 
   try {
-    // kiểm tra username
+    // Kiểm tra username
     const user = await User.findOne({
       username,
     })
@@ -32,7 +32,7 @@ async function login(req, res, next) {
       throw new BadReqErr("Tài khoản không tồn tại");
     }
 
-    // kiểm tra password
+    // Kiểm tra password
     const isMatch = await Password.compare(
       user.password,
       password
@@ -41,17 +41,17 @@ async function login(req, res, next) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
-    // tạo token
+    // Tạo token
     const payload = {
       id: user.id,
       perms: user.role.permissions.map((p) => p.name),
       hasAccess: user.hasAccess,
     };
-    const accessToken = sign(
+    const accessToken = jwt.sign(
       payload,
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "3d", // token hết hạn sau 3 ngày
+        expiresIn: "3d", // Token hết hạn sau 3 ngày
       }
     );
 
@@ -65,4 +65,4 @@ async function login(req, res, next) {
   }
 }
 
-module.exports = { login };
+module.exports = login;

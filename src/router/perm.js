@@ -1,21 +1,21 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const { deletePerm } = require("../handler/perm/v1/delete");
-const { getPerms } = require("../handler/perm/v1/get");
-const { getPerm } = require("../handler/perm/v1/get-by-id");
-const { newPerm } = require("../handler/perm/v1/new");
-const { updatePerm } = require("../handler/perm/v1/update");
-const { access } = require("../middleware/access");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const active = require("../middleware/active");
+const access = require("../middleware/access");
+const version = require("../middleware/version");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+// Routes
+const getPerms = require("../handler/perm/v1/get");
+const getPerm = require("../handler/perm/v1/get-by-id");
+const newPerm = require("../handler/perm/v1/new");
+const updatePerm = require("../handler/perm/v1/update");
+const deletePerm = require("../handler/perm/v1/delete");
 
-const r = Router();
+const r = express.Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.PERM;
+const { GET, GET_BY_ID, NEW, MOD, DEL } = route.API.PERM;
 
 r[GET.METHOD](
   GET.PATH,
@@ -72,6 +72,4 @@ r[DEL.METHOD](
   })
 );
 
-module.exports = {
-  permRouter: r,
-};
+module.exports = r;

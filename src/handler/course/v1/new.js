@@ -1,6 +1,6 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { Course } = require("../../../model/course");
-const { Subject } = require("../../../model/subject");
+const BadReqErr = require("../../../error/bad-req");
+const Course = require("../../../model/course");
+const Subject = require("../../../model/subject");
 
 async function newCourse(req, res, next) {
   const { title, description, subjectId } = req.body;
@@ -38,4 +38,4 @@ async function newCourse(req, res, next) {
   }
 }
 
-module.exports = { newCourse };
+module.exports = newCourse;

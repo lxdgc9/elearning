@@ -1,4 +1,4 @@
-const { Course } = require("../../../model/course");
+const Course = require("../../../model/course");
 
 async function getCourses(req, res, next) {
   try {
@@ -13,4 +13,4 @@ async function getCourses(req, res, next) {
   }
 }
 
-module.exports = { getCourses };
+module.exports = getCourses;

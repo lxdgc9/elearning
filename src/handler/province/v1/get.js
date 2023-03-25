@@ -9,4 +9,4 @@ function getProvinces(req, res, next) {
   }
 }
 
-module.exports = { getProvinces };
+module.exports = getProvinces;

@@ -1,13 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { GPerm } = require("../../../model/gperm");
-const { Perm } = require("../../../model/perm");
+const NotFoundErr = require("../../../error/not-found");
+const GPerm = require("../../../model/gperm");
+const Perm = require("../../../model/perm");
 
 async function updatePerm(req, res, next) {
-  const { id } = req.params;
   const { name, groupId, description } = req.body;
 
   try {
-    const perm = await Perm.findById(id);
+    const perm = await Perm.findById(req.params.id);
     if (!perm) {
       throw new NotFoundErr("Không tìm thấy quyền");
     }
@@ -38,4 +37,4 @@ async function updatePerm(req, res, next) {
   }
 }
 
-module.exports = { updatePerm };
+module.exports = updatePerm;

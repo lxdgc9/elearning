@@ -1,29 +1,21 @@
-const { Router } = require("express");
-const { API } = require("../cfg/route");
-const {
-  deleteSubject,
-} = require("../handler/subject/v1/delete");
-const {
-  getSubjects,
-} = require("../handler/subject/v1/get");
-const {
-  getSubject,
-} = require("../handler/subject/v1/get-by-id");
-const { newSubject } = require("../handler/subject/v1/new");
-const {
-  updateSubject,
-} = require("../handler/subject/v1/update");
-const { access } = require("../middleware/access");
-const { active } = require("../middleware/active");
-const { currUser } = require("../middleware/current-user");
-const {
-  requireAuth,
-} = require("../middleware/require-auth");
-const { version } = require("../middleware/version");
+const express = require("express");
+const route = require("../cfg/route");
+// Middlewares
+const access = require("../middleware/access");
+const active = require("../middleware/active");
+const currUser = require("../middleware/current-user");
+const requireAuth = require("../middleware/require-auth");
+const version = require("../middleware/version");
+// Handlers
+const getSubjects = require("../handler/subject/v1/get");
+const getSubject = require("../handler/subject/v1/get-by-id");
+const newSubject = require("../handler/subject/v1/new");
+const updateSubject = require("../handler/subject/v1/update");
+const deleteSubject = require("../handler/subject/v1/delete");
 
-const r = Router();
+const r = express.Router();
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = API.SUBJECT;
+const { GET, GET_BY_ID, NEW, MOD, DEL } = route.API.SUBJECT;
 
 r[GET.METHOD](
   GET.PATH,
@@ -80,6 +72,4 @@ r[DEL.METHOD](
   })
 );
 
-module.exports = {
-  subjectRouter: r,
-};
+module.exports = r;

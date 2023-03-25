@@ -1,8 +1,10 @@
-const { model, Schema } = require("mongoose");
-const { Password } = require("../helper/password");
-const { MALE, FEMALE, OTHER } = require("../type/gender");
+const mongoose = require("mongoose");
+const Password = require("../helper/password");
+const gender = require("../type/gender");
 
-const schema = new Schema(
+const { MALE, FEMALE, OTHER } = gender;
+
+const schema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -62,12 +64,12 @@ const schema = new Schema(
       },
     },
     role: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "role",
     },
     classes: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "class",
       },
     ],
@@ -77,7 +79,7 @@ const schema = new Schema(
     },
     logs: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "log",
       },
     ],
@@ -129,6 +131,6 @@ schema.statics.build = (attrs) => {
   return new User(attrs);
 };
 
-const User = model("user", schema);
+const User = mongoose.model("user", schema);
 
-module.exports = { User };
+module.exports = User;

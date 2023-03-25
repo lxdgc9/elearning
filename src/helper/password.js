@@ -1,17 +1,21 @@
-// Password helper hash mật khẩu và so sánh mật khẩu
-
-const { compare, genSalt, hash } = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 class Password {
-  // hash mật khẩu
+  // Hash mật khẩu
   static async toHash(pass) {
-    return await hash(pass, await genSalt(10));
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(pass, salt);
+    return hashed;
   }
 
-  // kiểm tra trùng khớp 2 mật khẩu
+  // Kiểm tra trùng khớp 2 mật khẩu
   static async compare(storedPass, suppliedPass) {
-    return await compare(suppliedPass, storedPass);
+    const isMatch = await bcrypt.compare(
+      suppliedPass,
+      storedPass
+    );
+    return isMatch;
   }
 }
 
-module.exports = { Password };
+module.exports = Password;

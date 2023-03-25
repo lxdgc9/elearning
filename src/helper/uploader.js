@@ -7,10 +7,10 @@ const multer = require("multer");
 const uploader = multer({
   storage: multer.diskStorage({
     destination(_req, _file, callback) {
-      callback(null, "../upload"); // đường dẫn lưu file
+      callback(null, "../upload"); // Đường dẫn lưu file
     },
     filename(_req, file, callback) {
-      // lưu tên với dạng utf8
+      // Lưu tên với dạng utf8
       file.originalname = Buffer.from(
         file.originalname,
         "latin1"
@@ -19,8 +19,8 @@ const uploader = multer({
     },
   }),
   limits: {
-    fileSize: 1000 * 1024 * 1024, // giới hạn: 1G
+    fileSize: 1000 * 1024 * 1024, // Giới hạn: 1G
   },
 });
 
-module.exports = { uploader };
+module.exports = uploader;

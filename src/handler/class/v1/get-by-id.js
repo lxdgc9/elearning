@@ -1,11 +1,11 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
 
 async function getClass(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const _class = await Class.findById(id).populate([
+    const _class = await Class.findById(
+      req.params.id
+    ).populate([
       {
         path: "users",
         populate: [
@@ -33,4 +33,4 @@ async function getClass(req, res, next) {
   }
 }
 
-module.exports = { getClass };
+module.exports = getClass;

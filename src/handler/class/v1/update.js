@@ -1,13 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Class } = require("../../../model/class");
+const NotFoundErr = require("../../../error/not-found");
+const Class = require("../../../model/class");
 
 async function updateClass(req, res, next) {
-  const { id } = req.params;
   const { name, session, description } = req.body;
 
   try {
     const _class = await Class.findByIdAndUpdate(
-      id,
+      req.params.id,
       {
         name,
         session,
@@ -30,4 +29,4 @@ async function updateClass(req, res, next) {
   }
 }
 
-module.exports = { updateClass };
+module.exports = updateClass;

@@ -1,4 +1,4 @@
-const { HttpErr } = require("./http");
+const HttpErr = require("./http");
 
 class UnauthorizedErr extends HttpErr {
   constructor(msg) {
@@ -7,4 +7,4 @@ class UnauthorizedErr extends HttpErr {
   }
 }
 
-module.exports = { UnauthorizedErr };
+module.exports = UnauthorizedErr;

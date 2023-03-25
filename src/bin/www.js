@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const { app } = require("../app");
-const { config } = require("dotenv");
-const { connectDb } = require("../db");
-const { createServer } = require("http");
+const db = require("../db");
+const http = require("http");
+const app = require("../app");
+const dotenv = require("dotenv");
+const socket = require("../sock");
 
-config();
+dotenv.config();
 
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI must be defined");
@@ -20,9 +21,13 @@ if (!process.env.REFRESH_TOKEN_SECRET) {
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
-const sv = createServer(app);
+const sv = http.createServer(app);
 
-connectDb(process.env.MONGO_URI);
+// Kết nối MongoDb
+db.connect(process.env.MONGO_URI);
+
+// Tạo socket
+socket(sv);
 
 sv.listen(port);
 sv.on("listening", onListening);

@@ -1,10 +1,8 @@
-const {
-  GET,
-  POST,
-  PATCH,
-  DELETE,
-} = require("../type/method");
-const { GPERM, PERM, ROLE } = require("./perm");
+const rules = require("./rule");
+const methods = require("../type/method");
+
+const { ROLE, GPERM, PERM } = rules;
+const { GET, POST, PATCH, DELETE } = methods;
 
 const API = {
   AUTH: {

@@ -1,11 +1,11 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { GPerm } = require("../../../model/gperm");
+const NotFoundErr = require("../../../error/not-found");
+const GPerm = require("../../../model/gperm");
 
 async function getGPerm(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const gperm = await GPerm.findById(id).populate([
+    const gperm = await GPerm.findById(
+      req.params.id
+    ).populate([
       {
         path: "permissions",
       },
@@ -23,4 +23,4 @@ async function getGPerm(req, res, next) {
   }
 }
 
-module.exports = { getGPerm };
+module.exports = getGPerm;

@@ -1,6 +1,6 @@
-const { model, Schema } = require("mongoose");
+const mongoose = require("mongoose");
 
-const schema = new Schema(
+const schema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -9,7 +9,7 @@ const schema = new Schema(
       trim: true,
     },
     author: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
@@ -18,20 +18,20 @@ const schema = new Schema(
       trim: true,
     },
     subject: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "subject",
       required: true,
     },
     classes: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "class",
         required: true,
       },
     ],
     content: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "lesson",
       },
     ],
@@ -41,7 +41,7 @@ const schema = new Schema(
     },
     logs: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "log",
       },
     ],
@@ -75,6 +75,6 @@ schema.statics.build = (attrs) => {
   return new Course(attrs);
 };
 
-const Course = model("course", schema);
+const Course = mongoose.model("course", schema);
 
-module.exports = { Course };
+module.exports = Course;

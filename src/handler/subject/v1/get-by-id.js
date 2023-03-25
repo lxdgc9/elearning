@@ -1,11 +1,9 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { Subject } = require("../../../model/subject");
+const NotFoundErr = require("../../../error/not-found");
+const Subject = require("../../../model/subject");
 
 async function getSubject(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const subject = await Subject.findById(id);
+    const subject = await Subject.findById(req.params.id);
     if (!subject) {
       throw new NotFoundErr("Không tìm thấy môn học");
     }
@@ -19,4 +17,4 @@ async function getSubject(req, res, next) {
   }
 }
 
-module.exports = { getSubject };
+module.exports = getSubject;
