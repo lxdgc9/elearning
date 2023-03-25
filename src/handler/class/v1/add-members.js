@@ -3,14 +3,13 @@ const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
 
 async function addMembers(req, res, next) {
-  const { id } = req.params;
   const { memberIds } = req.body;
 
   try {
     // Kiểm tra lớp học có hợp lệ hay không
-    const _class = await Class.findById(id);
+    const _class = await Class.findById(req.params.id);
     if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+      throw new BadReqErr("Lớp học không tồn tại");
     }
 
     // Kiểm tra danh sách thành viên có hợp lệ hay không

@@ -48,6 +48,13 @@ r[GET_BY_ID.METHOD](
   requireAuth,
   active,
   access(GET_BY_ID.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+  ],
+  validReq,
   version({
     v1: getClass,
   })
@@ -122,14 +129,12 @@ r[ADD_MEMBERS.METHOD](
           );
           if (!isValid) {
             throw new BadReqErr(
-              "Danh sách thành viên không hợp lệ"
+              "Tồn tại thành viên không hợp lệ trong danh sách"
             );
           }
           return true;
         }
-        throw new BadReqErr(
-          "Yêu cầu ít nhất một thành viên"
-        );
+        throw new BadReqErr("Danh sách thành viên rỗng");
       }),
   ],
   validReq,
@@ -145,6 +150,31 @@ r[DELETE_MEMBERS.METHOD](
   requireAuth,
   active,
   access(ADD_MEMBERS.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("memberIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại thành viên không hợp lệ trong danh sách"
+            );
+          }
+          return true;
+        }
+        throw new BadReqErr("Danh sách thành viên rỗng");
+      }),
+  ],
+  validReq,
   version({
     v1: deleteMembers,
   })
@@ -157,6 +187,13 @@ r[UPDATE.METHOD](
   requireAuth,
   active,
   access(UPDATE.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+  ],
+  validReq,
   version({
     v1: updateClass,
   })
@@ -169,6 +206,13 @@ r[DELETE.METHOD](
   requireAuth,
   active,
   access(DELETE.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+  ],
+  validReq,
   version({
     v1: deleteClass,
   })

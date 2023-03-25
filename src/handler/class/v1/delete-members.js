@@ -16,9 +16,20 @@ async function deleteMembers(req, res, next) {
       {
         new: true,
       }
-    );
+    ).populate([
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            select: "name description",
+          },
+        ],
+      },
+    ]);
     if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+      throw new BadReqErr("Lớp học không tồn tại");
     }
 
     // Sau khi xóa thành viên ra khỏi lớp học, tiến hành

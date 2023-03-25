@@ -15,9 +15,20 @@ async function updateClass(req, res, next) {
       {
         new: true,
       }
-    );
+    ).populate([
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            select: "name description",
+          },
+        ],
+      },
+    ]);
     if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+      throw new BadReqErr("Lớp học không tồn tại");
     }
 
     res.json({
