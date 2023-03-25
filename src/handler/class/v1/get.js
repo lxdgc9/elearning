@@ -1,19 +1,15 @@
 const NotFoundErr = require("../../../error/not-found");
 const Class = require("../../../model/class");
 
-async function getClasses(_req, res, next) {
+async function getClasses(req, res, next) {
   try {
     const classes = await Class.find({}).populate([
       {
-        path: "users",
+        path: "members",
         populate: [
           {
             path: "role",
-            populate: [
-              {
-                path: "permissions",
-              },
-            ],
+            select: "name description",
           },
         ],
       },

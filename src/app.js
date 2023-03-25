@@ -8,6 +8,7 @@ const errHandler = require("./middleware/err-handler");
 // Routes
 const authRouter = require("./router/auth");
 const classRouter = require("./router/class");
+const channelRouter = require("./router/channel");
 const courseRouter = require("./router/course");
 const gpermRouter = require("./router/gperm");
 const permRouter = require("./router/perm");
@@ -29,6 +30,7 @@ app.use(roleRouter);
 app.use(permRouter);
 app.use(gpermRouter);
 app.use(classRouter);
+app.use(channelRouter);
 app.use(subjectRouter);
 app.use(courseRouter);
 

@@ -1,21 +1,23 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const route = require("../cfg/route");
 const valid = require("express-validator");
-const BadReqErr = require("../error/bad-req");
+// Middlewares
 const active = require("../middleware/active");
 const access = require("../middleware/access");
 const version = require("../middleware/version");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
+// Routes
 const getClasses = require("../handler/class/v1/get");
 const getClass = require("../handler/class/v1/get-by-id");
-const newClass = require("../handler/class/v1/new");
-const addMembers = require("../handler/class/v1/add-members");
+// const addMembers = require("../handler/class/v1/alloc-user");
+// const deleteMembers = require("../handler/class/v1/remove-user");
 const updateClass = require("../handler/class/v1/update");
 const deleteClass = require("../handler/class/v1/delete");
-const deleteMembers = require("../handler/class/v1/delete-members");
+const newChannel = require("../handler/channel/v1/new");
 const validReq = require("../middleware/valid-req");
+const { default: mongoose } = require("mongoose");
+const BadReqErr = require("../error/bad-req");
 
 const r = express.Router();
 
@@ -23,13 +25,13 @@ const {
   GET,
   GET_BY_ID,
   NEW,
-  ALLOC_USER,
-  REMOVE_USER,
-  MOD,
-  DEL,
-} = route.API.CLASS;
+  ADD_MEMBERS,
+  DELETE_MEMBERS,
+  UPDATE,
+  DELETE,
+} = route.API.CHANNEL;
 
-// Lấy danh sách lớp
+// Lấy danh sách kênh
 r[GET.METHOD](
   GET.PATH,
   currUser,
@@ -41,7 +43,7 @@ r[GET.METHOD](
   })
 );
 
-// Lấy thông tin chi tiết lớp
+// Lấy chi tiết thông tin kênh
 r[GET_BY_ID.METHOD](
   GET_BY_ID.PATH,
   currUser,
@@ -53,7 +55,7 @@ r[GET_BY_ID.METHOD](
   })
 );
 
-// Tạo mới lớp
+// Tạo mới kênh
 r[NEW.METHOD](
   NEW.PATH,
   currUser,
@@ -64,11 +66,17 @@ r[NEW.METHOD](
     valid
       .check("name")
       .notEmpty()
-      .withMessage("Tên cầu tên lớp"),
+      .withMessage("Tên cầu tên kênh"),
     valid
-      .check("session")
+      .check("classId")
       .notEmpty()
-      .withMessage("Tên cầu niên khóa"),
+      .withMessage("Yêu cầu lớp học")
+      .custom((v) => {
+        if (!mongoose.Types.ObjectId.isValid(v)) {
+          throw new BadReqErr("Lớp học không hợp lệ");
+        }
+        return true;
+      }),
     valid
       .check("description")
       .isLength({ max: 255 })
@@ -77,7 +85,7 @@ r[NEW.METHOD](
     valid
       .check("memberIds")
       .isArray()
-      .withMessage("Danh sách thành viên không hợp lệ")
+      .withMessage("Yêu cầu danh sách thành viên")
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
@@ -90,58 +98,57 @@ r[NEW.METHOD](
           }
         }
         return true;
-      })
-      .optional({ nullable: true }),
+      }),
   ],
   validReq,
   version({
-    v1: newClass,
+    v1: newChannel,
   })
 );
 
-// Thêm thành viên vào lớp
-r[ALLOC_USER.METHOD](
-  ALLOC_USER.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(ALLOC_USER.ACCESS),
-  version({
-    v1: addMembers,
-  })
-);
+// Thêm thành viên vào kênh
+// r[ADD_MEMBERS.METHOD](
+//   ADD_MEMBERS.PATH,
+//   currUser,
+//   requireAuth,
+//   active,
+//   access(ADD_MEMBERS.ACCESS),
+//   version({
+//     v1: allocUser,
+//   })
+// );
 
-// Xóa thành viên khỏi lớp
-r[REMOVE_USER.METHOD](
-  REMOVE_USER.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(ALLOC_USER.ACCESS),
-  version({
-    v1: deleteMembers,
-  })
-);
+// Xóa thành viên khỏi kênh
+// r[DELETE_MEMBERS.METHOD](
+//   DELETE_MEMBERS.PATH,
+//   currUser,
+//   requireAuth,
+//   active,
+//   access(ADD_MEMBERS.ACCESS),
+//   version({
+//     v1: removeUser,
+//   })
+// );
 
-// Cập nhật thông tin lớp
-r[MOD.METHOD](
-  MOD.PATH,
+// Cập nhật thông tin kênh
+r[UPDATE.METHOD](
+  UPDATE.PATH,
   currUser,
   requireAuth,
   active,
-  access(MOD.ACCESS),
+  access(UPDATE.ACCESS),
   version({
     v1: updateClass,
   })
 );
 
-// Xóa lớp
-r[DEL.METHOD](
-  DEL.PATH,
+// xóa kênh
+r[DELETE.METHOD](
+  DELETE.PATH,
   currUser,
   requireAuth,
   active,
-  access(DEL.ACCESS),
+  access(DELETE.ACCESS),
   version({
     v1: deleteClass,
   })

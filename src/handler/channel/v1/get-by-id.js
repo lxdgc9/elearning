@@ -1,9 +1,9 @@
-const Class = require("../../../model/class");
+const Channel = require("../../../model/channel");
 const NotFoundErr = require("../../../error/not-found");
 
-async function getClass(req, res, next) {
+async function getChannel(req, res, next) {
   try {
-    const _class = await Class.findById(
+    const channel = await Channel.findById(
       req.params.id
     ).populate([
       {
@@ -16,12 +16,12 @@ async function getClass(req, res, next) {
         ],
       },
     ]);
-    if (!_class) {
-      throw new NotFoundErr("Không tìm thấy lớp học");
+    if (!channel) {
+      throw new NotFoundErr("Không tìm thấy kênh");
     }
 
     res.json({
-      class: _class,
+      channel,
     });
   } catch (err) {
     console.log(err);
@@ -29,4 +29,4 @@ async function getClass(req, res, next) {
   }
 }
 
-module.exports = getClass;
+module.exports = getChannel;

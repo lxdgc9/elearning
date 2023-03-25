@@ -209,6 +209,43 @@ const API = {
       ACCESS: [],
     },
   },
+  CHANNEL: {
+    GET: {
+      METHOD: GET,
+      PATH: "/api/channels",
+      ACCESS: [],
+    },
+    GET_BY_ID: {
+      METHOD: GET,
+      PATH: "/api/channels/:id",
+      ACCESS: [],
+    },
+    NEW: {
+      METHOD: POST,
+      PATH: "/api/channels",
+      ACCESS: [],
+    },
+    ADD_MEMBERS: {
+      METHOD: PATCH,
+      PATH: "/api/channels/alloc-users/:id",
+      ACCESS: [],
+    },
+    DELETE_MEMBERS: {
+      METHOD: PATCH,
+      PATH: "/api/channels/remove-users/:id",
+      ACCESS: [],
+    },
+    UPDATE: {
+      METHOD: PATCH,
+      PATH: "/api/channels/:id",
+      ACCESS: [],
+    },
+    DELETE: {
+      METHOD: DELETE,
+      PATH: "/api/channels/:id",
+      ACCESS: [],
+    },
+  },
   COURSE: {
     GET: {
       METHOD: GET,

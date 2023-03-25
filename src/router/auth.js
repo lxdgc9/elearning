@@ -9,7 +9,7 @@ const r = express.Router();
 
 const { LOGIN } = route.API.AUTH;
 
-// Login
+// Đăng nhập 
 r[LOGIN.METHOD](
   LOGIN.PATH,
   [

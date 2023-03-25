@@ -16,16 +16,16 @@ const schema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    users: [
+    members: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
       },
     ],
-    logs: [
+    channels: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "log",
+        ref: "channel",
       },
     ],
   },
@@ -42,9 +42,13 @@ const schema = new mongoose.Schema(
   }
 );
 
-// xóa khoảng trắng thừa trong tên
+// Xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
-  this.name = this.name.replace(/\s+/g, " ").trim();
+  let { name, description } = this;
+  name = name.replace(/\s+/g, " ").trim();
+  if (description) {
+    description = description.replace(/\s+/g, " ").trim();
+  }
   next();
 });
 

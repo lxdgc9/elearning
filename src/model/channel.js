@@ -5,26 +5,29 @@ const schema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
-    groupId: {
+    classId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "gperm",
-      required: true,
+      ref: "class",
     },
     description: {
       type: String,
       trim: true,
     },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   {
-    collection: "Permission",
+    collection: "Channel",
     toJSON: {
       transform(_doc, ret, _options) {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.groupId;
         delete ret.__v;
       },
     },
@@ -32,21 +35,20 @@ const schema = new mongoose.Schema(
   }
 );
 
-// xóa khoảng trắng thừa trong tên và mô tả
+// Xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
-  this.name = this.name.replace(/\s+/g, " ").trim();
-  if (this.description) {
-    this.description = this.description
-      .replace(/\s+/g, " ")
-      .trim();
+  let { name, description } = this;
+  name = name.replace(/\s+/g, " ").trim();
+  if (description) {
+    description = description.replace(/\s+/g, " ").trim();
   }
   next();
 });
 
 schema.statics.build = (attrs) => {
-  return new Perm(attrs);
+  return new Channel(attrs);
 };
 
-const Perm = mongoose.model("perm", schema);
+const Channel = mongoose.model("channel", schema);
 
-module.exports = Perm;
+module.exports = Channel;
