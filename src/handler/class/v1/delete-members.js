@@ -11,7 +11,9 @@ async function deleteMembers(req, res, next) {
     const _class = await Class.findByIdAndUpdate(
       req.params.id,
       {
-        $pullAll: memberIds,
+        $pullAll: {
+          members: memberIds,
+        },
       },
       {
         new: true,

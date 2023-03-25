@@ -52,7 +52,7 @@ r[GET_BY_ID.METHOD](
     valid
       .param("id")
       .isMongoId()
-      .withMessage("Lớp học không hợp lệ"),
+      .withMessage("Không tìm thấy lớp học"),
   ],
   validReq,
   version({

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../../../model/user");
 const BadReqErr = require("../../../error/bad-req");
 const Password = require("../../../helper/password");
-const User = require("../../../model/user");
 
 async function login(req, res, next) {
   const { username, password } = req.body;

@@ -15,7 +15,6 @@ const getUser = require("../handler/user/v1/get-by-id");
 const me = require("../handler/user/v1/me");
 const newUser = require("../handler/user/v1/new");
 const newManyUser = require("../handler/user/v1/new-many");
-const setRole = require("../handler/user/v1/set-role");
 const updateProf = require("../handler/user/v1/update-prof");
 
 const r = express.Router();
@@ -62,6 +61,13 @@ r[GET_BY_ID.METHOD](
   requireAuth,
   active,
   access(GET_BY_ID.ACCESS),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Không tìm thấy người dùng"),
+  ],
+  validReq,
   version({
     v1: getUser,
   })
