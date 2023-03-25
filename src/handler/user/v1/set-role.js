@@ -1,7 +1,7 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { NotFoundErr } = require("../../../error/not-found");
-const { Role } = require("../../../model/role");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const NotFoundErr = require("../../../error/not-found");
+const Role = require("../../../model/role");
+const User = require("../../../model/user");
 
 async function setRole(req, res, next) {
   const { userIds, roleId } = req.body;
@@ -37,4 +37,4 @@ async function setRole(req, res, next) {
   }
 }
 
-module.exports = { setRole };
+module.exports = setRole;

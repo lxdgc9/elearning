@@ -1,11 +1,9 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { User } = require("../../../model/user");
+const NotFoundErr = require("../../../error/not-found");
+const User = require("../../../model/user");
 
 async function getUser(req, res, next) {
-  const { id } = req.params;
-
   try {
-    const user = await User.findById(id)
+    const user = await User.findById(req.params.id)
       .select("-logs -classes")
       .populate([
         {
@@ -32,4 +30,4 @@ async function getUser(req, res, next) {
   }
 }
 
-module.exports = { getUser };
+module.exports = getUser;

@@ -1,6 +1,6 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { Role } = require("../../../model/role");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const Role = require("../../../model/role");
+const User = require("../../../model/user");
 
 async function newUser(req, res, next) {
   const {
@@ -68,4 +68,4 @@ async function newUser(req, res, next) {
   }
 }
 
-module.exports = { newUser };
+module.exports = newUser;

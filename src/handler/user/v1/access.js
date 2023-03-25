@@ -1,13 +1,12 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { User } = require("../../../model/user");
+const NotFoundErr = require("../../../error/not-found");
+const User = require("../../../model/user");
 
 async function accessUser(req, res, next) {
-  const { id } = req.params;
   const { status } = req.body;
 
   try {
     const user = await User.findByIdAndUpdate(
-      id,
+      req.params.id,
       {
         $set: {
           hasAccess: status,
@@ -41,4 +40,4 @@ async function accessUser(req, res, next) {
   }
 }
 
-module.exports = { accessUser };
+module.exports = accessUser;

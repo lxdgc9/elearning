@@ -1,16 +1,15 @@
-const { BadReqErr } = require("../../../error/bad-req");
-const { Password } = require("../../../helper/password");
-const { User } = require("../../../model/user");
+const BadReqErr = require("../../../error/bad-req");
+const Password = require("../../../helper/password");
+const User = require("../../../model/user");
 
 async function changePass(req, res, next) {
-  const { id } = req.user;
   const {
     currentPassword: currPass,
     newPassword: newPass,
   } = req.body;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(req.user.id);
 
     // kiểm tra currPass
     const isMatch = await Password.compare(
@@ -34,4 +33,4 @@ async function changePass(req, res, next) {
   }
 }
 
-module.exports = { changePass };
+module.exports = changePass;

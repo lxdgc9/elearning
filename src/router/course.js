@@ -1,12 +1,12 @@
 const express = require("express");
 const route = require("../cfg/route");
-// Middlewares
+
 const active = require("../middleware/active");
 const access = require("../middleware/access");
 const version = require("../middleware/version");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
-// Routes
+
 const getCourses = require("../handler/course/v1/get");
 const getCourse = require("../handler/course/v1/get-by-id");
 const newCourse = require("../handler/course/v1/new");

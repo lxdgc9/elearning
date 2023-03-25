@@ -1,7 +1,4 @@
-// Helper upload file lưu ở folder upload
-// và lưu tên với định dạng uft8
-// *** Giới hạn file 1G
-
+// Lưu ở folder upload và lưu tên với định dạng uft8
 const multer = require("multer");
 
 const uploader = multer({

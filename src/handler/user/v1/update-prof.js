@@ -1,8 +1,7 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { User } = require("../../../model/user");
+const NotFoundErr = require("../../../error/not-found");
+const User = require("../../../model/user");
 
 async function updateProf(req, res, next) {
-  const { id } = req.user;
   const {
     fullName,
     gender,
@@ -15,7 +14,7 @@ async function updateProf(req, res, next) {
 
   try {
     const user = await User.findByIdAndUpdate(
-      id,
+      req.user.id,
       {
         profile: {
           fullName,
@@ -52,4 +51,4 @@ async function updateProf(req, res, next) {
   }
 }
 
-module.exports = { updateProf };
+module.exports = updateProf;

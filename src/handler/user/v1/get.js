@@ -1,5 +1,5 @@
-const { NotFoundErr } = require("../../../error/not-found");
-const { User } = require("../../../model/user");
+const NotFoundErr = require("../../../error/not-found");
+const User = require("../../../model/user");
 
 async function getUsers(req, res, next) {
   try {
@@ -25,4 +25,4 @@ async function getUsers(req, res, next) {
   }
 }
 
-module.exports = { getUsers };
+module.exports = getUsers;

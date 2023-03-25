@@ -3,17 +3,17 @@
 // thì người dùng sẽ được thông qua các middleware tiếp theo
 //
 // Permission của user sẽ nằm trong jwt được giải mã nhằm
-// giảm tải truy vấn permission từ database. Do đó để tăng tính
-// bảo mật, hệ thống sẽ giảm thời gian sống của accessToken và
-// yêu cầu refreshToken sau khi hết hạn
+// giảm tải truy vấn permission từ database. Do đó để tăng
+// tính bảo mật, hệ thống sẽ giảm thời gian sống của
+// accessToken và yêu cầu refreshToken sau khi hết hạn
 
 const FobiddenErr = require("../error/forbidden");
 
 function access(perms) {
   return async (req, res, next) => {
     try {
-      // Danh sách permission rỗng xem như người dùng
-      // thông qua middleware này
+      // Danh sách permission rỗng xem như người dùng thông
+      // qua middleware này
       if (!perms || !perms.length) {
         next();
         return;

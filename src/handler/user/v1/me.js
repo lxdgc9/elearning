@@ -1,10 +1,8 @@
-const { User } = require("../../../model/user");
+const User = require("../../../model/user");
 
 async function me(req, res, next) {
-  const { id } = req.user;
-
   try {
-    const user = await User.findById(id)
+    const user = await User.findById(req.user.id)
       .select("-logs")
       .populate([
         {
@@ -32,4 +30,4 @@ async function me(req, res, next) {
   }
 }
 
-module.exports = { me };
+module.exports = me;
