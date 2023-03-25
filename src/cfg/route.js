@@ -188,22 +188,22 @@ const API = {
       PATH: "/api/classes",
       ACCESS: [],
     },
-    ALLOC_USER: {
+    ADD_MEMBERS: {
       METHOD: PATCH,
-      PATH: "/api/classes/alloc-users/:id",
+      PATH: "/api/classes/add-members/:id",
       ACCESS: [],
     },
-    REMOVE_USER: {
+    DELETE_MEMBERS: {
       METHOD: PATCH,
-      PATH: "/api/classes/remove-users/:id",
+      PATH: "/api/classes/remove-members/:id",
       ACCESS: [],
     },
-    MOD: {
+    UPDATE: {
       METHOD: PATCH,
       PATH: "/api/classes/:id",
       ACCESS: [],
     },
-    DEL: {
+    DELETE: {
       METHOD: DELETE,
       PATH: "/api/classes/:id",
       ACCESS: [],

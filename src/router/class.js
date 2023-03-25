@@ -23,10 +23,10 @@ const {
   GET,
   GET_BY_ID,
   NEW,
-  ALLOC_USER,
-  REMOVE_USER,
-  MOD,
-  DEL,
+  ADD_MEMBERS,
+  DELETE_MEMBERS,
+  UPDATE,
+  DELETE,
 } = route.API.CLASS;
 
 // Lấy danh sách lớp
@@ -100,48 +100,48 @@ r[NEW.METHOD](
 );
 
 // Thêm thành viên vào lớp
-r[ALLOC_USER.METHOD](
-  ALLOC_USER.PATH,
+r[ADD_MEMBERS.METHOD](
+  ADD_MEMBERS.PATH,
   currUser,
   requireAuth,
   active,
-  access(ALLOC_USER.ACCESS),
+  access(ADD_MEMBERS.ACCESS),
   version({
     v1: addMembers,
   })
 );
 
 // Xóa thành viên khỏi lớp
-r[REMOVE_USER.METHOD](
-  REMOVE_USER.PATH,
+r[DELETE_MEMBERS.METHOD](
+  DELETE_MEMBERS.PATH,
   currUser,
   requireAuth,
   active,
-  access(ALLOC_USER.ACCESS),
+  access(ADD_MEMBERS.ACCESS),
   version({
     v1: deleteMembers,
   })
 );
 
 // Cập nhật thông tin lớp
-r[MOD.METHOD](
-  MOD.PATH,
+r[UPDATE.METHOD](
+  UPDATE.PATH,
   currUser,
   requireAuth,
   active,
-  access(MOD.ACCESS),
+  access(UPDATE.ACCESS),
   version({
     v1: updateClass,
   })
 );
 
 // Xóa lớp
-r[DEL.METHOD](
-  DEL.PATH,
+r[DELETE.METHOD](
+  DELETE.PATH,
   currUser,
   requireAuth,
   active,
-  access(DEL.ACCESS),
+  access(DELETE.ACCESS),
   version({
     v1: deleteClass,
   })
