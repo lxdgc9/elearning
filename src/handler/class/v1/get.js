@@ -24,7 +24,6 @@ async function getClasses(req, res, next) {
                     populate: [
                       {
                         path: "permissions",
-                        select: "name description",
                       },
                     ],
                   },
@@ -43,7 +42,6 @@ async function getClasses(req, res, next) {
                 populate: [
                   {
                     path: "permissions",
-                    select: "name description",
                   },
                 ],
               },
@@ -53,14 +51,12 @@ async function getClasses(req, res, next) {
       },
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },

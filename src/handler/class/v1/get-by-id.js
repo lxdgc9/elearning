@@ -38,33 +38,19 @@ async function getClass(req, res, next) {
           {
             path: "owner",
           },
-          {
-            path: "members",
-            select: "profile role",
-            populate: [
-              {
-                path: "role",
-                populate: [
-                  {
-                    path: "permissions",
-                    select: "name description",
-                  },
-                ],
-              },
-            ],
-          },
+          // {
+          //   path: "members",
+          // },
         ],
       },
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
