@@ -1,4 +1,6 @@
+const jwt = require("socket.io");
 const socketio = require("socket.io");
+const Class = require("../model/class");
 
 function createSock(ws) {
   const io = new socketio.Server(ws, {
@@ -7,12 +9,10 @@ function createSock(ws) {
     },
   });
 
-  console.log("Socket is starting");
+  console.log("Socket is starting!!!");
 
   io.on("connection", (socket) => {
     console.log("a socket connected", socket.id);
-
-    // Events
 
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);

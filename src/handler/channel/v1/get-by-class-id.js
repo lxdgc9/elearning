@@ -1,5 +1,3 @@
-const Channel = require("../../../model/channel");
-const NotFoundErr = require("../../../error/not-found");
 const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
 

@@ -23,36 +23,25 @@ const getByClass = require("../handler/channel/v1/get-by-class-id");
 
 const r = express.Router();
 
-const {
-  GET,
-  GET_BY_CLASS_ID,
-  GET_BY_ID,
-  NEW,
-  ADD_MEMBERS,
-  DELETE_MEMBERS,
-  UPDATE,
-  DELETE,
-} = route.API.CHANNEL;
-
 // Lấy danh sách kênh
-r[GET.METHOD](
-  GET.PATH,
+r.get(
+  "/api/channels",
   currUser,
   requireAuth,
   active,
-  access(GET.ACCESS),
+  access(),
   version({
     v1: getChannels,
   })
 );
 
 // Lấy danh sách kênh của một lớp
-r[GET_BY_CLASS_ID.METHOD](
-  GET_BY_CLASS_ID.PATH,
+r.get(
+  "/api/channels/class/:classId",
   currUser,
   requireAuth,
   active,
-  access(GET_BY_CLASS_ID.ACCESS),
+  access(),
   [
     valid
       .param("classId")
@@ -66,12 +55,12 @@ r[GET_BY_CLASS_ID.METHOD](
 );
 
 // Lấy chi tiết thông tin kênh
-r[GET_BY_ID.METHOD](
-  GET_BY_ID.PATH,
+r.get(
+  "/api/channels/:id",
   currUser,
   requireAuth,
   active,
-  access(GET_BY_ID.ACCESS),
+  access(),
   [
     valid
       .param("id")
@@ -85,12 +74,12 @@ r[GET_BY_ID.METHOD](
 );
 
 // Tạo mới kênh
-r[NEW.METHOD](
-  NEW.PATH,
+r.post(
+  "/api/channels",
   currUser,
   requireAuth,
   active,
-  access(NEW.ACCESS),
+  access(),
   [
     valid
       .check("name")
@@ -131,12 +120,12 @@ r[NEW.METHOD](
 );
 
 // Thêm thành viên vào kênh
-r[ADD_MEMBERS.METHOD](
-  ADD_MEMBERS.PATH,
+r.patch(
+  "/api/channels/add-members/:id",
   currUser,
   requireAuth,
   active,
-  access(ADD_MEMBERS.ACCESS),
+  access(),
   [
     valid
       .param("id")
@@ -168,12 +157,12 @@ r[ADD_MEMBERS.METHOD](
 );
 
 // Xóa thành viên khỏi kênh
-r[DELETE_MEMBERS.METHOD](
-  DELETE_MEMBERS.PATH,
+r.patch(
+  "/api/channels/delete-members/:id",
   currUser,
   requireAuth,
   active,
-  access(ADD_MEMBERS.ACCESS),
+  access(),
   [
     valid
       .param("id")
@@ -205,12 +194,12 @@ r[DELETE_MEMBERS.METHOD](
 );
 
 // Cập nhật thông tin kênh
-r[UPDATE.METHOD](
-  UPDATE.PATH,
+r.patch(
+  "/api/channels/:id",
   currUser,
   requireAuth,
   active,
-  access(UPDATE.ACCESS),
+  access(),
   [
     valid
       .param("id")
@@ -239,12 +228,12 @@ r[UPDATE.METHOD](
 );
 
 // Xóa kênh
-r[DELETE.METHOD](
-  DELETE.PATH,
+r.delete(
+  "/api/channels/:id",
   currUser,
   requireAuth,
   active,
-  access(DELETE.ACCESS),
+  access(),
   [
     valid
       .param("id")
