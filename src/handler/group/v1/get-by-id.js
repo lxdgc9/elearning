@@ -1,15 +1,11 @@
 const Channel = require("../../../model/channel");
 const NotFoundErr = require("../../../error/not-found");
 
-async function getChannels(req, res, next) {
+async function getChannel(req, res, next) {
   try {
-    const channels = await Channel.find({}).populate([
-      {
-        path: "owner",
-      },
-      {
-        path: "class",
-      },
+    const channel = await Channel.findById(
+      req.params.id
+    ).populate([
       {
         path: "members",
         select: "profile role",
@@ -26,12 +22,12 @@ async function getChannels(req, res, next) {
         ],
       },
     ]);
-    if (!channels.length) {
-      throw new NotFoundErr("Danh sách kênh trống");
+    if (!channel) {
+      throw new NotFoundErr("Không tìm thấy kênh");
     }
 
     res.json({
-      channels,
+      channel,
     });
   } catch (err) {
     console.log(err);
@@ -39,4 +35,4 @@ async function getChannels(req, res, next) {
   }
 }
 
-module.exports = getChannels;
+module.exports = getChannel;

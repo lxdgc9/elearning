@@ -7,6 +7,9 @@ async function getChannel(req, res, next) {
       req.params.id
     ).populate([
       {
+        path: "owner",
+      },
+      {
         path: "members",
         select: "profile role",
         populate: [

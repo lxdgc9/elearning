@@ -5,12 +5,6 @@ async function getChannels(req, res, next) {
   try {
     const channels = await Channel.find({}).populate([
       {
-        path: "owner",
-      },
-      {
-        path: "class",
-      },
-      {
         path: "members",
         select: "profile role",
         populate: [

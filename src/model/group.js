@@ -11,9 +11,9 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
-    class: {
+    channelId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "class",
+      ref: "channel",
     },
     description: {
       type: String,
@@ -27,7 +27,7 @@ const schema = new mongoose.Schema(
     ],
   },
   {
-    collection: "Channel",
+    collection: "Group",
     timestamps: true,
     toJSON: {
       transform(_doc, ret, _options) {
@@ -50,9 +50,9 @@ schema.pre("save", function (next) {
 });
 
 schema.statics.build = (attrs) => {
-  return new Channel(attrs);
+  return new Group(attrs);
 };
 
-const Channel = mongoose.model("channel", schema);
+const Group = mongoose.model("group", schema);
 
-module.exports = Channel;
+module.exports = Group;

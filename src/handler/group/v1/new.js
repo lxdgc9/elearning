@@ -2,8 +2,9 @@ const Class = require("../../../model/class");
 const Channel = require("../../../model/channel");
 const BadReqErr = require("../../../error/bad-req");
 
-async function newChannel(req, res, next) {
-  let { name, classId, description, memberIds } = req.body;
+async function newGroup(req, res, next) {
+  let { name, channelId, description, memberIds } =
+    req.body;
 
   try {
     // Kiểm tra lớp học có hợp lệ hay không, nhằm tạo kênh
@@ -52,7 +53,7 @@ async function newChannel(req, res, next) {
     const channel = Channel.build({
       name,
       owner: req.user.id,
-      class: classId,
+      classId,
       description,
       members: memberIds,
     });
@@ -88,4 +89,4 @@ async function newChannel(req, res, next) {
   }
 }
 
-module.exports = newChannel;
+module.exports = newGroup;
