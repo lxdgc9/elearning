@@ -9,7 +9,7 @@ const r = Router();
 
 // Đăng nhập
 r.post(
-  "/api/users",
+  "/api/auth/login",
   [
     check("username")
       .notEmpty()
