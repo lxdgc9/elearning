@@ -9,6 +9,47 @@ async function getClasses(req, res, next) {
         populate: [
           {
             path: "groups",
+            populate: [
+              {
+                path: "owner",
+              },
+              {
+                path: "channel",
+              },
+              {
+                path: "members",
+                select: "profile role",
+                populate: [
+                  {
+                    path: "role",
+                    populate: [
+                      {
+                        path: "permissions",
+                        select: "name description",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "owner",
+          },
+          {
+            path: "members",
+            select: "profile role",
+            populate: [
+              {
+                path: "role",
+                populate: [
+                  {
+                    path: "permissions",
+                    select: "name description",
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
