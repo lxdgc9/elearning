@@ -1,7 +1,7 @@
 const Channel = require("../../../model/channel");
 const BadReqErr = require("../../../error/bad-req");
 
-async function updateClass(req, res, next) {
+async function updateChann(req, res, next) {
   const { name, session, description, memberIds } =
     req.body;
 
@@ -50,4 +50,4 @@ async function updateClass(req, res, next) {
   }
 }
 
-module.exports = updateClass;
+module.exports = updateChann;

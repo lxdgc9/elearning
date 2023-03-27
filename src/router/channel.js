@@ -20,6 +20,7 @@ const getChannels = require("../handler/channel/v1/get");
 const newChannel = require("../handler/channel/v1/new");
 const getChannel = require("../handler/channel/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
+const updateChann = require("../handler/channel/v1/update");
 
 const r = express.Router();
 
@@ -223,7 +224,7 @@ r.patch(
   ],
   validReq,
   version({
-    v1: updateClass,
+    v1: updateChann,
   })
 );
 
