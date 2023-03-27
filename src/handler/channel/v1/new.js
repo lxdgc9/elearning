@@ -60,7 +60,9 @@ async function newChannel(req, res, next) {
 
     // Cập nhật channel vào lớp
     await _class.updateOne({
-      $addToSet: channel.id,
+      $addToSet: {
+        channels: channel.id,
+      },
     });
 
     // Lấy thông tin chi tiết kênh đã tạo trả về client
