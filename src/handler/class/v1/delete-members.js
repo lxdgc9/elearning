@@ -1,6 +1,6 @@
-const User = require("../../../model/user");
-const Class = require("../../../model/class");
-const BadReqErr = require("../../../err/bad-req").default;
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Class } from "../../../model/class.js";
+import { User } from "../../../model/user.js";
 
 async function deleteMembers(req, res, next) {
   const { memberIds } = req.body;
@@ -21,14 +21,12 @@ async function deleteMembers(req, res, next) {
     ).populate([
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
@@ -58,4 +56,4 @@ async function deleteMembers(req, res, next) {
   }
 }
 
-module.exports = deleteMembers;
+export { deleteMembers };

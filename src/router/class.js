@@ -1,94 +1,77 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const route = require("../cfg/route");
-const valid = require("express-validator");
-const BadReqErr = require("../err/bad-req").default;
-const active = require("../middleware/active");
-const access = require("../middleware/access");
-const version = require("../middleware/version");
-const validReq = require("../middleware/valid-req");
-const currUser = require("../middleware/current-user");
-const requireAuth = require("../middleware/require-auth");
-const getClasses = require("../handler/class/v1/get");
-const getClass = require("../handler/class/v1/get-by-id");
-const newClass = require("../handler/class/v1/new");
-const addMembers = require("../handler/class/v1/add-members");
-const deleteMembers = require("../handler/class/v1/delete-members");
-const updateClass = require("../handler/class/v1/update");
-const deleteClass = require("../handler/class/v1/delete");
+import { Router } from "express";
+import { check, param } from "express-validator";
+import { Types } from "mongoose";
 
-const r = express.Router();
+import { BadReqErr } from "../err/bad-req.js";
+import { addMembers } from "../handler/class/v1/add-members.js";
+import { deleteMembers } from "../handler/class/v1/delete-members.js";
+import { deleteClass } from "../handler/class/v1/delete.js";
+import { getClass } from "../handler/class/v1/get-by-id.js";
+import { getClasses } from "../handler/class/v1/get.js";
+import { newClass } from "../handler/class/v1/new.js";
+import { updateClass } from "../handler/class/v1/update.js";
+import { accessCtrl } from "../middleware/access-ctrl.js";
+import { checkUser } from "../middleware/check-user.js";
+import { decodeJwt } from "../middleware/decode-jwt.js";
+import { redirectVer } from "../middleware/redirect-ver.js";
+import { requireAuth } from "../middleware/require-auth.js";
+import { validReq } from "../middleware/valid-req.js";
 
-const {
-  GET,
-  GET_BY_ID,
-  NEW,
-  ADD_MEMBERS,
-  DELETE_MEMBERS,
-  UPDATE,
-  DELETE,
-} = route.API.CLASS;
+const r = Router();
 
 // Lấy danh sách lớp
-r[GET.METHOD](
-  GET.PATH,
-  currUser,
+r.get(
+  "/api/classes",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
     v1: getClasses,
   })
 );
 
 // Lấy chi tiết thông tin lớp
-r[GET_BY_ID.METHOD](
-  GET_BY_ID.PATH,
-  currUser,
+r.get(
+  "/api/classes/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET_BY_ID.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Không tìm thấy lớp học"),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: getClass,
   })
 );
 
 // Tạo mới lớp
-r[NEW.METHOD](
-  NEW.PATH,
-  currUser,
+r.post(
+  "/api/classes",
+  decodeJwt,
   requireAuth,
-  active,
-  access(NEW.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .check("name")
-      .notEmpty()
-      .withMessage("Tên cầu tên lớp"),
-    valid
-      .check("session")
+    check("name").notEmpty().withMessage("Tên cầu tên lớp"),
+    check("session")
       .notEmpty()
       .withMessage("Tên cầu niên khóa"),
-    valid
-      .check("description")
+    check("description")
       .isLength({ max: 255 })
       .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
       .optional({ nullable: true }),
-    valid
-      .check("memberIds")
+    check("memberIds")
       .isArray()
       .withMessage("Danh sách thành viên không hợp lệ")
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(
@@ -101,31 +84,29 @@ r[NEW.METHOD](
       .optional({ nullable: true }),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: newClass,
   })
 );
 
 // Thêm thành viên vào lớp
-r[ADD_MEMBERS.METHOD](
-  ADD_MEMBERS.PATH,
-  currUser,
+r.patch(
+  "/api/classes/add-members/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(ADD_MEMBERS.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Lớp học không hợp lệ"),
-    valid
-      .check("memberIds")
+    check("memberIds")
       .isArray()
       .withMessage("Danh sách thành viên không hợp lệ")
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(
@@ -138,31 +119,29 @@ r[ADD_MEMBERS.METHOD](
       }),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: addMembers,
   })
 );
 
 // Xóa thành viên khỏi lớp
-r[DELETE_MEMBERS.METHOD](
-  DELETE_MEMBERS.PATH,
-  currUser,
+r.patch(
+  "/api/classes/delete-members/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(ADD_MEMBERS.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Lớp học không hợp lệ"),
-    valid
-      .check("memberIds")
+    check("memberIds")
       .isArray()
       .withMessage("Danh sách thành viên không hợp lệ")
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(
@@ -175,62 +154,57 @@ r[DELETE_MEMBERS.METHOD](
       }),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: deleteMembers,
   })
 );
 
 // Cập nhật thông tin lớp
-r[UPDATE.METHOD](
-  UPDATE.PATH,
-  currUser,
+r.patch(
+  "/api/classes/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(UPDATE.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Lớp học không hợp lệ"),
-    valid
-      .check("name")
+    check("name")
       .isLength({ min: 1 })
       .withMessage("Tên lớp không được trống")
       .optional({ nullable: true }),
-    valid
-      .check("session")
+    check("session")
       .isLength({ min: 1 })
       .withMessage("Niên khóa không được trống")
       .optional({ nullable: true }),
-    valid
-      .check("description")
+    check("description")
       .isLength({ max: 255 })
       .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
       .optional({ nullable: true }),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: updateClass,
   })
 );
 
 // Xóa lớp
-r[DELETE.METHOD](
-  DELETE.PATH,
-  currUser,
+r.delete(
+  "/api/classes/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(DELETE.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Lớp học không hợp lệ"),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: deleteClass,
   })
 );
 
-module.exports = r;
+export { r as classRouter };

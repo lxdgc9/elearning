@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
+import { Types } from "mongoose";
 
 import { BadReqErr } from "../err/bad-req.js";
+import { applyUsers } from "../handler/role/v1/apply-users.js";
 import { deleteRole } from "../handler/role/v1/delete.js";
 import { getRole } from "../handler/role/v1/get-by-id.js";
 import { getRoles } from "../handler/role/v1/get.js";
@@ -67,7 +69,7 @@ r.post(
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(
@@ -82,6 +84,40 @@ r.post(
   validReq,
   redirectVer({
     v1: newRole,
+  })
+);
+
+// Chỉ định vai trò cho người dùng
+r.patch(
+  "/api/roles/users/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Vai trò không hợp lệ"),
+    check("userIds")
+      .isArray()
+      .withMessage("Danh sách người dùng không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại người dùng không hợp lệ trong danh sách"
+            );
+          }
+        }
+        return true;
+      }),
+  ],
+  validReq,
+  redirectVer({
+    v1: applyUsers,
   })
 );
 
@@ -109,7 +145,7 @@ r.patch(
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(

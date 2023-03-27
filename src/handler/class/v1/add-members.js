@@ -1,6 +1,6 @@
-const User = require("../../../model/user");
-const Class = require("../../../model/class");
-const BadReqErr = require("../../../err/bad-req").default;
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Class } from "../../../model/class.js";
+import { User } from "../../../model/user.js";
 
 async function addMembers(req, res, next) {
   const { memberIds } = req.body;
@@ -13,8 +13,8 @@ async function addMembers(req, res, next) {
     }
 
     // Kiểm tra danh sách thành viên có hợp lệ hay không
-    // nếu tồn tại một memberId không hợp lệ, xem như danh
-    // sách này không hợp lệ, ngưng thao tác tạo kênh
+    // nếu tồn tại một thành viên không hợp lệ, xem như
+    // danh sách này không hợp lệ, ngưng thao tác tạo kênh
     let users = [];
     if (memberIds && memberIds.length > 0) {
       users = await User.find({
@@ -22,7 +22,7 @@ async function addMembers(req, res, next) {
       });
       if (memberIds.length !== users.length) {
         throw new BadReqErr(
-          "Danh sách thành viên không hợp lệ"
+          "Có thành viên trong danh sách không tồn tại"
         );
       }
     }
@@ -40,14 +40,12 @@ async function addMembers(req, res, next) {
     ).populate([
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
@@ -74,4 +72,4 @@ async function addMembers(req, res, next) {
   }
 }
 
-module.exports = addMembers;
+export { addMembers };

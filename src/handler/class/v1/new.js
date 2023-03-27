@@ -1,6 +1,6 @@
-const User = require("../../../model/user");
-const Class = require("../../../model/class");
-const BadReqErr = require("../../../err/bad-req").default;
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Class } from "../../../model/class.js";
+import { User } from "../../../model/user.js";
 
 async function newClass(req, res, next) {
   let { name, session, description, memberIds } = req.body;
@@ -23,14 +23,14 @@ async function newClass(req, res, next) {
       users = await User.find({ _id: memberIds });
       if (memberIds.length !== users.length) {
         throw new BadReqErr(
-          "Danh sách thành viên không hợp lệ"
+          "Có thành viên trong danh sách không tồn tại"
         );
       }
     }
 
     // Khi thông tin đầu vào hợp lệ, tiến hành tạo lớp
     const userIds = users.map((u) => u.id);
-    const _class = Class.build({
+    const _class = new Class({
       name,
       session,
       description,
@@ -38,20 +38,27 @@ async function newClass(req, res, next) {
     });
     await _class.save();
 
+    // Cập nhật lớp học trực thuộc theo danh sách thành viên
+    for await (const u of userIds) {
+      await User.findByIdAndUpdate(u, {
+        $addToSet: {
+          classes: _class.id,
+        },
+      });
+    }
+
     // Lấy thông tin chi tiết lớp học đã tạo trả về client
     const classDetail = await Class.findById(
       _class.id
     ).populate([
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
@@ -68,4 +75,4 @@ async function newClass(req, res, next) {
   }
 }
 
-module.exports = newClass;
+export { newClass };

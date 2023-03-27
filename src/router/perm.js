@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
+import { Types } from "mongoose";
 
 import { BadReqErr } from "../err/bad-req.js";
 import { deletePerm } from "../handler/perm/v1/delete.js";
@@ -127,7 +128,7 @@ r.patch(
       .custom((v) => {
         if (v.length > 0) {
           const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
+            Types.ObjectId.isValid(id)
           );
           if (!isValid) {
             throw new BadReqErr(

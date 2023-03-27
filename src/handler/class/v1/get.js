@@ -1,7 +1,7 @@
-const Class = require("../../../model/class");
-const NotFoundErr = require("../../../err/not-found");
+import { NotFoundErr } from "../../../err/not-found.js";
+import { Class } from "../../../model/class.js";
 
-async function getClasses(req, res, next) {
+async function getClasses(_req, res, next) {
   try {
     const classes = await Class.find({}).populate([
       {
@@ -9,14 +9,12 @@ async function getClasses(req, res, next) {
       },
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
@@ -36,4 +34,4 @@ async function getClasses(req, res, next) {
   }
 }
 
-module.exports = getClasses;
+export { getClasses };

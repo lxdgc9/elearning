@@ -1,5 +1,5 @@
-const Class = require("../../../model/class");
-const BadReqErr = require("../../../err/bad-req").default;
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Class } from "../../../model/class.js";
 
 async function updateClass(req, res, next) {
   const { name, session, description } = req.body;
@@ -18,14 +18,12 @@ async function updateClass(req, res, next) {
     ).populate([
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },
@@ -45,4 +43,4 @@ async function updateClass(req, res, next) {
   }
 }
 
-module.exports = updateClass;
+export { updateClass };

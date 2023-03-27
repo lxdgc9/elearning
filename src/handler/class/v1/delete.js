@@ -1,6 +1,6 @@
-const Class = require("../../../model/class");
-const BadReqErr = require("../../../err/bad-req").default;
-const User = require("../../../model/user");
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Class } from "../../../model/class.js";
+import { User } from "../../../model/user.js";
 
 async function deleteClass(req, res, next) {
   try {
@@ -14,7 +14,7 @@ async function deleteClass(req, res, next) {
     // Sau khi xóa thành công lớp học, tiến hành xóa lớp
     // trực thuộc này ra khỏi những thành viên
     for await (const u of _class.members) {
-      await User.findByIdAndUpdate(u.id, {
+      await User.findByIdAndUpdate(u, {
         $pull: {
           classes: _class.id,
         },
@@ -28,4 +28,4 @@ async function deleteClass(req, res, next) {
   }
 }
 
-module.exports = deleteClass;
+export { deleteClass };
