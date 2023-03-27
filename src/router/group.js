@@ -20,6 +20,7 @@ const getGroups = require("../handler/group/v1/get");
 const newGroup = require("../handler/group/v1/new");
 const getGroup = require("../handler/group/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
+const updateGroup = require("../handler/group/v1/update");
 
 const r = express.Router();
 
@@ -73,7 +74,7 @@ r.get(
   })
 );
 
-// Tạo mới kênh
+// Tạo mới nhóm
 r.post(
   "/api/groups",
   currUser,
@@ -193,37 +194,17 @@ r.patch(
   })
 );
 
-// Cập nhật thông tin kênh
+// Cập nhật thông tin nhóm
 r.patch(
-  "/api/channels/:id",
+  "/api/groups/:id",
   currUser,
   requireAuth,
   active,
   access(),
-  [
-    valid
-      .param("id")
-      .isMongoId()
-      .withMessage("Lớp học không hợp lệ"),
-    valid
-      .check("name")
-      .isLength({ min: 1 })
-      .withMessage("Tên lớp không được trống")
-      .optional({ nullable: true }),
-    valid
-      .check("session")
-      .isLength({ min: 1 })
-      .withMessage("Niên khóa không được trống")
-      .optional({ nullable: true }),
-    valid
-      .check("description")
-      .isLength({ max: 255 })
-      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
-      .optional({ nullable: true }),
-  ],
+  [],
   validReq,
   version({
-    v1: updateClass,
+    v1: updateGroup,
   })
 );
 

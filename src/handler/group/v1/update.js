@@ -1,27 +1,29 @@
-const Class = require("../../../model/class");
+const Group = require("../../../model/group");
 const BadReqErr = require("../../../error/bad-req");
 
-async function updateClass(req, res, next) {
-  const { name, session, description } = req.body;
+async function updateGroup(req, res, next) {
+  const { name, session, description, memberIds } =
+    req.body;
 
   try {
-    const _class = await Class.findByIdAndUpdate(
+    const group = await Group.findByIdAndUpdate(
       req.params.id,
       {
         name,
         session,
         description,
+        members: memberIds,
       },
       {
         new: true,
       }
     );
-    if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+    if (!group) {
+      throw new BadReqErr("Không tồn tại nhóm");
     }
 
     res.json({
-      class: _class,
+      group,
     });
   } catch (err) {
     console.log(err);
@@ -29,4 +31,4 @@ async function updateClass(req, res, next) {
   }
 }
 
-module.exports = updateClass;
+module.exports = updateGroup;
