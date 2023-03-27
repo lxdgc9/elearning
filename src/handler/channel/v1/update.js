@@ -1,27 +1,48 @@
-const Class = require("../../../model/class");
+const Channel = require("../../../model/channel");
 const BadReqErr = require("../../../error/bad-req");
 
 async function updateClass(req, res, next) {
-  const { name, session, description } = req.body;
+  const { name, session, description, memberIds } =
+    req.body;
 
   try {
-    const _class = await Class.findByIdAndUpdate(
+    const chann = await Channel.findByIdAndUpdate(
       req.params.id,
       {
         name,
         session,
         description,
+        members: memberIds,
       },
       {
         new: true,
       }
-    );
-    if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+    ).populate([
+      {
+        path: "owner",
+      },
+      {
+        path: "members",
+        select: "profile role",
+        populate: [
+          {
+            path: "role",
+            populate: [
+              {
+                path: "permissions",
+                select: "name description",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+    if (!chann) {
+      throw new BadReqErr("Không tồn tại kênh");
     }
 
     res.json({
-      class: _class,
+      channel: chann,
     });
   } catch (err) {
     console.log(err);
