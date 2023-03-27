@@ -7,6 +7,7 @@ const authRouter = require("./router/auth");
 const provRouter = require("./router/province");
 const classRouter = require("./router/class");
 const channelRouter = require("./router/channel");
+const groupRouter = require("./router/group");
 const courseRouter = require("./router/course");
 const gpermRouter = require("./router/gperm");
 const permRouter = require("./router/perm");
@@ -28,6 +29,7 @@ app.use(permRouter);
 app.use(gpermRouter);
 app.use(classRouter);
 app.use(channelRouter);
+app.use(groupRouter);
 app.use(subjectRouter);
 app.use(courseRouter);
 

@@ -16,28 +16,28 @@ const updateClass = require("../handler/class/v1/update");
 const deleteClass = require("../handler/class/v1/delete");
 const deleteMembers = require("../handler/class/v1/delete-members");
 const validReq = require("../middleware/valid-req");
-const getChannels = require("../handler/channel/v1/get");
-const newChannel = require("../handler/channel/v1/new");
-const getChannel = require("../handler/channel/v1/get-by-id");
+const getGroups = require("../handler/group/v1/get");
+const newGroup = require("../handler/group/v1/new");
+const getGroup = require("../handler/group/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
 
 const r = express.Router();
 
-// Lấy danh sách kênh
+// Lấy danh sách nhóm
 r.get(
-  "/api/channels",
+  "/api/groups",
   currUser,
   requireAuth,
   active,
   access(),
   version({
-    v1: getChannels,
+    v1: getGroups,
   })
 );
 
 // Lấy danh sách kênh của một lớp
 r.get(
-  "/api/channels/class/:classId",
+  "/api/groups/channel/:classId",
   currUser,
   requireAuth,
   active,
@@ -56,7 +56,7 @@ r.get(
 
 // Lấy chi tiết thông tin kênh
 r.get(
-  "/api/channels/:id",
+  "/api/groups/:id",
   currUser,
   requireAuth,
   active,
@@ -65,17 +65,17 @@ r.get(
     valid
       .param("id")
       .isMongoId()
-      .withMessage("Không tìm thấy kênh"),
+      .withMessage("Không tìm thấy nhóm"),
   ],
   validReq,
   version({
-    v1: getChannel,
+    v1: getGroup,
   })
 );
 
 // Tạo mới kênh
 r.post(
-  "/api/channels",
+  "/api/groups",
   currUser,
   requireAuth,
   active,
@@ -84,11 +84,11 @@ r.post(
     valid
       .check("name")
       .notEmpty()
-      .withMessage("Tên cầu tên kênh"),
+      .withMessage("Tên cầu tên nhóm"),
     valid
-      .check("classId")
+      .check("channelId")
       .isMongoId()
-      .withMessage("Lớp học không hợp lệ"),
+      .withMessage("Kênh không hợp lệ"),
     valid
       .check("description")
       .isLength({ max: 255 })
@@ -115,7 +115,7 @@ r.post(
   ],
   validReq,
   version({
-    v1: newChannel,
+    v1: newGroup,
   })
 );
 

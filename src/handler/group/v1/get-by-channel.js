@@ -1,16 +1,20 @@
 const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
+const Group = require("../../../model/group");
+const Channel = require("../../../model/channel");
 
 async function getByChannel(req, res, next) {
   try {
-    const _class = await Class.findById(req.params.classId)
+    const channel = await Channel.findById(
+      req.params.channelId
+    )
       .select("channels")
       .populate([
         {
           path: "channels",
         },
       ]);
-    if (!_class) {
+    if (!channel) {
       throw new BadReqErr("Lớp học không tồn tại");
     }
 

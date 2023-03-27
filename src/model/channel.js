@@ -25,6 +25,12 @@ const schema = new mongoose.Schema(
         ref: "user",
       },
     ],
+    groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "group",
+      },
+    ],
   },
   {
     collection: "Channel",

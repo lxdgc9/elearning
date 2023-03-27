@@ -1,5 +1,4 @@
 const Channel = require("../../../model/channel");
-const BadReqErr = require("../../../error/bad-req");
 const Group = require("../../../model/group");
 
 async function newGroup(req, res, next) {
@@ -16,10 +15,22 @@ async function newGroup(req, res, next) {
     });
     await group.save();
 
-    // Lấy thông tin chi tiết kênh đã tạo trả về client
-    const groupDetail = await Channel.findById(
+    await Channel.findByIdAndUpdate(channelId, {
+      $addToSet: {
+        groups: group.id,
+      },
+    });
+
+    // Lấy thông tin chi tiết nhóm đã tạo trả về client
+    const groupDetail = await Group.findById(
       group.id
     ).populate([
+      {
+        path: "owner",
+      },
+      {
+        path: "channel",
+      },
       {
         path: "members",
         select: "profile role",
