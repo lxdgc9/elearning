@@ -82,11 +82,12 @@ const schema = new mongoose.Schema(
     collection: "User",
     timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        // ret.id = ret._id;
-        // delete ret._id;
-        // delete ret.password;
-        // delete ret.__v;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+        return ret;
       },
     },
   }
