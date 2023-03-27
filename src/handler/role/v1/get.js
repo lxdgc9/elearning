@@ -1,7 +1,7 @@
 import { NotFoundErr } from "../../../err/not-found.js";
 import { Role } from "../../../model/role.js";
 
-async function getRoles(req, res, next) {
+async function getRoles(_req, res, next) {
   try {
     const roles = await Role.find({})
       .populate([
