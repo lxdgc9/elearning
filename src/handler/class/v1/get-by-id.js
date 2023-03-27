@@ -7,6 +7,9 @@ async function getClass(req, res, next) {
       req.params.id
     ).populate([
       {
+        path: "channels",
+      },
+      {
         path: "members",
         select: "profile role",
         populate: [
