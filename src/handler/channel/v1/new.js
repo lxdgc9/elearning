@@ -58,6 +58,11 @@ async function newChannel(req, res, next) {
     });
     await channel.save();
 
+    // Cập nhật channel vào lớp
+    await _class.updateOne({
+      $addToSet: channel.id,
+    });
+
     // Lấy thông tin chi tiết kênh đã tạo trả về client
     const channelDetail = await Channel.findById(
       channel.id

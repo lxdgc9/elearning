@@ -1,7 +1,7 @@
 const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
 
-async function getByClass(req, res, next) {
+async function getByChannel(req, res, next) {
   try {
     const _class = await Class.findById(req.params.classId)
       .select("channels")
@@ -23,4 +23,4 @@ async function getByClass(req, res, next) {
   }
 }
 
-module.exports = getByClass;
+module.exports = getByChannel;

@@ -1,11 +1,17 @@
-const Channel = require("../../../model/channel");
 const NotFoundErr = require("../../../error/not-found");
+const Group = require("../../../model/group");
 
-async function getChannel(req, res, next) {
+async function getGroup(req, res, next) {
   try {
-    const channel = await Channel.findById(
+    const group = await Group.findById(
       req.params.id
     ).populate([
+      {
+        path: "owner",
+      },
+      {
+        path: "channel",
+      },
       {
         path: "members",
         select: "profile role",
@@ -22,12 +28,12 @@ async function getChannel(req, res, next) {
         ],
       },
     ]);
-    if (!channel) {
-      throw new NotFoundErr("Không tìm thấy kênh");
+    if (!group) {
+      throw new NotFoundErr("Không tìm thấy nhóm");
     }
 
     res.json({
-      channel,
+      group,
     });
   } catch (err) {
     console.log(err);
@@ -35,4 +41,4 @@ async function getChannel(req, res, next) {
   }
 }
 
-module.exports = getChannel;
+module.exports = getGroup;
