@@ -1,4 +1,4 @@
-import { UnauthorizedErr } from "../err/unauthorized";
+import { UnauthorizedErr } from "../err/unauthorized.js";
 
 function requireAuth(req, _res, next) {
   if (!req.user) {

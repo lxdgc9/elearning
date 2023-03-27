@@ -1,4 +1,4 @@
-import { HttpErr } from "../err/http";
+import { HttpErr } from "../err/http.js";
 
 function errHandler(err, _req, res, _next) {
   if (err instanceof HttpErr) {

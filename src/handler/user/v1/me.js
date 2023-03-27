@@ -1,5 +1,5 @@
-import { UnauthorizedErr } from "../../../err/unauthorized";
-import { User } from "../../../model/user";
+import { UnauthorizedErr } from "../../../err/unauthorized.js";
+import { User } from "../../../model/user.js";
 
 async function me(req, res, next) {
   try {

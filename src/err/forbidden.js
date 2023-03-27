@@ -1,4 +1,4 @@
-import { HttpErr } from "./http";
+import { HttpErr } from "./http.js";
 
 class FobiddenErr extends HttpErr {
   constructor(msg) {

@@ -4,9 +4,9 @@ import http from "http";
 
 import dotenv from "dotenv";
 
-import { app } from "../app";
-import { connectDb } from "../db";
-import { createSock } from "../sock";
+import { app } from "../app.js";
+import { connectDb } from "../db.js";
+import { createSock } from "../sock/index.js";
 
 dotenv.config();
 
@@ -20,18 +20,18 @@ if (!process.env.REFRESH_TOKEN_SECRET) {
   throw new Error("REFRESH_TOKEN_SECRET must be defined");
 }
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
 
-const sv = http.createServer(app);
+const serv = http.createServer(app);
 
 connectDb(process.env.MONGO_URI);
 
-createSock(sv);
+createSock(serv);
 
-sv.listen(port);
-sv.on("listening", onListening);
-sv.on("error", onError);
+serv.listen(port);
+serv.on("listening", onListening);
+serv.on("error", onError);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
@@ -70,7 +70,7 @@ function onError(err) {
 }
 
 function onListening() {
-  const addr = sv.address();
+  const addr = serv.address();
   const bind =
     typeof addr === "string"
       ? "pipe " + addr

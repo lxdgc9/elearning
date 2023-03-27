@@ -1,6 +1,6 @@
-import { BadReqErr } from "../../../err/bad-req";
-import { GPerm } from "../../../model/gperm";
-import { Perm } from "../../../model/perm";
+import { BadReqErr } from "../../../err/bad-req.js";
+import { GPerm } from "../../../model/gperm.js";
+import { Perm } from "../../../model/perm.js";
 
 async function newPerm(req, res, next) {
   const { code, groupId, description } = req.body;

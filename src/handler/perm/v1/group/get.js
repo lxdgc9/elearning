@@ -1,4 +1,4 @@
-import { GPerm } from "../../../../model/gperm";
+import { GPerm } from "../../../../model/gperm.js";
 
 async function getGPerms(_req, res, next) {
   try {

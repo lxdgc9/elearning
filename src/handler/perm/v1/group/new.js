@@ -1,4 +1,4 @@
-import { GPerm } from "../../../../model/gperm";
+import { GPerm } from "../../../../model/gperm.js";
 
 async function newGPerm(req, res, next) {
   const { name } = req.body;

@@ -1,6 +1,6 @@
-import { BadReqErr } from "../../../err/bad-req";
-import { Perm } from "../../../model/perm";
-import { Role } from "../../../model/role";
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Perm } from "../../../model/perm.js";
+import { Role } from "../../../model/role.js";
 
 async function updateRole(req, res, next) {
   const { name, description, permissionIds } = req.body;

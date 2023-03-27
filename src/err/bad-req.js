@@ -1,4 +1,4 @@
-import { HttpErr } from "./http";
+import { HttpErr } from "./http.js";
 
 class BadReqErr extends HttpErr {
   constructor(msg) {

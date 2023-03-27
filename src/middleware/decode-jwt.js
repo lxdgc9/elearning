@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { UnauthorizedErr } from "../err/unauthorized";
+import { UnauthorizedErr } from "../err/unauthorized.js";
 
 function decodeJwt(req, _res, next) {
   try {

@@ -1,5 +1,5 @@
-import { NotFoundErr } from "../../../err/not-found";
-import { Role } from "../../../model/role";
+import { NotFoundErr } from "../../../err/not-found.js";
+import { Role } from "../../../model/role.js";
 
 async function getRole(req, res, next) {
   try {

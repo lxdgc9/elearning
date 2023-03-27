@@ -1,5 +1,5 @@
-import { NotFoundErr } from "../../../err/not-found";
-import { User } from "../../../model/user";
+import { NotFoundErr } from "../../../err/not-found.js";
+import { User } from "../../../model/user.js";
 
 async function getUser(req, res, next) {
   try {

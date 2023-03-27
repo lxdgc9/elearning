@@ -1,6 +1,6 @@
-import { BadReqErr } from "../../../err/bad-req";
-import { Role } from "../../../model/role";
-import { User } from "../../../model/user";
+import { BadReqErr } from "../../../err/bad-req.js";
+import { Role } from "../../../model/role.js";
+import { User } from "../../../model/user.js";
 
 async function newUser(req, res, next) {
   const {

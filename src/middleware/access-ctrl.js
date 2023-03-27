@@ -1,4 +1,4 @@
-import { FobiddenErr } from "../err/forbidden";
+import { FobiddenErr } from "../err/forbidden.js";
 
 function accessCtrl(...perms) {
   return async (req, _res, next) => {

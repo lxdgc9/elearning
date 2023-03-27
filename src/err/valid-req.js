@@ -1,4 +1,4 @@
-import { HttpErr } from "./http";
+import { HttpErr } from "./http.js";
 
 class ValidReqErr extends HttpErr {
   constructor(msg) {

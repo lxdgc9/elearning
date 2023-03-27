@@ -1,5 +1,5 @@
-import { BadReqErr } from "../../../err/bad-req";
-import { User } from "../../../model/user";
+import { BadReqErr } from "../../../err/bad-req.js";
+import { User } from "../../../model/user.js";
 
 async function grantAccessUser(req, res, next) {
   const { status } = req.body;

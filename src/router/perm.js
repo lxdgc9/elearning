@@ -1,22 +1,22 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
-import { BadReqErr } from "../err/bad-req";
 
-import { deletePerm } from "../handler/perm/v1/delete";
-import { getPerms } from "../handler/perm/v1/get";
-import { getPerm } from "../handler/perm/v1/get-by-id";
-import { deleteGPerm } from "../handler/perm/v1/group/delete";
-import { getGPerms } from "../handler/perm/v1/group/get";
-import { newGPerm } from "../handler/perm/v1/group/new";
-import { updateGPerm } from "../handler/perm/v1/group/update";
-import { newPerm } from "../handler/perm/v1/new";
-import { updatePerm } from "../handler/perm/v1/update";
-import { accessCtrl } from "../middleware/access-ctrl";
-import { checkUser } from "../middleware/check-user";
-import { decodeJwt } from "../middleware/decode-jwt";
-import { redirectVer } from "../middleware/redirect-ver";
-import { requireAuth } from "../middleware/require-auth";
-import { validReq } from "../middleware/valid-req";
+import { BadReqErr } from "../err/bad-req.js";
+import { deletePerm } from "../handler/perm/v1/delete.js";
+import { getPerm } from "../handler/perm/v1/get-by-id.js";
+import { getPerms } from "../handler/perm/v1/get.js";
+import { deleteGPerm } from "../handler/perm/v1/group/delete.js";
+import { getGPerms } from "../handler/perm/v1/group/get.js";
+import { newGPerm } from "../handler/perm/v1/group/new.js";
+import { updateGPerm } from "../handler/perm/v1/group/update.js";
+import { newPerm } from "../handler/perm/v1/new.js";
+import { updatePerm } from "../handler/perm/v1/update.js";
+import { accessCtrl } from "../middleware/access-ctrl.js";
+import { checkUser } from "../middleware/check-user.js";
+import { decodeJwt } from "../middleware/decode-jwt.js";
+import { redirectVer } from "../middleware/redirect-ver.js";
+import { requireAuth } from "../middleware/require-auth.js";
+import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 

@@ -1,5 +1,5 @@
-import { NotFoundErr } from "../../../err/not-found";
-import { Perm } from "../../../model/perm";
+import { NotFoundErr } from "../../../err/not-found.js";
+import { Perm } from "../../../model/perm.js";
 
 async function getPerms(_req, res, next) {
   try {

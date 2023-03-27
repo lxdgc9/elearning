@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-import { Password } from "../helper/password";
+import { Password } from "../helper/password.js";
 
 const schema = new Schema(
   {

@@ -1,5 +1,5 @@
-import { BadReqErr } from "../../../../err/bad-req";
-import { GPerm } from "../../../../model/gperm";
+import { BadReqErr } from "../../../../err/bad-req.js";
+import { GPerm } from "../../../../model/gperm.js";
 
 async function updateGPerm(req, res, next) {
   const { name, permissionsIds } = req.body;

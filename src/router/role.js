@@ -1,18 +1,18 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
-import { BadReqErr } from "../err/bad-req";
-import { deleteRole } from "../handler/role/v1/delete";
 
-import { getRoles } from "../handler/role/v1/get";
-import { getRole } from "../handler/role/v1/get-by-id";
-import { newRole } from "../handler/role/v1/new";
-import { updateRole } from "../handler/role/v1/update";
-import { accessCtrl } from "../middleware/access-ctrl";
-import { checkUser } from "../middleware/check-user";
-import { decodeJwt } from "../middleware/decode-jwt";
-import { redirectVer } from "../middleware/redirect-ver";
-import { requireAuth } from "../middleware/require-auth";
-import { validReq } from "../middleware/valid-req";
+import { BadReqErr } from "../err/bad-req.js";
+import { deleteRole } from "../handler/role/v1/delete.js";
+import { getRole } from "../handler/role/v1/get-by-id.js";
+import { getRoles } from "../handler/role/v1/get.js";
+import { newRole } from "../handler/role/v1/new.js";
+import { updateRole } from "../handler/role/v1/update.js";
+import { accessCtrl } from "../middleware/access-ctrl.js";
+import { checkUser } from "../middleware/check-user.js";
+import { decodeJwt } from "../middleware/decode-jwt.js";
+import { redirectVer } from "../middleware/redirect-ver.js";
+import { requireAuth } from "../middleware/require-auth.js";
+import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
@@ -80,7 +80,7 @@ r.post(
       .optional({ nullable: true }),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: newRole,
   })
 );

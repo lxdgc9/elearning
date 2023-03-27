@@ -1,6 +1,6 @@
-import { UnauthorizedErr } from "../../../err/unauthorized";
-import { Password } from "../../../helper/password";
-import { User } from "../../../model/user";
+import { UnauthorizedErr } from "../../../err/unauthorized.js";
+import { Password } from "../../../helper/password.js";
+import { User } from "../../../model/user.js";
 
 async function changePass(req, res, next) {
   const { password, newPassword } = req.body;

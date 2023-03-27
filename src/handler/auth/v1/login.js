@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 
-import { BadReqErr } from "../../../err/bad-req";
-import { NotFoundErr } from "../../../err/not-found";
-import { Password } from "../../../helper/password";
-import { User } from "../../../model/user";
+import { BadReqErr } from "../../../err/bad-req.js";
+import { NotFoundErr } from "../../../err/not-found.js";
+import { Password } from "../../../helper/password.js";
+import { User } from "../../../model/user.js";
 
 async function login(req, res, next) {
   const { username, password } = req.body;

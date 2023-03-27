@@ -1,20 +1,21 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
 
-import { changePass } from "../handler/user/v1/change-pass";
-import { getUsers } from "../handler/user/v1/get";
-import { getUser } from "../handler/user/v1/get-by-id";
-import { grantAccessUser } from "../handler/user/v1/grant-access";
-import { me } from "../handler/user/v1/me";
-import { newUser } from "../handler/user/v1/new";
-import { newManyUser } from "../handler/user/v1/new-many";
-import { updateProf } from "../handler/user/v1/update-prof";
-import { accessCtrl } from "../middleware/access-ctrl";
-import { checkUser } from "../middleware/check-user";
-import { decodeJwt } from "../middleware/decode-jwt";
-import { redirectVer } from "../middleware/redirect-ver";
-import { requireAuth } from "../middleware/require-auth";
-import { validReq } from "../middleware/valid-req";
+import { changePass } from "../handler/user/v1/change-pass.js";
+import { getUser } from "../handler/user/v1/get-by-id.js";
+import { getUsers } from "../handler/user/v1/get.js";
+import { grantAccessUser } from "../handler/user/v1/grant-access.js";
+import { me } from "../handler/user/v1/me.js";
+import { newManyUser } from "../handler/user/v1/new-many.js";
+import { newUser } from "../handler/user/v1/new.js";
+import { updateProf } from "../handler/user/v1/update-prof.js";
+import { uploader } from "../helper/uploader.js";
+import { accessCtrl } from "../middleware/access-ctrl.js";
+import { checkUser } from "../middleware/check-user.js";
+import { decodeJwt } from "../middleware/decode-jwt.js";
+import { redirectVer } from "../middleware/redirect-ver.js";
+import { requireAuth } from "../middleware/require-auth.js";
+import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
@@ -119,7 +120,7 @@ r.post(
       .withMessage("Vai trò không hợp lệ"),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: newUser,
   })
 );
@@ -193,7 +194,7 @@ r.patch(
   requireAuth,
   checkUser,
   accessCtrl(),
-  single("avatar"),
+  uploader.single("avatar"),
   [
     check("username")
       .notEmpty()

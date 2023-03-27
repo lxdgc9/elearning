@@ -1,4 +1,4 @@
-import { BadReqErr } from "../err/bad-req";
+import { BadReqErr } from "../err/bad-req.js";
 
 function redirectVer(payload) {
   return function (req, res, next) {

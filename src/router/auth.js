@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { check } from "express-validator";
 
-import { login } from "../handler/auth/v1/login";
-import { redirectVer } from "../middleware/redirect-ver";
-import { validReq } from "../middleware/valid-req";
+import { login } from "../handler/auth/v1/login.js";
+import { redirectVer } from "../middleware/redirect-ver.js";
+import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
