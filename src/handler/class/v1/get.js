@@ -18,7 +18,6 @@ async function getClasses(req, res, next) {
               },
               {
                 path: "members",
-                select: "profile role",
                 populate: [
                   {
                     path: "role",
@@ -38,7 +37,6 @@ async function getClasses(req, res, next) {
           },
           {
             path: "members",
-            select: "profile role",
             populate: [
               {
                 path: "role",
