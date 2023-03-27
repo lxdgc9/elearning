@@ -8,6 +8,11 @@ async function getClass(req, res, next) {
     ).populate([
       {
         path: "channels",
+        populate: [
+          {
+            path: "groups",
+          },
+        ],
       },
       {
         path: "members",
