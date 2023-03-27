@@ -1,13 +1,11 @@
-// Lưu ở folder upload và lưu tên với định dạng uft8
-const multer = require("multer");
+import multer from "multer";
 
 const uploader = multer({
   storage: multer.diskStorage({
     destination(_req, _file, callback) {
-      callback(null, "../upload"); // Đường dẫn lưu file
+      callback(null, "../upload");
     },
     filename(_req, file, callback) {
-      // Lưu tên với dạng utf8
       file.originalname = Buffer.from(
         file.originalname,
         "latin1"
@@ -16,8 +14,8 @@ const uploader = multer({
     },
   }),
   limits: {
-    fileSize: 1000 * 1024 * 1024, // Giới hạn: 1G
+    fileSize: 1048576000,
   },
 });
 
-module.exports = uploader;
+export { uploader };

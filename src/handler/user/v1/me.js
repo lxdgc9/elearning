@@ -1,4 +1,5 @@
-const User = require("../../../model/user");
+import { UnauthorizedErr } from "../../../err/unauthorized";
+import { User } from "../../../model/user";
 
 async function me(req, res, next) {
   try {
@@ -20,6 +21,9 @@ async function me(req, res, next) {
           select: "name session description",
         },
       ]);
+    if (!user) {
+      throw new UnauthorizedErr("Người dùng không tồn tại");
+    }
 
     res.json({
       user,
@@ -30,4 +34,4 @@ async function me(req, res, next) {
   }
 }
 
-module.exports = me;
+export { me };

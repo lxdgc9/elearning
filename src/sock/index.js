@@ -1,23 +1,21 @@
-const jwt = require("socket.io");
-const socketio = require("socket.io");
-const Class = require("../model/class");
+import { Server } from "socket.io";
 
 function createSock(ws) {
-  const io = new socketio.Server(ws, {
+  const io = new Server(ws, {
     cors: {
       origin: "*",
     },
   });
 
-  console.log("Socket is starting!!!");
+  console.log("Created socket");
 
   io.on("connection", (socket) => {
-    console.log("a socket connected", socket.id);
+    console.log("A socket connected", socket.id);
 
     socket.on("disconnect", () => {
-      console.log("a socket disconnected", socket.id);
+      console.log("A socket disconnected", socket.id);
     });
   });
 }
 
-module.exports = createSock;
+export { createSock };

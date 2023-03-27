@@ -1,5 +1,5 @@
-const NotFoundErr = require("../../../error/not-found");
-const User = require("../../../model/user");
+import { UnauthorizedErr } from "../../../err/unauthorized";
+import { User } from "../../../model/user";
 
 async function updateProf(req, res, next) {
   const {
@@ -11,6 +11,11 @@ async function updateProf(req, res, next) {
     address,
     bio,
   } = req.body;
+
+  let avatar;
+  if (req.file) {
+    avatar = req.file.filename;
+  }
 
   try {
     const user = await User.findByIdAndUpdate(
@@ -24,6 +29,7 @@ async function updateProf(req, res, next) {
           phone,
           address,
           bio,
+          avatar,
         },
       },
       { new: true }
@@ -33,13 +39,12 @@ async function updateProf(req, res, next) {
         populate: [
           {
             path: "permissions",
-            select: "-_id name description",
           },
         ],
       },
     ]);
     if (!user) {
-      throw new NotFoundErr("Không tìm thấy người dùng");
+      throw new UnauthorizedErr("Người dùng không tồn tại");
     }
 
     res.json({
@@ -51,4 +56,4 @@ async function updateProf(req, res, next) {
   }
 }
 
-module.exports = updateProf;
+export { updateProf };

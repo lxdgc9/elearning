@@ -1,19 +1,22 @@
-const User = require("../../../model/user");
-const NotFoundErr = require("../../../error/not-found");
+import { NotFoundErr } from "../../../err/not-found";
+import { User } from "../../../model/user";
 
-async function getUsers(req, res, next) {
+async function getUsers(_req, res, next) {
   try {
     const users = await User.find({})
-      .select("-logs -classes")
       .populate([
         {
           path: "role",
-          select: "name description",
+          populate: [
+            {
+              path: "permissions",
+            },
+          ],
         },
       ])
       .sort({ createdAt: -1 });
     if (!users.length) {
-      throw new NotFoundErr("Danh Sách Người Dùng Trống");
+      throw new NotFoundErr("Danh sách người dùng trống");
     }
 
     res.json({
@@ -25,4 +28,4 @@ async function getUsers(req, res, next) {
   }
 }
 
-module.exports = getUsers;
+export { getUsers };

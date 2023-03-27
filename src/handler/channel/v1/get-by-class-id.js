@@ -1,5 +1,5 @@
 const Class = require("../../../model/class");
-const BadReqErr = require("../../../error/bad-req");
+const BadReqErr = require("../../../err/bad-req").default;
 
 async function getByClass(req, res, next) {
   try {

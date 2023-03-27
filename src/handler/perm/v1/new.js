@@ -1,26 +1,39 @@
-const GPerm = require("../../../model/gperm");
-const Perm = require("../../../model/perm");
+import { BadReqErr } from "../../../err/bad-req";
+import { GPerm } from "../../../model/gperm";
+import { Perm } from "../../../model/perm";
 
 async function newPerm(req, res, next) {
-  const { name, groupId, description } = req.body;
+  const { code, groupId, description } = req.body;
 
   try {
-    const perm = Perm.build({
-      name,
-      groupId,
+    const gPerm = await GPerm.findById(groupId);
+    if (!gPerm) {
+      throw new BadReqErr("Nhóm quyền không tồn tại");
+    }
+
+    const perm = new Perm({
+      code,
       description,
+      group: groupId,
     });
     await perm.save();
 
-    // Thêm 'permission' vào 'group'
-    await GPerm.findByIdAndUpdate(groupId, {
+    await gPerm.updateOne({
       $addToSet: {
         permissions: perm.id,
       },
     });
 
+    const permDetail = await Perm.findById(
+      perm.id
+    ).populate([
+      {
+        path: "group",
+      },
+    ]);
+
     res.status(201).json({
-      permission: perm,
+      permission: permDetail,
     });
   } catch (err) {
     console.log(err);
@@ -28,4 +41,4 @@ async function newPerm(req, res, next) {
   }
 }
 
-module.exports = newPerm;
+export { newPerm };

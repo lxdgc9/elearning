@@ -1,10 +1,8 @@
-const mongoose = require("mongoose");
-const Password = require("../helper/password");
-const gender = require("../type/gender");
+import { model, Schema } from "mongoose";
 
-const { MALE, FEMALE, OTHER } = gender;
+import { Password } from "../helper/password";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     username: {
       type: String,
@@ -28,10 +26,10 @@ const schema = new mongoose.Schema(
       },
       gender: {
         type: String,
-        enum: [MALE, FEMALE, OTHER],
+        enum: ["MALE", "FEMALE", "OTHER"],
         uppercase: true,
         trim: true,
-        default: OTHER,
+        default: "OTHER",
       },
       email: {
         type: String,
@@ -43,13 +41,13 @@ const schema = new mongoose.Schema(
         trim: true,
       },
       address: {
-        provinceId: {
+        province: {
           type: String,
         },
-        districtId: {
+        district: {
           type: String,
         },
-        wardId: {
+        ward: {
           type: String,
         },
         street: {
@@ -64,12 +62,12 @@ const schema = new mongoose.Schema(
       },
     },
     role: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "role",
     },
     classes: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "class",
       },
     ],
@@ -82,8 +80,8 @@ const schema = new mongoose.Schema(
     collection: "User",
     timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        ret.id = ret._id;
         delete ret._id;
         delete ret.password;
         delete ret.__v;
@@ -92,38 +90,29 @@ const schema = new mongoose.Schema(
   }
 );
 
-// Tạo index cho user, mới nhất đứng đầu
+schema.index({ username: -1 });
 schema.index({ createdAt: -1 });
 
-// Mã hóa mật khẩu trước khi lưu
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
-    const hashed = await Password.toHash(
-      this.get("password")
-    );
-    this.set("password", hashed);
+    this.password = await Password.toHash(this.password);
   }
   fn();
 });
 
-// Xóa khoảng trắng thừa trong họ tên và mô tả bản thân
 schema.pre("save", function (next) {
-  let {
-    profile: { fullName, bio },
-  } = this;
-  if (fullName) {
-    fullName = fullName.replace(/\s+/g, " ").trim();
-  }
-  if (bio) {
-    bio = bio.replace(/\s+/g, " ").trim();
+  let { profile: { fullName, bio } = {} } = this;
+  if (profile) {
+    if (fullName) {
+      fullName = fullName.replace(/\s+/g, " ").trim();
+    }
+    if (bio) {
+      bio = bio.replace(/\s+/g, " ").trim();
+    }
   }
   next();
 });
 
-schema.statics.build = (attrs) => {
-  return new User(attrs);
-};
+const User = model("user", schema);
 
-const User = mongoose.model("user", schema);
-
-module.exports = User;
+export { User };

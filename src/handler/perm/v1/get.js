@@ -1,11 +1,17 @@
-const NotFoundErr = require("../../../error/not-found");
-const Perm = require("../../../model/perm");
+import { NotFoundErr } from "../../../err/not-found";
+import { Perm } from "../../../model/perm";
 
-async function getPerms(req, res, next) {
+async function getPerms(_req, res, next) {
   try {
-    const perms = await Perm.find({});
+    const perms = await Perm.find({})
+      .populate([
+        {
+          path: "group",
+        },
+      ])
+      .sort({ createdAt: -1 });
     if (!perms.length) {
-      throw new NotFoundErr("Danh Sách Quyền Hạn Trống");
+      throw new NotFoundErr("Danh sách quyền hạn trống");
     }
 
     res.json({
@@ -17,4 +23,4 @@ async function getPerms(req, res, next) {
   }
 }
 
-module.exports = getPerms;
+export { getPerms };

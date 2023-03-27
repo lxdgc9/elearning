@@ -1,17 +1,13 @@
-// Middleware này bắt lỗi từ express-validator
-// thông báo lỗi đầu tiên gặp phải
-//
-// Doc: https://express-validator.github.io/docs
+import { validationResult } from "express-validator";
 
-const valid = require("express-validator");
-const ReqValidateErr = require("../error/req-validate");
+import { ValidReqErr } from "../err/valid-req";
 
-function validReq(req, res, next) {
-  const errs = valid.validationResult(req);
+function validReq(req, _res, next) {
+  const errs = validationResult(req);
   if (!errs.isEmpty()) {
-    throw new ReqValidateErr(errs.array()[0].msg);
+    throw new ValidReqErr(errs.array()[0].msg);
   }
   next();
 }
 
-module.exports = validReq;
+export { validReq };

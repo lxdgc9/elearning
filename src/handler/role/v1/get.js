@@ -1,12 +1,18 @@
-const Role = require("../../../model/role");
+import { NotFoundErr } from "../../../err/not-found";
+import { Role } from "../../../model/role";
 
 async function getRoles(req, res, next) {
   try {
-    const roles = await Role.find({}).populate([
-      {
-        path: "permissions",
-      },
-    ]);
+    const roles = await Role.find({})
+      .populate([
+        {
+          path: "permissions",
+        },
+      ])
+      .sort({ createdAt: -1 });
+    if (!roles.lengh) {
+      throw new NotFoundErr("Danh sách vai trò trống");
+    }
 
     res.json({
       roles,
@@ -17,4 +23,4 @@ async function getRoles(req, res, next) {
   }
 }
 
-module.exports = getRoles;
+export { getRoles };

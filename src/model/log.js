@@ -1,19 +1,16 @@
-const mongoose = require("mongoose");
-const action = require("../type/action");
+import { model, Schema } from "mongoose";
 
-const { GET, NEW, MOD, DEL } = action;
-
-const logSchema = new mongoose.Schema(
+const schema = new Schema(
   {
     action: {
       type: String,
-      enum: [GET, NEW, MOD, DEL],
+      enum: ["GET", "NEW", "MOD", "DEL"],
       required: true,
       uppercase: true,
       trim: true,
     },
-    modBy: {
-      type: mongoose.Schema.Types.ObjectId,
+    modifiedBy: {
+      type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
@@ -22,8 +19,8 @@ const logSchema = new mongoose.Schema(
     collection: "Log",
     timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
       },
@@ -31,10 +28,8 @@ const logSchema = new mongoose.Schema(
   }
 );
 
-logSchema.statics.build = (attrs) => {
-  return new Log(attrs);
-};
+schema.index({ createdAt: -1 });
 
-const Log = mongoose.model("log", logSchema);
+const Log = model("log", schema);
 
-module.exports = Log;
+export { Log };

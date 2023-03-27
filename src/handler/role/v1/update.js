@@ -1,11 +1,44 @@
-const NotFoundErr = require("../../../error/not-found");
-const Role = require("../../../model/role");
+import { BadReqErr } from "../../../err/bad-req";
+import { Perm } from "../../../model/perm";
+import { Role } from "../../../model/role";
 
 async function updateRole(req, res, next) {
   const { name, description, permissionIds } = req.body;
 
   try {
-    const role = await Role.findByIdAndUpdate(
+    if (permissionIds && permissionIds.length > 0) {
+      const perms = await Perm.find({ _id: permissionIds });
+      if (perms.length !== permissionIds.length) {
+        throw new BadReqErr(
+          "Có quyền hạn trong danh sách không tồn tại"
+        );
+      }
+    }
+
+    const role = await Role.findById(req.params.id);
+    if (!role) {
+      throw new BadReqErr("Vai trò không tồn tại");
+    }
+
+    for await (const p of role.permissions) {
+      if (!permissionIds.includes(p)) {
+        await Perm.findByIdAndUpdate(p, {
+          $pull: {
+            roles: role.id,
+          },
+        });
+      }
+    }
+
+    for await (const p of permissionIds) {
+      await Perm.findByIdAndUpdate(p, {
+        $addToSet: {
+          roles: role.id,
+        },
+      });
+    }
+
+    const roleDetail = await Role.findByIdAndUpdate(
       req.params.id,
       {
         name,
@@ -13,13 +46,14 @@ async function updateRole(req, res, next) {
         permissions: permissionIds,
       },
       { new: true }
-    );
-    if (!role) {
-      throw new NotFoundErr("Không tìm thấy vai trò");
-    }
+    ).populate([
+      {
+        path: "permissions",
+      },
+    ]);
 
     res.json({
-      role,
+      role: roleDetail,
     });
   } catch (err) {
     console.log(err);
@@ -27,4 +61,4 @@ async function updateRole(req, res, next) {
   }
 }
 
-module.exports = updateRole;
+export { updateRole };

@@ -1,129 +1,77 @@
-const express = require("express");
-const route = require("../cfg/route");
-const valid = require("express-validator");
-const uploader = require("../helper/uploader");
-const access = require("../middleware/access");
-const active = require("../middleware/active");
-const version = require("../middleware/version");
-const validReq = require("../middleware/valid-req");
-const currUser = require("../middleware/current-user");
-const requireAuth = require("../middleware/require-auth");
-const accessUser = require("../handler/user/v1/access");
-const changePass = require("../handler/user/v1/change-pass");
-const getUsers = require("../handler/user/v1/get");
-const getUser = require("../handler/user/v1/get-by-id");
-const me = require("../handler/user/v1/me");
-const newUser = require("../handler/user/v1/new");
-const newManyUser = require("../handler/user/v1/new-many");
-const updateProf = require("../handler/user/v1/update-prof");
+import { Router } from "express";
+import { check, param } from "express-validator";
 
-const r = express.Router();
+import { changePass } from "../handler/user/v1/change-pass";
+import { getUsers } from "../handler/user/v1/get";
+import { getUser } from "../handler/user/v1/get-by-id";
+import { grantAccessUser } from "../handler/user/v1/grant-access";
+import { me } from "../handler/user/v1/me";
+import { newUser } from "../handler/user/v1/new";
+import { newManyUser } from "../handler/user/v1/new-many";
+import { updateProf } from "../handler/user/v1/update-prof";
+import { accessCtrl } from "../middleware/access-ctrl";
+import { checkUser } from "../middleware/check-user";
+import { decodeJwt } from "../middleware/decode-jwt";
+import { redirectVer } from "../middleware/redirect-ver";
+import { requireAuth } from "../middleware/require-auth";
+import { validReq } from "../middleware/valid-req";
 
-const {
-  GET,
-  GET_BY_ID,
-  NEW,
-  NEW_MANY,
-  CURRENT_USER,
-  SET_STATE,
-  UPDATE_PROFILE,
-  CHANGE_PASSWORD,
-} = route.API.USER;
+const r = Router();
 
 // Lấy chi tiết thông tin người dùng từ token
-r[CURRENT_USER.METHOD](
-  CURRENT_USER.PATH,
-  currUser,
+r.get(
+  "/api/users/me",
+  decodeJwt,
   requireAuth,
-  active,
-  access(CURRENT_USER.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
     v1: me,
   })
 );
 
 // Lấy danh sách người dùng
-r[GET.METHOD](
-  GET.PATH,
-  currUser,
+r.get(
+  "/api/users",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
     v1: getUsers,
   })
 );
 
 // Lấy chi tiết thông tin người dùng
-r[GET_BY_ID.METHOD](
-  GET_BY_ID.PATH,
-  currUser,
+r.get(
+  "/api/users/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET_BY_ID.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .param("id")
+    param("id")
       .isMongoId()
       .withMessage("Không tìm thấy người dùng"),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: getUser,
   })
 );
 
-// Chặn người dùng truy cập
-r[SET_STATE.METHOD](
-  SET_STATE.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(SET_STATE.ACCESS),
-  version({
-    v1: accessUser,
-  })
-);
-
-// Cập nhật hồ sơ cá nhân
-r[UPDATE_PROFILE.METHOD](
-  UPDATE_PROFILE.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(UPDATE_PROFILE.ACCESS),
-  uploader.single("avatar"),
-  version({
-    v1: updateProf,
-  })
-);
-
-// Đổi mật khẩu
-r[CHANGE_PASSWORD.METHOD](
-  CHANGE_PASSWORD.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(CHANGE_PASSWORD.ACCESS),
-  version({
-    v1: changePass,
-  })
-);
-
 // Tạo người dùng
-r[NEW.METHOD](
-  NEW.PATH,
-  currUser,
+r.post(
+  "/api/users",
+  decodeJwt,
   requireAuth,
-  active,
-  access(NEW.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .check("username")
+    check("username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    valid
-      .check("password")
+    check("password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
@@ -135,44 +83,40 @@ r[NEW.METHOD](
       .withMessage(
         "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
-    valid
-      .check("fullName")
+    check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
         "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
-    valid
-      .check("dob")
+    check("dob")
       .isAfter("1900-01-01")
       .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
         new Date(Date.now() - 378683424000).toString()
-      ) // yêu cầu đủ 12 tuổi
+      )
       .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
-    valid
-      .check("gender")
+    check("gender")
       .toLowerCase()
       .isIn(["male", "female", "other"])
       .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("email")
+    check("email")
       .isEmail()
       .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("phone")
+    check("phone")
       .isLength({ min: 10, max: 11 })
       .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
       .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("roleId")
+    check("roleId")
       .notEmpty()
-      .withMessage("Yêu cầu vai trò người dùng"),
+      .withMessage("Yêu cầu vai trò người dùng")
+      .isMongoId()
+      .withMessage("Vai trò không hợp lệ"),
   ],
   validReq,
   version({
@@ -181,19 +125,17 @@ r[NEW.METHOD](
 );
 
 // Tạo nhiều người dùng
-r[NEW_MANY.METHOD](
-  NEW_MANY.PATH,
-  currUser,
+r.post(
+  "/api/users/many",
+  decodeJwt,
   requireAuth,
-  active,
-  access(NEW_MANY.ACCESS),
+  checkUser,
+  accessCtrl(),
   [
-    valid
-      .check("users.*.username")
+    check("users.*.username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    valid
-      .check("users.*.password")
+    check("users.*.password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu")
       .isStrongPassword({
@@ -205,47 +147,155 @@ r[NEW_MANY.METHOD](
       .withMessage(
         "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
       ),
-    valid
-      .check("users.*.fullName")
+    check("users.*.fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(
         "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
       )
       .optional({ nullable: true }),
-    valid
-      .check("users.*.dob")
+    check("users.*.dob")
       .isAfter("1900-01-01")
       .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
       .isBefore(
         new Date(Date.now() - 378683424000).toString()
-      ) // Yêu cầu đủ 12 tuổi
+      )
       .withMessage("Người dùng phải đủ 12 tuổi")
       .optional({ nullable: true }),
-    valid
-      .check("users.*.gender")
+    check("users.*.gender")
       .toLowerCase()
       .isIn(["male", "female", "other"])
       .withMessage("Giới tính không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("users.*.email")
+    check("users.*.email")
       .isEmail()
       .withMessage("Email không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("users.*.phone")
+    check("users.*.phone")
       .isLength({ min: 10, max: 11 })
       .withMessage("Số điện thoại không đúng định dạng")
       .isNumeric()
       .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
-    valid
-      .check("users.*.roleId")
+    check("users.*.roleId")
       .notEmpty()
-      .withMessage("Yêu cầu vai trò người dùng"),
+      .withMessage("Yêu cầu vai trò người dùng")
+      .isMongoId()
+      .withMessage("Vai trò không hợp lệ"),
   ],
   validReq,
   newManyUser
 );
 
-module.exports = r;
+// Cập nhật hồ sơ cá nhân
+r.patch(
+  "/api/users/profile",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  single("avatar"),
+  [
+    check("username")
+      .notEmpty()
+      .withMessage("Yêu cầu tên tài khoản"),
+    check("password")
+      .notEmpty()
+      .withMessage("Yêu cầu mật khẩu")
+      .isStrongPassword({
+        minLength: 6,
+        minLowercase: 1,
+        minUppercase: 1,
+        minSymbols: 0,
+      })
+      .withMessage(
+        "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
+      ),
+    check("fullName")
+      .isAlpha("vi-VN", { ignore: " " })
+      .withMessage(
+        "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
+      )
+      .optional({ nullable: true }),
+    check("dob")
+      .isAfter("1900-01-01")
+      .withMessage("Ngày sinh phải từ năm 1990 trở về sau")
+      .isBefore(
+        new Date(Date.now() - 378683424000).toString()
+      )
+      .withMessage("Người dùng phải đủ 12 tuổi")
+      .optional({ nullable: true }),
+    check("gender")
+      .toLowerCase()
+      .isIn(["male", "female", "other"])
+      .withMessage("Giới tính không hợp lệ")
+      .optional({ nullable: true }),
+    check("email")
+      .isEmail()
+      .withMessage("Email không hợp lệ")
+      .optional({ nullable: true }),
+    check("phone")
+      .isLength({ min: 10, max: 11 })
+      .withMessage("Số điện thoại không đúng định dạng")
+      .isNumeric()
+      .withMessage("Số điện thoại không hợp lệ")
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  redirectVer({
+    v1: updateProf,
+  })
+);
+
+// Đổi mật khẩu
+r.patch(
+  "/api/users/password",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    check("password")
+      .notEmpty()
+      .withMessage("Yêu cầu mật khẩu hiện tại"),
+    check("newPassword")
+      .notEmpty()
+      .withMessage("Yêu cầu mật khẩu mới")
+      .isStrongPassword({
+        minLength: 6,
+        minLowercase: 1,
+        minUppercase: 1,
+        minSymbols: 0,
+      })
+      .withMessage(
+        "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
+      ),
+  ],
+  validReq,
+  redirectVer({
+    v1: changePass,
+  })
+);
+
+// Bật/tắt quyền truy cập người dùng
+r.patch(
+  "/api/users/access/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Người dùng không hợp lệ"),
+    check("status")
+      .notEmpty()
+      .withMessage("Yêu cầu trạng thái truy cập")
+      .isBoolean()
+      .withMessage("Trạng thái truy cập không hợp lệ"),
+  ],
+  redirectVer({
+    v1: grantAccessUser,
+  })
+);
+
+export { r as userRouter };

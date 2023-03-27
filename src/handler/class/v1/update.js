@@ -1,5 +1,5 @@
 const Class = require("../../../model/class");
-const BadReqErr = require("../../../error/bad-req");
+const BadReqErr = require("../../../err/bad-req").default;
 
 async function updateClass(req, res, next) {
   const { name, session, description } = req.body;

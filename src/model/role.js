@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { model, Schema } from "mongoose";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     name: {
       type: String,
@@ -13,8 +13,14 @@ const schema = new mongoose.Schema(
     },
     permissions: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "perm",
+      },
+    ],
+    users: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
       },
     ],
   },
@@ -22,8 +28,8 @@ const schema = new mongoose.Schema(
     collection: "Role",
     timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
       },
@@ -31,9 +37,10 @@ const schema = new mongoose.Schema(
   }
 );
 
-// Xóa khoảng trắng thừa trong tên và mô tả
+schema.index({ createdAt: -1 });
+
 schema.pre("save", function (next) {
-  const { name, description } = this;
+  let { name, description } = this;
   name = name.replace(/\s+/g, " ").trim();
   if (description) {
     description = description.replace(/\s+/g, " ").trim();
@@ -41,10 +48,6 @@ schema.pre("save", function (next) {
   next();
 });
 
-schema.statics.build = (attrs) => {
-  return new Role(attrs);
-};
+const Role = model("role", schema);
 
-const Role = mongoose.model("role", schema);
-
-module.exports = Role;
+export { Role };

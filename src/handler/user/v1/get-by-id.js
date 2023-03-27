@@ -1,22 +1,20 @@
-const NotFoundErr = require("../../../error/not-found");
-const User = require("../../../model/user");
+import { NotFoundErr } from "../../../err/not-found";
+import { User } from "../../../model/user";
 
 async function getUser(req, res, next) {
   try {
-    const user = await User.findById(req.params.id)
-      .select("-logs -classes")
-      .populate([
-        {
-          path: "role",
-          select: "name description permissions",
-          populate: [
-            {
-              path: "permissions",
-              select: "name description",
-            },
-          ],
-        },
-      ]);
+    const user = await User.findById(
+      req.params.id
+    ).populate([
+      {
+        path: "role",
+        populate: [
+          {
+            path: "permissions",
+          },
+        ],
+      },
+    ]);
     if (!user) {
       throw new NotFoundErr("Không tìm thấy người dùng");
     }
@@ -30,4 +28,4 @@ async function getUser(req, res, next) {
   }
 }
 
-module.exports = getUser;
+export { getUser };

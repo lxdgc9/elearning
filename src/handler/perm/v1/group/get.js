@@ -1,6 +1,6 @@
-const GPerm = require("../../../model/gperm");
+import { GPerm } from "../../../../model/gperm";
 
-async function getGPerms(req, res, next) {
+async function getGPerms(_req, res, next) {
   try {
     const gperms = await GPerm.find({}).populate([
       {
@@ -17,4 +17,4 @@ async function getGPerms(req, res, next) {
   }
 }
 
-module.exports = getGPerms;
+export { getGPerms };

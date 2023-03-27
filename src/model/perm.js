@@ -1,52 +1,53 @@
-const mongoose = require("mongoose");
+import { model, Schema } from "mongoose";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
-    name: {
+    code: {
       type: String,
       required: true,
       unique: true,
       trim: true,
     },
-    groupId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "gperm",
-      required: true,
-    },
     description: {
       type: String,
       trim: true,
     },
+    group: {
+      type: Schema.Types.ObjectId,
+      ref: "gperm",
+      required: true,
+    },
+    roles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "role",
+      },
+    ],
   },
   {
     collection: "Permission",
+    timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        ret.id = ret._id;
         delete ret._id;
-        delete ret.groupId;
         delete ret.__v;
       },
     },
-    timestamps: true,
   }
 );
 
-// xóa khoảng trắng thừa trong tên và mô tả
+schema.index({ createdAt: -1 });
+
 schema.pre("save", function (next) {
-  this.name = this.name.replace(/\s+/g, " ").trim();
-  if (this.description) {
-    this.description = this.description
-      .replace(/\s+/g, " ")
-      .trim();
+  let { code, description } = this;
+  code = code.replace(/\s+/g, " ").trim();
+  if (description) {
+    description = description.replace(/\s+/g, " ").trim();
   }
   next();
 });
 
-schema.statics.build = (attrs) => {
-  return new Perm(attrs);
-};
+const Perm = model("perm", schema);
 
-const Perm = mongoose.model("perm", schema);
-
-module.exports = Perm;
+export { Perm };

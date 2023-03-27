@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { model, Schema } from "mongoose";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     name: {
       type: String,
@@ -9,40 +9,29 @@ const schema = new mongoose.Schema(
     },
     permissions: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "perm",
-      },
-    ],
-    logs: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "log",
       },
     ],
   },
   {
     collection: "Group Permission",
+    timestamps: true,
     toJSON: {
+      virtuals: true,
       transform(_doc, ret, _options) {
-        ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
       },
     },
-    timestamps: true,
   }
 );
 
-// xóa khoảng trắng thừa trong tên
 schema.pre("save", function (next) {
   this.name = this.name.replace(/\s+/g, " ").trim();
   next();
 });
 
-schema.statics.build = (attrs) => {
-  return new GPerm(attrs);
-};
+const GPerm = model("gperm", schema);
 
-const GPerm = mongoose.model("gperm", schema);
-
-module.exports = GPerm;
+export { GPerm };

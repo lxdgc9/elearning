@@ -1,5 +1,5 @@
-const NotFoundErr = require("../../../error/not-found");
-const Role = require("../../../model/role");
+import { NotFoundErr } from "../../../err/not-found";
+import { Role } from "../../../model/role";
 
 async function getRole(req, res, next) {
   try {
@@ -11,7 +11,7 @@ async function getRole(req, res, next) {
       },
     ]);
     if (!role) {
-      throw new NotFoundErr("Không tìm thấy quyền hạn");
+      throw new NotFoundErr("Không tìm thấy vai trò");
     }
 
     res.json({
@@ -23,4 +23,4 @@ async function getRole(req, res, next) {
   }
 }
 
-module.exports = getRole;
+export { getRole };

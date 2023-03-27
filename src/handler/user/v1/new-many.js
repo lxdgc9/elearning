@@ -1,28 +1,29 @@
-const BadReqErr = require("../../../error/bad-req");
-const Role = require("../../../model/role");
-const User = require("../../../model/user");
+import { BadReqErr } from "../../../err/bad-req";
+import { Role } from "../../../model/role";
+import { User } from "../../../model/user";
 
 async function newManyUser(req, res, next) {
   const { users } = req.body;
 
   try {
-    // Kiểm tra username
     const extUsers = await User.find({
       username: { $in: users.map((u) => u.username) },
     });
     if (extUsers.length > 0) {
-      throw new BadReqErr("Tên Người Dùng Đã Tồn Tại");
+      throw new BadReqErr(
+        "Có người dùng trong danh sách đã tồn tại"
+      );
     }
 
-    // Kiểm tra roleId
     const roles = await Role.find({}).select("_id");
     const extRoleIds = roles.map((r) => r.id);
     const roleIds = users.map((u) => u.roleId);
     if (roleIds.some((r) => !extRoleIds.includes(r))) {
-      throw new BadReqErr("Không Tìm Thấy Vai Trò");
+      throw new BadReqErr(
+        "Tồn tại người dùng trong danh sách có vai trò không hợp lệ"
+      );
     }
 
-    // Tạo nhiều user
     let flag = true;
     let userList = [];
     for await (const {
@@ -33,9 +34,9 @@ async function newManyUser(req, res, next) {
       dob,
       email,
       phone,
-      provinceId,
-      districtId,
-      wardId,
+      province,
+      district,
+      ward,
       street,
       roleId,
       hasAccess,
@@ -51,9 +52,9 @@ async function newManyUser(req, res, next) {
             email,
             phone,
             address: {
-              provinceId,
-              districtId,
-              wardId,
+              province,
+              district,
+              ward,
               street,
             },
           },
@@ -66,18 +67,31 @@ async function newManyUser(req, res, next) {
         flag = false;
       }
     }
-    // Tiến hành tạo lưu những user đã tạo
-    if (flag) {
-      userList.forEach(async (u) => {
-        console.log(u);
-        await u.save();
-      });
-    } else {
-      throw new BadReqErr("Tạo Nhiều Người Dùng Thất Bại");
+    if (!flag) {
+      throw new BadReqErr("Tạo nhiều người dùng thất bại");
     }
 
+    for await (const u of userList) {
+      await u.save();
+    }
+
+    const usersDetail = await User.find({
+      _id: userList.map((u) => u.id),
+    })
+      .populate([
+        {
+          path: "role",
+          populate: [
+            {
+              path: "permissions",
+            },
+          ],
+        },
+      ])
+      .sort({ createdAt: -1 });
+
     res.status(201).json({
-      message: "Tạo Thành Công",
+      users: usersDetail,
     });
   } catch (err) {
     console.log(err);
@@ -85,4 +99,4 @@ async function newManyUser(req, res, next) {
   }
 }
 
-module.exports = newManyUser;
+export { newManyUser };

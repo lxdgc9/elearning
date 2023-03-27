@@ -1,31 +1,27 @@
-const express = require("express");
-const route = require("../cfg/route");
-const valid = require("express-validator");
-const login = require("../handler/auth/v1/login");
-const validReq = require("../middleware/valid-req");
-const version = require("../middleware/version");
+import { Router } from "express";
+import { check } from "express-validator";
 
-const r = express.Router();
+import { login } from "../handler/auth/v1/login";
+import { redirectVer } from "../middleware/redirect-ver";
+import { validReq } from "../middleware/valid-req";
 
-const { LOGIN } = route.API.AUTH;
+const r = Router();
 
-// Đăng nhập 
-r[LOGIN.METHOD](
-  LOGIN.PATH,
+// Đăng nhập
+r.post(
+  "/api/users",
   [
-    valid
-      .check("username")
+    check("username")
       .notEmpty()
       .withMessage("Yêu cầu tên tài khoản"),
-    valid
-      .check("password")
+    check("password")
       .notEmpty()
       .withMessage("Yêu cầu mật khẩu"),
   ],
   validReq,
-  version({
+  redirectVer({
     v1: login,
   })
 );
 
-module.exports = r;
+export { r as authRouter };

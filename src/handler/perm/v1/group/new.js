@@ -1,16 +1,16 @@
-const GPerm = require("../../../model/gperm");
+import { GPerm } from "../../../../model/gperm";
 
 async function newGPerm(req, res, next) {
   const { name } = req.body;
 
   try {
-    const gperm = GPerm.build({
+    const gPerm = new GPerm({
       name,
     });
-    await gperm.save();
+    await gPerm.save();
 
     res.status(201).json({
-      groupPermission: gperm,
+      groupPermission: gPerm,
     });
   } catch (err) {
     console.log(err);
@@ -18,4 +18,4 @@ async function newGPerm(req, res, next) {
   }
 }
 
-module.exports = newGPerm;
+export { newGPerm };

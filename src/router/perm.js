@@ -1,75 +1,208 @@
-const express = require("express");
-const route = require("../cfg/route");
-// Middlewares
-const active = require("../middleware/active");
-const access = require("../middleware/access");
-const version = require("../middleware/version");
-const currUser = require("../middleware/current-user");
-const requireAuth = require("../middleware/require-auth");
-// Routes
-const getPerms = require("../handler/perm/v1/get");
-const getPerm = require("../handler/perm/v1/get-by-id");
-const newPerm = require("../handler/perm/v1/new");
-const updatePerm = require("../handler/perm/v1/update");
-const deletePerm = require("../handler/perm/v1/delete");
+import { Router } from "express";
+import { check, param } from "express-validator";
+import { BadReqErr } from "../err/bad-req";
 
-const r = express.Router();
+import { deletePerm } from "../handler/perm/v1/delete";
+import { getPerms } from "../handler/perm/v1/get";
+import { getPerm } from "../handler/perm/v1/get-by-id";
+import { deleteGPerm } from "../handler/perm/v1/group/delete";
+import { getGPerms } from "../handler/perm/v1/group/get";
+import { newGPerm } from "../handler/perm/v1/group/new";
+import { updateGPerm } from "../handler/perm/v1/group/update";
+import { newPerm } from "../handler/perm/v1/new";
+import { updatePerm } from "../handler/perm/v1/update";
+import { accessCtrl } from "../middleware/access-ctrl";
+import { checkUser } from "../middleware/check-user";
+import { decodeJwt } from "../middleware/decode-jwt";
+import { redirectVer } from "../middleware/redirect-ver";
+import { requireAuth } from "../middleware/require-auth";
+import { validReq } from "../middleware/valid-req";
 
-const { GET, GET_BY_ID, NEW, MOD, DEL } = route.API.PERM;
+const r = Router();
 
-r[GET.METHOD](
-  GET.PATH,
-  currUser,
+// Lấy danh sách quyền hạn
+r.get(
+  "/api/permissions",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
     v1: getPerms,
   })
 );
 
-r[GET_BY_ID.METHOD](
-  GET_BY_ID.PATH,
-  currUser,
+// Lấy danh sách quyền hạn theo nhóm
+r.get(
+  "/api/permissions/group",
+  decodeJwt,
   requireAuth,
-  active,
-  access(GET_BY_ID.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
+    v1: getGPerms,
+  })
+);
+
+// Lấy chi tiết thông tin quyền hạn
+r.get(
+  "/api/permissions/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Không tìm thấy quyền hạn"),
+  ],
+  validReq,
+  redirectVer({
     v1: getPerm,
   })
 );
 
-r[NEW.METHOD](
-  NEW.PATH,
-  currUser,
+// Tạo mới nhóm quyền
+r.post(
+  "/api/permissions/group",
+  decodeJwt,
   requireAuth,
-  active,
-  access(NEW.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  [
+    check("name")
+      .notEmpty()
+      .withMessage("Yêu cầu nhóm quyền"),
+  ],
+  validReq,
+  redirectVer({
+    v1: newGPerm,
+  })
+);
+
+// Tạo mới quyền hạn
+r.post(
+  "/api/permissions",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    check("code")
+      .notEmpty()
+      .withMessage("Yêu cầu mã quyền hạn"),
+    check("groupId")
+      .notEmpty()
+      .withMessage("Yêu cầu nhóm quyền")
+      .isMongoId()
+      .withMessage("Nhóm quyền không hợp lệ"),
+    check("description")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  redirectVer({
     v1: newPerm,
   })
 );
 
-r[MOD.METHOD](
-  MOD.PATH,
-  currUser,
+// Cập nhật thông tin nhóm quyền
+r.patch(
+  "/api/permissions/group/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(MOD.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Nhóm quyền không hợp lệ"),
+    check("name")
+      .notEmpty()
+      .withMessage("Yêu cầu nhóm quyền"),
+    check("permissionIds")
+      .isArray()
+      .withMessage("Danh sách quyền hạn không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại quyền hạn không hợp lệ trong danh sách"
+            );
+          }
+        }
+        return true;
+      })
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  redirectVer({
+    v1: updateGPerm,
+  })
+);
+
+// Cập nhật thông tin quyền hạn
+r.patch(
+  "/api/permissions/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Quyền hạn không hợp lệ"),
+    check("code")
+      .notEmpty()
+      .withMessage("Yêu cầu mã quyền hạn"),
+    check("groupId")
+      .notEmpty()
+      .withMessage("Yêu cầu nhóm quyền")
+      .isMongoId()
+      .withMessage("Nhóm quyền không hợp lệ"),
+    check("description")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  redirectVer({
     v1: updatePerm,
   })
 );
 
-r[DEL.METHOD](
-  DEL.PATH,
-  currUser,
+// Xóa nhóm quyền
+r.delete(
+  "/api/users/group/:id",
+  decodeJwt,
   requireAuth,
-  active,
-  access(DEL.ACCESS),
-  version({
+  checkUser,
+  accessCtrl(),
+  redirectVer({
+    v1: deleteGPerm,
+  })
+);
+
+// Xóa quyền hạn
+r.delete(
+  "/api/users/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Quyền hạn không hợp lệ"),
+  ],
+  validReq,
+  redirectVer({
     v1: deletePerm,
   })
 );
 
-module.exports = r;
+export { r as permRouter };

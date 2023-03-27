@@ -1,16 +1,15 @@
-const HttpErr = require("../error/http");
+import { HttpErr } from "../err/http";
 
-function errHandler(err, req, res, next) {
+function errHandler(err, _req, res, _next) {
   if (err instanceof HttpErr) {
     return res
       .status(err.code)
       .send({ message: err.message });
   }
 
-  // Lỗi xảy ra ngoài ràng buộc
   res.status(500).send({
     message: "Có gì đó sai sai!!!",
   });
 }
 
-module.exports = errHandler;
+export { errHandler };

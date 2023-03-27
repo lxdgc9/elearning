@@ -1,5 +1,5 @@
 const Class = require("../../../model/class");
-const NotFoundErr = require("../../../error/not-found");
+const NotFoundErr = require("../../../err/not-found");
 
 async function getClass(req, res, next) {
   try {

@@ -1,6 +1,6 @@
-const BadReqErr = require("../../../error/bad-req");
-const Role = require("../../../model/role");
-const User = require("../../../model/user");
+import { BadReqErr } from "../../../err/bad-req";
+import { Role } from "../../../model/role";
+import { User } from "../../../model/user";
 
 async function newUser(req, res, next) {
   const {
@@ -11,29 +11,26 @@ async function newUser(req, res, next) {
     dob,
     email,
     phone,
-    provinceId,
-    districtId,
-    wardId,
+    province,
+    district,
+    ward,
     street,
     roleId,
     hasAccess,
   } = req.body;
 
   try {
-    // kiểm tra username
-    const extUser = await User.findOne({ username });
-    if (extUser) {
-      throw new BadReqErr("Tài Khoản Đã Tồn Tại");
+    const user = await User.findOne({ username });
+    if (user) {
+      throw new BadReqErr("Tài khoản đã tồn tại");
     }
 
-    // kiểm tra roleId
     const role = await Role.findById(roleId);
-    if (role) {
-      throw new BadReqErr("Vai Trò Không Hợp Lệ");
+    if (!role) {
+      throw new BadReqErr("Vai trò không tồn tại");
     }
 
-    // tạo user
-    const user = User.build({
+    const newUser = new User({
       username,
       password,
       profile: {
@@ -43,24 +40,32 @@ async function newUser(req, res, next) {
         email,
         phone,
         address: {
-          provinceId,
-          districtId,
-          wardId,
+          province,
+          district,
+          ward,
           street,
         },
       },
       role: role.id,
       hasAccess,
     });
-    await user.save();
+    await newUser.save();
 
-    // fetch user
-    const _user = await User.findById(user.id)
-      .select("-logs -classes")
-      .populate("role");
+    const userDetail = await User.findById(
+      newUser.id
+    ).populate([
+      {
+        path: "role",
+        populate: [
+          {
+            path: "permissions",
+          },
+        ],
+      },
+    ]);
 
     res.status(201).json({
-      user: _user,
+      user: userDetail,
     });
   } catch (err) {
     console.log(err);
@@ -68,4 +73,4 @@ async function newUser(req, res, next) {
   }
 }
 
-module.exports = newUser;
+export { newUser };

@@ -1,6 +1,6 @@
 const User = require("../../../model/user");
 const Class = require("../../../model/class");
-const BadReqErr = require("../../../error/bad-req");
+const BadReqErr = require("../../../err/bad-req").default;
 
 async function newClass(req, res, next) {
   let { name, session, description, memberIds } = req.body;

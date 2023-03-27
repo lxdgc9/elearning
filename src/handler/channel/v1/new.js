@@ -1,6 +1,6 @@
 const Class = require("../../../model/class");
 const Channel = require("../../../model/channel");
-const BadReqErr = require("../../../error/bad-req");
+const BadReqErr = require("../../../err/bad-req").default;
 
 async function newChannel(req, res, next) {
   let { name, classId, description, memberIds } = req.body;

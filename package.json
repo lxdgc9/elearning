@@ -1,16 +1,16 @@
 {
-  "name": "eleaning",
+  "name": "mythware",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "node src/bin/www.js",
-    "dev": "nodemon src/bin/www.js",
+    "dev": "node --watch src/bin/www.js",
     "beauty": "prettier --print-width 60 --write ."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "csv-parser": "^3.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-validator": "^6.15.0",
@@ -21,7 +21,6 @@
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21",
     "prettier": "^2.8.4"
   }
 }

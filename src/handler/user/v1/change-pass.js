@@ -1,36 +1,34 @@
-const BadReqErr = require("../../../error/bad-req");
-const Password = require("../../../helper/password");
-const User = require("../../../model/user");
+import { UnauthorizedErr } from "../../../err/unauthorized";
+import { Password } from "../../../helper/password";
+import { User } from "../../../model/user";
 
 async function changePass(req, res, next) {
-  const {
-    currentPassword: currPass,
-    newPassword: newPass,
-  } = req.body;
+  const { password, newPassword } = req.body;
 
   try {
     const user = await User.findById(req.user.id);
-
-    // kiểm tra currPass
-    const isMatch = await Password.compare(
-      user.password,
-      currPass
-    );
-    if (isMatch) {
-      throw new BadReqErr(
-        "Sai Mật Khẩu. Đổi Mật Khẩu Thất Bại"
-      );
+    if (!user) {
+      throw new UnauthorizedErr("Người dùng không tồn tại");
     }
 
-    // đổi mật khẩu
-    user.password = newPass;
+    const passMatch = await Password.compare(
+      user.password,
+      password
+    );
+    if (passMatch) {
+      throw new UnauthorizedErr("Sai mật khẩu");
+    }
+
+    user.password = await newPassword;
     await user.save();
 
-    res.json({});
+    res.json({
+      message: "Đổi mật khẩu thành công",
+    });
   } catch (err) {
     console.log(err);
     next(err);
   }
 }
 
-module.exports = changePass;
+export { changePass };

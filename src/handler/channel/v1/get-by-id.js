@@ -1,5 +1,5 @@
 const Channel = require("../../../model/channel");
-const NotFoundErr = require("../../../error/not-found");
+const NotFoundErr = require("../../../err/not-found");
 
 async function getChannel(req, res, next) {
   try {

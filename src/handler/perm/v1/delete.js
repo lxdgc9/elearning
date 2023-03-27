@@ -1,6 +1,6 @@
-const NotFoundErr = require("../../../error/not-found");
-const GPerm = require("../../../model/gperm");
-const Perm = require("../../../model/perm");
+import { BadReqErr } from "../../../err/bad-req";
+import { GPerm } from "../../../model/gperm";
+import { Perm } from "../../../model/perm";
 
 async function deletePerm(req, res, next) {
   try {
@@ -8,22 +8,20 @@ async function deletePerm(req, res, next) {
       req.params.id
     );
     if (!perm) {
-      throw new NotFoundErr("Không Tìm Thấy Quyền");
+      throw new BadReqErr("Quyền hạn không tồn tại");
     }
 
-    // khi xóa thành công 'permission',
-    // tiến hành xóa 'permission' khỏi 'group permission'
-    await GPerm.findByIdAndUpdate(perm.groupId, {
-      $pull: { permissions: perm.id },
+    await GPerm.findByIdAndUpdate(perm.group, {
+      $pull: {
+        permissions: perm.id,
+      },
     });
 
-    res.json({
-      permission: perm,
-    });
+    res.status(204).json({});
   } catch (err) {
     console.log(err);
     next(err);
   }
 }
 
-module.exports = deletePerm;
+export { deletePerm };

@@ -1,35 +1,43 @@
-const NotFoundErr = require("../../../error/not-found");
-const GPerm = require("../../../model/gperm");
-const Perm = require("../../../model/perm");
+import { BadReqErr } from "../../../err/bad-req";
+import { GPerm } from "../../../model/gperm";
+import { Perm } from "../../../model/perm";
 
 async function updatePerm(req, res, next) {
-  const { name, groupId, description } = req.body;
+  const { code, groupId, description } = req.body;
 
   try {
     const perm = await Perm.findById(req.params.id);
     if (!perm) {
-      throw new NotFoundErr("Không tìm thấy quyền");
+      throw new BadReqErr("Quyền hạn không tồn tại");
     }
 
-    // Remove permission =require( previous group,
-    // and add permission to new group
-    if (groupId && groupId !== perm.groupId) {
-      await GPerm.findByIdAndUpdate(perm.groupId, {
+    const preGroup = perm.group;
+
+    if (groupId && groupId !== preGroup) {
+      await GPerm.findByIdAndUpdate(preGroup, {
         $pull: { permissions: perm.id },
       });
-      await GPerm.findByIdAndUpdate(groupId, {
+      await GPerm.findByIdAndUpdate(perm.group, {
         $addToSet: { permissions: perm.id },
       });
     }
 
-    await perm.updateOne({
-      name,
-      groupId,
-      description,
-    });
+    const permDetail = await Perm.findByIdAndUpdate(
+      perm.id,
+      {
+        code,
+        group: groupId,
+        description,
+      },
+      { new: true }
+    ).populate([
+      {
+        path: "group",
+      },
+    ]);
 
     res.json({
-      permission: perm,
+      permission: permDetail,
     });
   } catch (err) {
     console.log(err);
@@ -37,4 +45,4 @@ async function updatePerm(req, res, next) {
   }
 }
 
-module.exports = updatePerm;
+export { updatePerm };

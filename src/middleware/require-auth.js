@@ -1,10 +1,10 @@
-const UnauthorizedErr = require("../error/unauthorized");
+import { UnauthorizedErr } from "../err/unauthorized";
 
-function requireAuth(req, res, next) {
+function requireAuth(req, _res, next) {
   if (!req.user) {
     throw new UnauthorizedErr("Không dược ủy quyền");
   }
   next();
 }
 
-module.exports = requireAuth;
+export { requireAuth };

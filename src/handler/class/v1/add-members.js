@@ -1,6 +1,6 @@
 const User = require("../../../model/user");
 const Class = require("../../../model/class");
-const BadReqErr = require("../../../error/bad-req");
+const BadReqErr = require("../../../err/bad-req").default;
 
 async function addMembers(req, res, next) {
   const { memberIds } = req.body;

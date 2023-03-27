@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-const db = require("../db");
-const http = require("http");
-const app = require("../app");
-const dotenv = require("dotenv");
-const socket = require("../sock");
+import http from "http";
+
+import dotenv from "dotenv";
+
+import { app } from "../app";
+import { connectDb } from "../db";
+import { createSock } from "../sock";
 
 dotenv.config();
 
@@ -23,11 +25,9 @@ app.set("port", port);
 
 const sv = http.createServer(app);
 
-// Kết nối MongoDb
-db.connect(process.env.MONGO_URI);
+connectDb(process.env.MONGO_URI);
 
-// Tạo socket
-socket(sv);
+createSock(sv);
 
 sv.listen(port);
 sv.on("listening", onListening);
