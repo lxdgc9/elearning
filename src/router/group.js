@@ -21,6 +21,7 @@ const newGroup = require("../handler/group/v1/new");
 const getGroup = require("../handler/group/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
 const updateGroup = require("../handler/group/v1/update");
+const deleteGroup = require("../handler/group/v1/delete");
 
 const r = express.Router();
 
@@ -223,7 +224,7 @@ r.delete(
   ],
   validReq,
   version({
-    v1: deleteClass,
+    v1: deleteGroup,
   })
 );
 

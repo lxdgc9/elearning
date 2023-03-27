@@ -1,14 +1,22 @@
 const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
+const Group = require("../../../model/group");
+const Channel = require("../../../model/channel");
 
-async function deleteClass(req, res, next) {
+async function deleteGroup(req, res, next) {
   try {
-    const _class = await Class.findByIdAndDelete(
+    const group = await Group.findByIdAndDelete(
       req.params.id
     );
-    if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+    if (!group) {
+      throw new BadReqErr("Không tồn tại nhóm");
     }
+
+    await Channel.findByIdAndUpdate(group.id, {
+      $pull: {
+        groups: group.id,
+      },
+    });
 
     res.status(204).json({});
   } catch (err) {
@@ -17,4 +25,4 @@ async function deleteClass(req, res, next) {
   }
 }
 
-module.exports = deleteClass;
+module.exports = deleteGroup;

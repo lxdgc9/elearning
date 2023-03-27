@@ -21,6 +21,7 @@ const newChannel = require("../handler/channel/v1/new");
 const getChannel = require("../handler/channel/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
 const updateChann = require("../handler/channel/v1/update");
+const deleteChannel = require("../handler/channel/v1/delete");
 
 const r = express.Router();
 
@@ -243,7 +244,7 @@ r.delete(
   ],
   validReq,
   version({
-    v1: deleteClass,
+    v1: deleteChannel,
   })
 );
 

@@ -1,14 +1,21 @@
 const Class = require("../../../model/class");
 const BadReqErr = require("../../../error/bad-req");
+const Channel = require("../../../model/channel");
 
-async function deleteClass(req, res, next) {
+async function deleteChannel(req, res, next) {
   try {
-    const _class = await Class.findByIdAndDelete(
+    const chann = await Channel.findByIdAndDelete(
       req.params.id
     );
-    if (!_class) {
-      throw new BadReqErr("Không tồn tại lớp học");
+    if (!chann) {
+      throw new BadReqErr("Không tồn tại kênh");
     }
+
+    await Class.findByIdAndUpdate(chann.class, {
+      $pull: {
+        channels: chann.id,
+      },
+    });
 
     res.status(204).json({});
   } catch (err) {
@@ -17,4 +24,4 @@ async function deleteClass(req, res, next) {
   }
 }
 
-module.exports = deleteClass;
+module.exports = deleteChannel;
