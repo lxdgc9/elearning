@@ -16,7 +16,6 @@ function createSock(ws) {
       console.log("a socket disconnected", socket.id);
     });
   });
-  app.locals.io = io;
 }
 
 module.exports = createSock;
