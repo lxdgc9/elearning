@@ -51,7 +51,7 @@ async function newGroup(req, res, next) {
 
     // Thông báo có group mới
     memberIds.forEach((m) => {
-      socket.to(m).emit("new-group", groupDetail.id);
+      getIO().to(m).emit("new-group", groupDetail.id);
     });
 
     res.status(201).json({
