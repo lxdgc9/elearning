@@ -87,7 +87,7 @@ async function newChannel(req, res, next) {
     ]);
 
     memberIds.forEach((m) => {
-      app.locals.io.to(m).emit("new-channel");
+      // app.locals.io.to(m).emit("new-channel");
     });
 
     res.status(201).json({
