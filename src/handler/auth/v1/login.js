@@ -16,17 +16,14 @@ async function login(req, res, next) {
       .populate([
         {
           path: "role",
-          select: "permissions",
           populate: [
             {
               path: "permissions",
-              select: "name description",
             },
           ],
         },
         {
           path: "classes",
-          select: "name session description",
         },
       ]);
     if (!user) {

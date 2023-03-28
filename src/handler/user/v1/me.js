@@ -8,17 +8,14 @@ async function me(req, res, next) {
       .populate([
         {
           path: "role",
-          select: "permissions",
           populate: [
             {
               path: "permissions",
-              select: "name description",
             },
           ],
         },
         {
           path: "classes",
-          select: "name session description",
         },
       ]);
     if (!user) {

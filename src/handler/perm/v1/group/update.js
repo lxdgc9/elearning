@@ -18,11 +18,11 @@ async function updateGPerm(req, res, next) {
       },
     ]);
     if (!gPerm) {
-      throw new BadReqErr("Nhóm quyền không hợp lệ");
+      throw new BadReqErr("Nhóm quyền không tồn tại");
     }
 
     res.json({
-      groupPermission: gPerm,
+      group: gPerm,
     });
   } catch (err) {
     console.log(err);

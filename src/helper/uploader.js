@@ -1,9 +1,11 @@
+import path from "path";
+
 import multer from "multer";
 
 const uploader = multer({
   storage: multer.diskStorage({
     destination(_req, _file, callback) {
-      callback(null, "../upload");
+      callback(null, path.join(path.resolve(), "upload"));
     },
     filename(_req, file, callback) {
       file.originalname = Buffer.from(

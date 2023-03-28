@@ -9,7 +9,7 @@ async function getGPerms(_req, res, next) {
     ]);
 
     res.json({
-      groupPermissions: gperms,
+      group: gperms,
     });
   } catch (err) {
     console.log(err);

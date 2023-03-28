@@ -132,9 +132,7 @@ r.patch(
     param("id")
       .isMongoId()
       .withMessage("Vai trò không hợp lệ"),
-    check("name")
-      .notEmpty()
-      .withMessage("Yêu cầu tên vai trò"),
+    check("name").optional({ nullable: true }),
     check("description")
       .isLength({ max: 255 })
       .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
@@ -154,7 +152,8 @@ r.patch(
           }
         }
         return true;
-      }),
+      })
+      .optional({ nullable: true }),
   ],
   validReq,
   redirectVer({

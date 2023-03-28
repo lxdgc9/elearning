@@ -5,6 +5,7 @@ function accessCtrl(...perms) {
     try {
       if (
         !perms ||
+        !perms.length ||
         (req.user.perms &&
           req.user.perms.some((p) => perms.includes(p)))
       ) {

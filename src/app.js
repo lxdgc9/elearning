@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
+import path from "path";
 
 import { NotFoundErr } from "./err/not-found.js";
 import { errHandler } from "./middleware/err-handler.js";
@@ -11,6 +12,12 @@ import { roleRouter } from "./router/role.js";
 import { userRouter } from "./router/user.js";
 
 const app = express();
+
+// Thư mục chứa avatar
+app.use(
+  "/avt",
+  express.static(path.join(path.resolve(), "upload"))
+);
 
 app.use(cors());
 app.use(helmet());

@@ -21,16 +21,14 @@ async function updateProf(req, res, next) {
     const user = await User.findByIdAndUpdate(
       req.user.id,
       {
-        profile: {
-          fullName,
-          gender,
-          dob,
-          email,
-          phone,
-          address,
-          bio,
-          avatar,
-        },
+        "profile.fullName": fullName,
+        "profile.gender": gender,
+        "profile.dob": dob,
+        "profile.email": email,
+        "profile.phone": phone,
+        "profile.address": address,
+        "profile.bio": bio,
+        "profile.avatar": avatar,
       },
       { new: true }
     ).populate([

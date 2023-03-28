@@ -101,14 +101,12 @@ schema.pre("save", async function (fn) {
 });
 
 schema.pre("save", function (next) {
-  let { profile: { fullName, bio } = {} } = this;
-  if (profile) {
-    if (fullName) {
-      fullName = fullName.replace(/\s+/g, " ").trim();
-    }
-    if (bio) {
-      bio = bio.replace(/\s+/g, " ").trim();
-    }
+  let { fullName, bio } = this.profile;
+  if (fullName) {
+    fullName = fullName.replace(/\s+/g, " ").trim();
+  }
+  if (bio) {
+    bio = bio.replace(/\s+/g, " ").trim();
   }
   next();
 });

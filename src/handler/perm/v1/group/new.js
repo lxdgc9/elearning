@@ -10,7 +10,7 @@ async function newGPerm(req, res, next) {
     await gPerm.save();
 
     res.status(201).json({
-      groupPermission: gPerm,
+      group: gPerm,
     });
   } catch (err) {
     console.log(err);

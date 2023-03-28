@@ -51,6 +51,12 @@ async function newUser(req, res, next) {
     });
     await newUser.save();
 
+    await role.updateOne({
+      $addToSet: {
+        users: newUser.id,
+      },
+    });
+
     const userDetail = await User.findById(
       newUser.id
     ).populate([

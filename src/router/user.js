@@ -19,18 +19,6 @@ import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
-// Lấy chi tiết thông tin người dùng từ token
-r.get(
-  "/api/users/me",
-  decodeJwt,
-  requireAuth,
-  checkUser,
-  accessCtrl(),
-  redirectVer({
-    v1: me,
-  })
-);
-
 // Lấy danh sách người dùng
 r.get(
   "/api/users",
@@ -40,6 +28,18 @@ r.get(
   accessCtrl(),
   redirectVer({
     v1: getUsers,
+  })
+);
+
+// Lấy chi tiết thông tin người dùng từ token
+r.get(
+  "/api/users/me",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  redirectVer({
+    v1: me,
   })
 );
 
@@ -196,21 +196,6 @@ r.patch(
   accessCtrl(),
   uploader.single("avatar"),
   [
-    check("username")
-      .notEmpty()
-      .withMessage("Yêu cầu tên tài khoản"),
-    check("password")
-      .notEmpty()
-      .withMessage("Yêu cầu mật khẩu")
-      .isStrongPassword({
-        minLength: 6,
-        minLowercase: 1,
-        minUppercase: 1,
-        minSymbols: 0,
-      })
-      .withMessage(
-        "Mật khẩu ít nhất 6 ký tư gồm: viết hoa, viết thường"
-      ),
     check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
       .withMessage(

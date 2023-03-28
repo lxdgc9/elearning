@@ -21,18 +21,6 @@ import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
-// Lấy danh sách quyền hạn
-r.get(
-  "/api/permissions",
-  decodeJwt,
-  requireAuth,
-  checkUser,
-  accessCtrl(),
-  redirectVer({
-    v1: getPerms,
-  })
-);
-
 // Lấy danh sách quyền hạn theo nhóm
 r.get(
   "/api/permissions/group",
@@ -63,6 +51,18 @@ r.get(
   })
 );
 
+// Lấy danh sách quyền hạn
+r.get(
+  "/api/permissions",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  redirectVer({
+    v1: getPerms,
+  })
+);
+
 // Tạo mới nhóm quyền
 r.post(
   "/api/permissions/group",
@@ -73,7 +73,7 @@ r.post(
   [
     check("name")
       .notEmpty()
-      .withMessage("Yêu cầu nhóm quyền"),
+      .withMessage("Yêu cầu tên nhóm quyền"),
   ],
   validReq,
   redirectVer({
@@ -119,9 +119,7 @@ r.patch(
     param("id")
       .isMongoId()
       .withMessage("Nhóm quyền không hợp lệ"),
-    check("name")
-      .notEmpty()
-      .withMessage("Yêu cầu nhóm quyền"),
+    check("name").optional({ nullable: true }),
     check("permissionIds")
       .isArray()
       .withMessage("Danh sách quyền hạn không hợp lệ")
@@ -157,14 +155,11 @@ r.patch(
     param("id")
       .isMongoId()
       .withMessage("Quyền hạn không hợp lệ"),
-    check("code")
-      .notEmpty()
-      .withMessage("Yêu cầu mã quyền hạn"),
+    check("code").optional({ nullable: true }),
     check("groupId")
-      .notEmpty()
-      .withMessage("Yêu cầu nhóm quyền")
       .isMongoId()
-      .withMessage("Nhóm quyền không hợp lệ"),
+      .withMessage("Nhóm quyền không hợp lệ")
+      .optional({ nullable: true }),
     check("description")
       .isLength({ max: 255 })
       .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
@@ -178,7 +173,7 @@ r.patch(
 
 // Xóa nhóm quyền
 r.delete(
-  "/api/users/group/:id",
+  "/api/permissions/group/:id",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -190,7 +185,7 @@ r.delete(
 
 // Xóa quyền hạn
 r.delete(
-  "/api/users/:id",
+  "/api/permissions/:id",
   decodeJwt,
   requireAuth,
   checkUser,

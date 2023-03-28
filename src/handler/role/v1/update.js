@@ -20,22 +20,24 @@ async function updateRole(req, res, next) {
       throw new BadReqErr("Vai trò không tồn tại");
     }
 
-    for await (const p of role.permissions) {
-      if (!permissionIds.includes(p)) {
+    if (permissionIds && permissionIds.length > 0) {
+      for await (const p of role.permissions) {
+        if (!permissionIds.includes(p)) {
+          await Perm.findByIdAndUpdate(p, {
+            $pull: {
+              roles: role.id,
+            },
+          });
+        }
+      }
+
+      for await (const p of permissionIds) {
         await Perm.findByIdAndUpdate(p, {
-          $pull: {
+          $addToSet: {
             roles: role.id,
           },
         });
       }
-    }
-
-    for await (const p of permissionIds) {
-      await Perm.findByIdAndUpdate(p, {
-        $addToSet: {
-          roles: role.id,
-        },
-      });
     }
 
     const roleDetail = await Role.findByIdAndUpdate(

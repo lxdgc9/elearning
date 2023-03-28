@@ -10,7 +10,7 @@ async function getRoles(_req, res, next) {
         },
       ])
       .sort({ createdAt: -1 });
-    if (!roles.lengh) {
+    if (!roles.length) {
       throw new NotFoundErr("Danh sách vai trò trống");
     }
 

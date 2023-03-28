@@ -22,12 +22,14 @@ async function newRole(req, res, next) {
     });
     await role.save();
 
-    for await (const p of permissionIds) {
-      await Perm.findByIdAndUpdate(p, {
-        $addToSet: {
-          roles: role.id,
-        },
-      });
+    if (permissionIds && permissionIds.length > 0) {
+      for await (const p of permissionIds) {
+        await Perm.findByIdAndUpdate(p, {
+          $addToSet: {
+            roles: role.id,
+          },
+        });
+      }
     }
 
     const roleDetail = await Role.findById(
