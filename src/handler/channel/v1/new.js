@@ -88,7 +88,7 @@ async function newChannel(req, res, next) {
     ]);
 
     memberIds.forEach((m) => {
-      getIO().emit("new-channel", {
+      getIO().to(m).emit("new-channel", {
         hello: "world",
       });
     });
