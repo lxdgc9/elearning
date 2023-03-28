@@ -86,6 +86,8 @@ async function newChannel(req, res, next) {
       },
     ]);
 
+    socet;
+
     res.status(201).json({
       channel: channelDetail,
     });

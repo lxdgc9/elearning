@@ -211,7 +211,7 @@ r.patch(
 
 // Xóa kênh
 r.delete(
-  "/api/channels/:id",
+  "/api/groups/:id",
   currUser,
   requireAuth,
   active,
