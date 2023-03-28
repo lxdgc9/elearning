@@ -14,6 +14,10 @@ function createSock(ws) {
   io.on("connection", (socket) => {
     console.log("a socket connected", socket.id);
 
+    socket.on("join-room", (roomId) => {
+      socket.join(roomId);
+    });
+
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);
     });

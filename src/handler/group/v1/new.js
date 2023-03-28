@@ -1,5 +1,6 @@
 const Channel = require("../../../model/channel");
 const Group = require("../../../model/group");
+const { getIO } = require("../../../sock");
 
 async function newGroup(req, res, next) {
   let { name, channelId, description, memberIds } =
@@ -47,6 +48,11 @@ async function newGroup(req, res, next) {
         ],
       },
     ]);
+
+    // Thông báo có group mới
+    memberIds.forEach((m) => {
+      socket.to(m).emit("new-group", groupDetail.id);
+    });
 
     res.status(201).json({
       group: groupDetail,

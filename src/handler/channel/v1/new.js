@@ -1,7 +1,6 @@
 const Class = require("../../../model/class");
 const Channel = require("../../../model/channel");
 const BadReqErr = require("../../../error/bad-req");
-const { getIO } = require("../../../sock/index");
 
 async function newChannel(req, res, next) {
   let { name, classId, description, memberIds } = req.body;
@@ -86,12 +85,6 @@ async function newChannel(req, res, next) {
         ],
       },
     ]);
-
-    memberIds.forEach((m) => {
-      getIO().to(m).emit("new-channel", {
-        hello: "world",
-      });
-    });
 
     res.status(201).json({
       channel: channelDetail,
