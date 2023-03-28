@@ -1,9 +1,11 @@
 const Class = require("../../../model/class");
 const Channel = require("../../../model/channel");
 const BadReqErr = require("../../../error/bad-req");
+const { getInstance } = require("../../../sock/index");
 
 async function newChannel(req, res, next) {
   let { name, classId, description, memberIds } = req.body;
+  const io = getInstance();
 
   try {
     // Kiểm tra lớp học có hợp lệ hay không, nhằm tạo kênh
@@ -86,7 +88,9 @@ async function newChannel(req, res, next) {
       },
     ]);
 
-    socet;
+    memberIds.forEach((m) => {
+      io.to(m).emit("new-channel");
+    });
 
     res.status(201).json({
       channel: channelDetail,
