@@ -15,6 +15,7 @@ function createSock(ws) {
     console.log("a socket connected", socket.id);
 
     socket.on("join-room", (roomId) => {
+      console.log("Join room event: ", socket.id, roomId);
       socket.join(roomId);
     });
 
