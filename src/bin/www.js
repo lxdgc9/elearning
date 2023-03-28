@@ -4,7 +4,7 @@ const db = require("../db");
 const http = require("http");
 const app = require("../app");
 const dotenv = require("dotenv");
-const socket = require("../sock");
+const { createSock } = require("../sock");
 
 dotenv.config();
 
@@ -27,7 +27,7 @@ const sv = http.createServer(app);
 db.connect(process.env.MONGO_URI);
 
 // Tạo socket
-socket(sv);
+createSock(sv);
 
 sv.listen(port);
 sv.on("listening", onListening);

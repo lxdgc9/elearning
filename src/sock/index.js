@@ -1,7 +1,9 @@
 const socketio = require("socket.io");
 
+let io;
+
 function createSock(ws) {
-  const io = new socketio.Server(ws, {
+  io = new socketio.Server(ws, {
     cors: {
       origin: "*",
     },
@@ -18,4 +20,14 @@ function createSock(ws) {
   });
 }
 
-module.exports = createSock;
+function getIO() {
+  if (!io) {
+    throw new Error("Socket.IO not initialized");
+  }
+  return io;
+}
+
+module.exports = {
+  getIO,
+  createSock,
+};
