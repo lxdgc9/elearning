@@ -14,6 +14,7 @@ const permRouter = require("./router/perm");
 const roleRouter = require("./router/role");
 const subjectRouter = require("./router/subject");
 const userRouter = require("./router/user");
+const testRouter = require("./router/test");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(channelRouter);
 app.use(groupRouter);
 app.use(subjectRouter);
 app.use(courseRouter);
+app.use(testRouter);
 
 app.all("*", (req, res) => {
   throw new NotFoundErr("Yêu cầu không tồn tại");
