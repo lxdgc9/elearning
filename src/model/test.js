@@ -72,7 +72,6 @@ const schema = new mongoose.Schema(
       virtuals: true,
       transform(_doc, ret, _options) {
         delete ret._id;
-        delete ret.password;
         delete ret.__v;
       },
     },
@@ -80,16 +79,16 @@ const schema = new mongoose.Schema(
   }
 );
 
-// Mã hóa mật khẩu trước khi lưu
-schema.pre("save", async function (fn) {
-  if (this.isModified("password")) {
-    const hashed = await Password.toHash(
-      this.get("password")
-    );
-    this.set("password", hashed);
-  }
-  fn();
-});
+// // Mã hóa mật khẩu trước khi lưu
+// schema.pre("save", async function (fn) {
+//   if (this.isModified("password")) {
+//     const hashed = await Password.toHash(
+//       this.get("password")
+//     );
+//     this.set("password", hashed);
+//   }
+//   fn();
+// });
 
 const Test = mongoose.model("test", schema);
 

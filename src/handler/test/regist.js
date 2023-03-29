@@ -39,11 +39,7 @@ async function regist(req, res, next) {
     }
 
     // Kiểm tra mật khẩu
-    const passMatch = await Password.compare(
-      test.password,
-      password
-    );
-    if (!passMatch) {
+    if (!test.password !== password) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
