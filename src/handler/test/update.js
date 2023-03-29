@@ -11,6 +11,7 @@ async function changeTest(req, res, next) {
     await test.updateOne({
       ...req.body,
     });
+    await test.save();
 
     const detail = await Test.findById(req.params.id);
 
