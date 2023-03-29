@@ -63,11 +63,30 @@ async function submit(req, res, next) {
       status = 3;
     }
 
+    // Tính tổng số câu hỏi đúng
+    let countCorrect = 0;
+    for await (const c of choices) {
+      const v = submission.test.questions.find(
+        (q) => q._id.toString() === c.question.toString()
+      );
+
+      if (v) {
+        const a = v.answers.find(
+          (a) => a._id.toString() === c.answer.toString()
+        );
+        if (a && a.isCorrect) {
+          countCorrect++;
+        }
+      }
+    }
+
     await submission.updateOne({
       $set: {
         status,
         submitedAt: Date.now(),
+        submitCount: submission.submitCount + 1,
         choices,
+        correctNum: countCorrect,
       },
     });
 
