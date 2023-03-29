@@ -34,7 +34,7 @@ async function regist(req, res, next) {
     // nộp bài hay chưa?
     if (!test.remake.includes(req.user.id)) {
       if (submission.status > 2) {
-        throw new BadReqErr("Bạn không thể nộp bài");
+        throw new BadReqErr("Bạn không thể làm bài");
       }
     }
 
