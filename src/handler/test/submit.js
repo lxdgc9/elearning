@@ -69,12 +69,16 @@ async function submit(req, res, next) {
     let countCorrect = 0;
     for await (const c of choices) {
       const v = submission.test.questions.find(
-        (q) => q._id.toString() === c.question.toString()
+        (q) =>
+          c.question &&
+          q._id.toString() === c.question.toString()
       );
 
       if (v) {
         const a = v.answers.find(
-          (a) => a._id.toString() === c.answer.toString()
+          (a) =>
+            c.answer &&
+            a._id.toString() === c.answer.toString()
         );
         if (a && a.isCorrect) {
           countCorrect++;

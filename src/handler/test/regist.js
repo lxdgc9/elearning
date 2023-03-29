@@ -29,6 +29,15 @@ async function regist(req, res, next) {
       );
     }
 
+    // Kiểm tra người dùng có trong danh sách cho phép thi
+    // lại hay không, nếu không => kiểm tra người dùng đã
+    // nộp bài hay chưa?
+    if (!test.remake.includes(req.user.id)) {
+      if (submission.status > 2) {
+        throw new BadReqErr("Bạn không thể nộp bài");
+      }
+    }
+
     // Kiểm tra mật khẩu
     const passMatch = await Password.compare(
       test.password,
