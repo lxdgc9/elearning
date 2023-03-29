@@ -10,10 +10,6 @@ const schema = new mongoose.Schema(
       type: Date,
     },
     status: String,
-    class: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "class",
-    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
