@@ -26,11 +26,13 @@ async function newTest(req, res, next) {
     });
     await newTest.save();
 
-    const newSubmission = new Submission({
-      user: req.user.id,
-      test: newTest.id,
-    });
-    await newSubmission.save();
+    for await (const m of newTest.members) {
+      const newSubmission = new Submission({
+        user: m,
+        test: newTest.id,
+      });
+      await newSubmission.save();
+    }
 
     res.status(201).json({
       test: newTest,
