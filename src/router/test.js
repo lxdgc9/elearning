@@ -44,7 +44,7 @@ r.get(
 
 // Lấy kết quả bài thi
 r.get(
-  "/api/test/result/:id",
+  "/api/test/result/:submissionId",
   currUser,
   requireAuth,
   active,
