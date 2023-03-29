@@ -16,6 +16,7 @@ const submit = require("../handler/test/submit");
 const result = require("../handler/test/result");
 const getSubmissions = require("../handler/test/get-submissions");
 const updateTest = require("../handler/test/update");
+const myTestById = require("../handler/test/my-test-by-id");
 
 const r = express.Router();
 
@@ -40,6 +41,18 @@ r.get(
   access(),
   version({
     v1: myTest,
+  })
+);
+
+// Lấy chi tiết bài thi đã tạo của bạn
+r.get(
+  "/api/test/my-test/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: myTestById,
   })
 );
 
