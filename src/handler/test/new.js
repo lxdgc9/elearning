@@ -1,3 +1,4 @@
+const Submission = require("../../model/submission");
 const Test = require("../../model/test");
 
 async function newTest(req, res, next) {
@@ -24,6 +25,12 @@ async function newTest(req, res, next) {
       questions,
     });
     await newTest.save();
+
+    const newSubmission = new Submission({
+      user: req.user.id,
+      test: req.params.id,
+    });
+    await newSubmission.save();
 
     res.status(201).json({
       test: newTest,

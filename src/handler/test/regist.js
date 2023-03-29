@@ -8,8 +8,16 @@ async function regist(req, res, next) {
   const { password } = req.body;
 
   try {
+    // Kiểm tra bài nộp
+    const submission = await Submission.findById(
+      req.params.id
+    );
+    if (!submission) {
+      throw new BadReqErr("Bài thi không tồn tại");
+    }
+
     // Kiểm tra bài thi
-    const test = await Test.findById(req.params.id);
+    const test = await Test.findById(submission.test);
     if (!test) {
       throw new BadReqErr("Bài thi không tồn tại");
     }
@@ -30,24 +38,24 @@ async function regist(req, res, next) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
-    const newSubmission = new Submission({
-      user: req.user.id,
-      test: req.params.id,
+    await submission.updateOne({
+      $set: {
+        status: 2,
+        signedAt: Date.now(),
+      },
     });
-    await newSubmission.save();
 
     // Tạo token, token sẽ gửi lên kèm theo khi nộp bài
     const token = jwt.sign(
       {
         id: req.user.id,
         testId: test.id,
-        submitId: newSubmission.id,
+        submitId: submission.id,
       },
       "oh-my-test"
     );
 
     res.status(201).json({
-      submission: newSubmission,
       token,
     });
   } catch (err) {
