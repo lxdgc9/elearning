@@ -45,6 +45,8 @@ const schema = new mongoose.Schema(
   }
 );
 
+schema.index({ createdAt: -1 });
+
 const Msg = mongoose.model("msg", schema);
 
 module.exports = Msg;

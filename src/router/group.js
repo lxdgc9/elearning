@@ -22,6 +22,7 @@ const getGroup = require("../handler/group/v1/get-by-id");
 const getByClass = require("../handler/channel/v1/get-by-class-id");
 const updateGroup = require("../handler/group/v1/update");
 const deleteGroup = require("../handler/group/v1/delete");
+const sendMsg = require("../handler/group/v1/send-msg");
 
 const r = express.Router();
 
@@ -118,6 +119,28 @@ r.post(
   validReq,
   version({
     v1: newGroup,
+  })
+);
+
+r.patch(
+  "/api/groups/send-msg/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [
+    valid
+      .param("id")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
+    valid
+      .check("resourceType")
+      .notEmpty()
+      .withMessage("Yêu cầu loại tin nhắn"),
+  ],
+  validReq,
+  version({
+    v1: sendMsg,
   })
 );
 
