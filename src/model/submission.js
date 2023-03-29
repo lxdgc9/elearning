@@ -9,7 +9,15 @@ const schema = new mongoose.Schema(
     submitedAt: {
       type: Date,
     },
-    status: String,
+    status: {
+      type: Number,
+      // 1: Chưa làm
+      // 2: Đang làm
+      // 3: Hoàn thành
+      // 4: Trễ hạn
+      enum: [1, 2, 3, 4],
+      default: 1,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
