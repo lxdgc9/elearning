@@ -8,7 +8,7 @@ async function getSubmissions(req, res, next) {
       .populate([
         {
           path: "test",
-          select: "-question",
+          select: "-questions",
         },
       ])
       .sort({ createdAt: -1 });

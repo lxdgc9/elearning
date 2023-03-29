@@ -8,8 +8,13 @@ async function submit(req, res, next) {
   const { token, choices } = req.body;
 
   try {
+    // Lấy bài làm
+    const extSub = await Submission.findById(req.params.id);
+    if (!extSub) {
+      throw new BadReqErr("Không tồn tại bài làm");
+    }
     // Kiểm tra bài thi
-    const test = await Test.findById(req.params.id);
+    const test = await Test.findById(extSub.test);
     if (!test) {
       throw new BadReqErr("Bài thi không tồn tại");
     }
@@ -43,9 +48,9 @@ async function submit(req, res, next) {
           test.duration * 60000
       )
     ) {
-      status = "expired";
+      status = 4;
     } else {
-      status = "ok";
+      status = 3;
     }
 
     await submission.updateOne({
