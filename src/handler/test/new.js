@@ -28,7 +28,7 @@ async function newTest(req, res, next) {
 
     const newSubmission = new Submission({
       user: req.user.id,
-      test: req.params.id,
+      test: newTest.id,
     });
     await newSubmission.save();
 
