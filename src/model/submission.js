@@ -10,6 +10,10 @@ const schema = new mongoose.Schema(
       type: Date,
     },
     status: String,
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "class",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -23,7 +27,7 @@ const schema = new mongoose.Schema(
         question: {
           type: mongoose.Schema.Types.ObjectId,
         },
-        answers: {
+        answer: {
           type: mongoose.Schema.Types.ObjectId,
         },
       },

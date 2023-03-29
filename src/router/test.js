@@ -1,14 +1,19 @@
 const express = require("express");
+const { check } = require("express-validator");
 
 const active = require("../middleware/active");
 const access = require("../middleware/access");
 const version = require("../middleware/version");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
+const validReq = require("../middleware/valid-req");
 const newTest = require("../handler/test/new");
 const myTest = require("../handler/test/my-test");
 const getTest = require("../handler/test/get");
 const getTestById = require("../handler/test/get-by-id");
+const regist = require("../handler/test/regist");
+const submit = require("../handler/test/submit");
+const result = require("../handler/test/result");
 
 const r = express.Router();
 
@@ -33,6 +38,20 @@ r.get(
   access(),
   version({
     v1: myTest,
+  })
+);
+
+// Lấy kết quả bài thi
+r.get(
+  "/api/test/result/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [],
+  validReq,
+  version({
+    v1: result,
   })
 );
 
@@ -62,13 +81,33 @@ r.get(
 
 // Đăng ký làm bài
 r.patch(
-  "/api/test/:id",
+  "/api/test/regist/:id",
   currUser,
   requireAuth,
   active,
   access(),
+  [
+    check("password")
+      .notEmpty()
+      .withMessage("Yêu cầu mật khẩu"),
+  ],
+  validReq,
   version({
-    v1: getTest,
+    v1: regist,
+  })
+);
+
+// Nộp bài
+r.patch(
+  "/api/test/submit/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [check("token").notEmpty().withMessage("Yêu cầu token")],
+  validReq,
+  version({
+    v1: submit,
   })
 );
 
