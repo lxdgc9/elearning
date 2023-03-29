@@ -36,6 +36,18 @@ const schema = new mongoose.Schema(
         },
       },
     ],
+    submitCount: {
+      type: Number,
+      default: 0,
+    },
+    correctNum: {
+      type: Number,
+      default: 0,
+    },
+    totalQuestion: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     collection: "Submission",

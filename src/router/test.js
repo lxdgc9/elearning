@@ -15,6 +15,7 @@ const regist = require("../handler/test/regist");
 const submit = require("../handler/test/submit");
 const result = require("../handler/test/result");
 const getSubmissions = require("../handler/test/get-submissions");
+const updateTest = require("../handler/test/update");
 
 const r = express.Router();
 
@@ -109,6 +110,17 @@ r.patch(
   validReq,
   version({
     v1: regist,
+  })
+);
+
+r.put(
+  "/api/test/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: updateTest,
   })
 );
 

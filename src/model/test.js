@@ -53,6 +53,18 @@ const schema = new mongoose.Schema(
         ],
       },
     ],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "sub",
+      },
+    ],
+    remake: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   {
     collection: "Test",

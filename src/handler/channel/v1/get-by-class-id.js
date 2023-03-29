@@ -8,6 +8,30 @@ async function getByClass(req, res, next) {
       .populate([
         {
           path: "channels",
+          populate: [
+            {
+              path: "owner",
+            },
+            {
+              path: "class",
+            },
+            {
+              path: "groups",
+            },
+            {
+              path: "members",
+              populate: [
+                {
+                  path: "role",
+                  populate: [
+                    {
+                      path: "permissions",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ]);
     if (!_class) {

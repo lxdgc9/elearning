@@ -13,10 +13,20 @@ async function submit(req, res, next) {
     if (!extSub) {
       throw new BadReqErr("Không tồn tại bài làm");
     }
+
     // Kiểm tra bài thi
     const test = await Test.findById(extSub.test);
     if (!test) {
       throw new BadReqErr("Bài thi không tồn tại");
+    }
+
+    // Kiểm tra người dùng có trong danh sách cho phép thi
+    // lại hay không, nếu không => kiểm tra người dùng đã
+    // nộp bài hay chưa?
+    if (!test.remake.includes(req.user.id)) {
+      if (extSub.status > 2) {
+        throw new BadReqErr("Bạn không thể nộp bài");
+      }
     }
 
     // Kiểm tra token

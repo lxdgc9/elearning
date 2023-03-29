@@ -11,15 +11,24 @@ async function getChannels(req, res, next) {
         path: "class",
       },
       {
+        path: "groups",
+        populate: [
+          {
+            path: "members",
+          },
+          {
+            path: "messages",
+          },
+        ],
+      },
+      {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
             populate: [
               {
                 path: "permissions",
-                select: "name description",
               },
             ],
           },

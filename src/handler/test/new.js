@@ -30,8 +30,16 @@ async function newTest(req, res, next) {
       const newSubmission = new Submission({
         user: m,
         test: newTest.id,
+        totalQuestion: questions.length || 0,
       });
       await newSubmission.save();
+
+      // Thêm bài nộp vào bài kiểm tra để tiện populate
+      await newTest.updateOne({
+        $addToSet: {
+          submissions: newSubmission.id,
+        },
+      });
     }
 
     res.status(201).json({
