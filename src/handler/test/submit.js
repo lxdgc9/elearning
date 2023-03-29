@@ -48,7 +48,9 @@ async function submit(req, res, next) {
       );
     }
 
-    const submission = await Submission.findById(submitId);
+    const submission = await Submission.findById(
+      submitId
+    ).populate("test");
 
     let status;
     if (
