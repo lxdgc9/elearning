@@ -12,6 +12,9 @@ async function myGroup(req, res, next) {
             path: "owner",
           },
           {
+            path: "messages",
+          },
+          {
             path: "channel",
             populate: [
               {
