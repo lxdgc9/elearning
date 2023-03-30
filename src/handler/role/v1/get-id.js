@@ -18,6 +18,11 @@ async function getRole(req, res, next) {
       {
         path: "users",
         select: "-role -classes",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
       },
     ]);
     if (!role) {

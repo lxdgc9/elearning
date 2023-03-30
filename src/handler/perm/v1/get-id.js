@@ -12,6 +12,12 @@ async function getPerm(req, res, next) {
       },
       {
         path: "roles",
+        select: "-perms -users",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
       },
     ]);
     if (!perm) {

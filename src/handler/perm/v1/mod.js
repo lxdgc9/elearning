@@ -56,6 +56,12 @@ async function modPerm(req, res, next) {
       },
       {
         path: "roles",
+        select: "-perms -users",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
       },
     ]);
 

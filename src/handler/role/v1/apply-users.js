@@ -53,6 +53,11 @@ async function applyUsers(req, res, next) {
       {
         path: "users",
         select: "-role -classes",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
       },
     ]);
 
