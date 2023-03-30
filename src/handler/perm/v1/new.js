@@ -19,24 +19,24 @@ async function newPerm(req, res, next) {
     const newPerm = new Perm({
       code,
       desc,
-      group: groupId,
+      group: permGr._id,
     });
     await newPerm.save();
 
     await permGr.updateOne({
       $addToSet: {
-        perms: newPerm.id,
+        perms: newPerm._id,
       },
     });
 
-    const detail = await Perm.findById(newPerm.id).populate(
-      [
-        {
-          path: "group",
-          select: "-perms",
-        },
-      ]
-    );
+    const detail = await Perm.findById(
+      newPerm._id
+    ).populate([
+      {
+        path: "group",
+        select: "-perms",
+      },
+    ]);
 
     res.status(201).json({
       detail,

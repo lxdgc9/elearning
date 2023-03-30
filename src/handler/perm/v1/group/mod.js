@@ -19,8 +19,13 @@ async function modPermGr(req, res, next) {
       { new: true }
     ).populate([
       {
-        path: "permissions",
-        select: "code description permissions",
+        path: "perms",
+        select: "-group -roles",
+        options: {
+          sort: {
+            _id: -1,
+          },
+        },
       },
     ]);
     if (!permGr) {

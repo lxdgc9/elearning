@@ -18,13 +18,13 @@ async function newRole(req, res, next) {
       role = new Role({
         name,
         desc,
-        perms: perms.map((p) => p.id),
+        perms: perms.map((p) => p._id),
       });
 
       for await (const p of perms) {
         await p.updateOne({
           $addToSet: {
-            roles: role.id,
+            roles: role._id,
           },
         });
       }
@@ -39,10 +39,15 @@ async function newRole(req, res, next) {
       await role.save();
     }
 
-    const detail = await Role.findById(role.id).populate([
+    const detail = await Role.findById(role._id).populate([
       {
         path: "perms",
         select: "-group -roles",
+        options: {
+          sort: {
+            _id: -1,
+          },
+        },
       },
     ]);
 

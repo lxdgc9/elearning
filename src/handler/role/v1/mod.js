@@ -23,12 +23,12 @@ async function modRole(req, res, next) {
         );
       }
 
-      const permsMapped = perms.map((p) => p.id);
+      const permsMapped = perms.map((p) => p._id);
       for await (const p of role.perms) {
         if (!permsMapped.includes(p)) {
           await Perm.findByIdAndUpdate(p, {
             $pull: {
-              roles: role.id,
+              roles: role._id,
             },
           });
         }
@@ -36,7 +36,7 @@ async function modRole(req, res, next) {
       for await (const p of permsMapped) {
         await Perm.findByIdAndUpdate(p, {
           $addToSet: {
-            roles: role.id,
+            roles: role._id,
           },
         });
       }
@@ -49,7 +49,6 @@ async function modRole(req, res, next) {
         },
       });
     } else {
-      console.log("djsakdjkls");
       await role.updateOne({
         $set: {
           name,
@@ -58,10 +57,15 @@ async function modRole(req, res, next) {
       });
     }
 
-    const detail = await Role.findById(role.id).populate([
+    const detail = await Role.findById(role._id).populate([
       {
         path: "perms",
         select: "-group -roles",
+        options: {
+          sort: {
+            _id: -1,
+          },
+        },
       },
       {
         path: "users",

@@ -14,7 +14,7 @@ async function getPerms(_req, res, next) {
         },
       ])
       .sort({
-        createdAt: -1,
+        _id: -1,
       });
     if (!perms.length) {
       throw new NotFoundErr("Danh sách quyền hạn trống");

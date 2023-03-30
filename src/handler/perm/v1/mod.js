@@ -29,27 +29,27 @@ async function modPerm(req, res, next) {
         throw new BadReqErr("Nhóm quyền không tồn tại");
       }
 
-      if (permGr.id !== perm.group) {
+      if (!permGr._id.equals(perm.group)) {
         await PermGr.findByIdAndUpdate(perm.group, {
           $pull: {
-            perms: perm.id,
+            perms: perm._id,
           },
         });
-        await PermGr.findByIdAndUpdate(permGr.id, {
+        await PermGr.findByIdAndUpdate(permGr._id, {
           $addToSet: {
-            perms: perm.id,
+            perms: perm._id,
           },
         });
       }
 
       await perm.updateOne({
         $set: {
-          group: permGr.id,
+          group: permGr._id,
         },
       });
     }
 
-    const detail = await Perm.findById(perm.id).populate([
+    const detail = await Perm.findById(perm._id).populate([
       {
         path: "group",
         select: "-perms",

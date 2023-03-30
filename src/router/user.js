@@ -19,7 +19,6 @@ import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
-// Lấy danh sách người dùng
 r.get(
   "/api/users",
   decodeJwt,
@@ -31,7 +30,6 @@ r.get(
   })
 );
 
-// Lấy chi tiết thông tin người dùng từ token
 r.get(
   "/api/users/me",
   decodeJwt,
@@ -43,7 +41,6 @@ r.get(
   })
 );
 
-// Lấy chi tiết thông tin người dùng
 r.get(
   "/api/users/:id",
   decodeJwt,
@@ -61,7 +58,6 @@ r.get(
   })
 );
 
-// Tạo người dùng
 r.post(
   "/api/users",
   decodeJwt,
@@ -125,7 +121,6 @@ r.post(
   })
 );
 
-// Tạo nhiều người dùng
 r.post(
   "/api/users/many",
   decodeJwt,
@@ -187,7 +182,6 @@ r.post(
   newManyUser
 );
 
-// Cập nhật hồ sơ cá nhân
 r.patch(
   "/api/users/profile",
   decodeJwt,
@@ -262,7 +256,6 @@ r.patch(
   })
 );
 
-// Bật/tắt quyền truy cập người dùng
 r.patch(
   "/api/users/access/:id",
   decodeJwt,

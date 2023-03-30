@@ -39,7 +39,6 @@ const schema = new Schema(
 
 schema.index({
   code: -1,
-  createdAt: -1,
 });
 
 schema.pre("save", function (next) {

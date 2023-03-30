@@ -13,7 +13,7 @@ async function delPerm(req, res, next) {
 
     await PermGr.findByIdAndUpdate(perm.group, {
       $pull: {
-        perms: perm.id,
+        perms: perm._id,
       },
     });
 

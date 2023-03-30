@@ -7,6 +7,11 @@ async function getPermGr(_req, res, next) {
       {
         path: "perms",
         select: "-group -roles",
+        options: {
+          sort: {
+            _id: -1,
+          },
+        },
       },
     ]);
     if (!permGr.length) {

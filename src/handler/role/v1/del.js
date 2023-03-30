@@ -15,7 +15,7 @@ async function delRole(req, res, next) {
     for await (const p of role.perms) {
       await Perm.findByIdAndUpdate(p, {
         $pull: {
-          roles: role.id,
+          roles: role._id,
         },
       });
     }

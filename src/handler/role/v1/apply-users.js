@@ -19,17 +19,17 @@ async function applyUsers(req, res, next) {
     }
 
     const userList = users
-      .filter((u) => u.role !== role.id)
-      .map((u) => u.id);
+      .filter((u) => !role._id.equals(u.role))
+      .map((u) => u._id);
     for await (const u of userList) {
       const user = await User.findByIdAndUpdate(u, {
         $set: {
-          role: role.id,
+          role: role._id,
         },
       });
       await Role.findByIdAndUpdate(user.role, {
         $pull: {
-          users: user.id,
+          users: user._id,
         },
       });
     }
@@ -40,10 +40,15 @@ async function applyUsers(req, res, next) {
       },
     });
 
-    const detail = await Role.findById(role.id).populate([
+    const detail = await Role.findById(role._id).populate([
       {
         path: "perms",
         select: "-group -roles",
+        options: {
+          sort: {
+            _id: -1,
+          },
+        },
       },
       {
         path: "users",

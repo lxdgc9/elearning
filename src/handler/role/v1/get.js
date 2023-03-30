@@ -8,6 +8,11 @@ async function getRoles(_req, res, next) {
         {
           path: "perms",
           select: "-group -roles",
+          options: {
+            sort: {
+              _id: -1,
+            },
+          },
         },
         {
           path: "users",
