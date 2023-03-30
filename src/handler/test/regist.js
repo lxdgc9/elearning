@@ -39,7 +39,7 @@ async function regist(req, res, next) {
     }
 
     // Kiểm tra mật khẩu
-    if (!test.password !== password) {
+    if (test.password !== password) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
