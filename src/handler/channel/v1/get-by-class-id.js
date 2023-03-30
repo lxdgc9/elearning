@@ -17,19 +17,17 @@ async function getByClass(req, res, next) {
             },
             {
               path: "groups",
+              populate: [
+                {
+                  path: "members",
+                },
+                {
+                  path: "messages",
+                },
+              ],
             },
             {
               path: "members",
-              populate: [
-                {
-                  path: "role",
-                  populate: [
-                    {
-                      path: "permissions",
-                    },
-                  ],
-                },
-              ],
             },
           ],
         },
@@ -39,7 +37,7 @@ async function getByClass(req, res, next) {
     }
 
     res.json({
-      channel,
+      channels: _class.channels,
     });
   } catch (err) {
     console.log(err);

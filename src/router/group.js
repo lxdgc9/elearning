@@ -1,4 +1,5 @@
 const express = require("express");
+const uploader = require("../helper/uploader");
 const mongoose = require("mongoose");
 const route = require("../cfg/route");
 const valid = require("express-validator");
@@ -128,6 +129,7 @@ r.patch(
   requireAuth,
   active,
   access(),
+  uploader.single("file"),
   [
     valid
       .param("id")

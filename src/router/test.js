@@ -17,6 +17,7 @@ const result = require("../handler/test/result");
 const getSubmissions = require("../handler/test/get-submissions");
 const updateTest = require("../handler/test/update");
 const myTestById = require("../handler/test/my-test-by-id");
+const deleteTest = require("../handler/test/delete");
 
 const r = express.Router();
 
@@ -148,6 +149,18 @@ r.patch(
   validReq,
   version({
     v1: submit,
+  })
+);
+
+// Xóa bài kiểm tra
+r.delete(
+  "/api/test/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: deleteTest,
   })
 );
 
