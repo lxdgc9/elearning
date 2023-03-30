@@ -13,6 +13,11 @@ async function myGroup(req, res, next) {
           },
           {
             path: "messages",
+            populate: [
+              {
+                path: "sender",
+              },
+            ],
           },
           {
             path: "channel",
