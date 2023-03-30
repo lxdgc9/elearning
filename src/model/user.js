@@ -73,6 +73,12 @@ const schema = new mongoose.Schema(
         ref: "class",
       },
     ],
+    groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "group",
+      },
+    ],
     hasAccess: {
       type: Boolean,
       default: true,

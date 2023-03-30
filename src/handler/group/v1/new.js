@@ -1,5 +1,6 @@
 const Channel = require("../../../model/channel");
 const Group = require("../../../model/group");
+const User = require("../../../model/user");
 const { getIO } = require("../../../sock");
 
 async function newGroup(req, res, next) {
@@ -15,6 +16,14 @@ async function newGroup(req, res, next) {
       members: memberIds,
     });
     await group.save();
+
+    for await (const m of group.members) {
+      await User.findByIdAndUpdate(m, {
+        $addToSet: {
+          groups: group.id,
+        },
+      });
+    }
 
     await Channel.findByIdAndUpdate(channelId, {
       $addToSet: {
