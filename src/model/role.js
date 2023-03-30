@@ -7,11 +7,11 @@ const schema = new Schema(
       required: true,
       trim: true,
     },
-    description: {
+    desc: {
       type: String,
       trim: true,
     },
-    permissions: [
+    perms: [
       {
         type: Schema.Types.ObjectId,
         ref: "perm",
@@ -41,12 +41,11 @@ schema.index({
   createdAt: -1,
 });
 
-// Chuẩn hóa khoảng trắng
 schema.pre("save", function (next) {
-  let { name, description } = this;
+  let { name, desc } = this;
   name = name.replace(/\s+/g, " ").trim();
-  if (description) {
-    description = description.replace(/\s+/g, " ").trim();
+  if (desc) {
+    desc = desc.replace(/\s+/g, " ").trim();
   }
   next();
 });

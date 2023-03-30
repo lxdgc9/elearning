@@ -6,8 +6,8 @@ const schema = new Schema(
       type: String,
       enum: ["GET", "NEW", "MOD", "DEL"],
       required: true,
-      uppercase: true,
       trim: true,
+      uppercase: true,
     },
     modBy: {
       type: Schema.Types.ObjectId,
