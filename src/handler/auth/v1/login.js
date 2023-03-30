@@ -11,21 +11,31 @@ async function login(req, res, next) {
   try {
     const user = await User.findOne({
       username,
-    })
-      .select("-logs")
-      .populate([
-        {
-          path: "role",
-          populate: [
-            {
-              path: "permissions",
+    }).populate([
+      {
+        path: "role",
+        populate: [
+          {
+            path: "perms",
+            select: "-group -roles",
+            options: {
+              sort: {
+                _id: -1,
+              },
             },
-          ],
+          },
+        ],
+      },
+      {
+        path: "classes",
+        select: "-members -channels",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
         },
-        {
-          path: "classes",
-        },
-      ]);
+      },
+    ]);
     if (!user) {
       throw new NotFoundErr("Tài khoản không tồn tại");
     }
@@ -40,8 +50,8 @@ async function login(req, res, next) {
 
     const accessToken = jwt.sign(
       {
-        id: user.id,
-        perms: user.role.permissions.map((p) => p.name),
+        id: user._id,
+        perms: user.role.perms.map((p) => p.code),
         hasAccess: user.hasAccess,
       },
       process.env.ACCESS_TOKEN_SECRET,

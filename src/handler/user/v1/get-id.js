@@ -8,11 +8,16 @@ async function getUser(req, res, next) {
     ).populate([
       {
         path: "role",
-        populate: [
-          {
-            path: "permissions",
+        select: "-perms -users",
+      },
+      {
+        path: "classes",
+        select: "-members -channels",
+        options: {
+          sort: {
+            createdAt: -1,
           },
-        ],
+        },
       },
     ]);
     if (!user) {

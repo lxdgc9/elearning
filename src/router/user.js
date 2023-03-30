@@ -2,13 +2,13 @@ import { Router } from "express";
 import { check, param } from "express-validator";
 
 import { changePass } from "../handler/user/v1/change-pass.js";
-import { getUser } from "../handler/user/v1/get-by-id.js";
+import { getUser } from "../handler/user/v1/get-id.js";
 import { getUsers } from "../handler/user/v1/get.js";
 import { grantAccessUser } from "../handler/user/v1/grant-access.js";
 import { me } from "../handler/user/v1/me.js";
 import { newManyUser } from "../handler/user/v1/new-many.js";
 import { newUser } from "../handler/user/v1/new.js";
-import { updateProf } from "../handler/user/v1/update-prof.js";
+import { modProf } from "../handler/user/v1/mod-prof.js";
 import { uploader } from "../helper/uploader.js";
 import { accessCtrl } from "../middleware/access-ctrl.js";
 import { checkUser } from "../middleware/check-user.js";
@@ -182,13 +182,13 @@ r.post(
   newManyUser
 );
 
-r.patch(
-  "/api/users/profile",
+r.put(
+  "/api/users/prof",
   decodeJwt,
   requireAuth,
   checkUser,
   accessCtrl(),
-  uploader.single("avatar"),
+  uploader.single("avt"),
   [
     check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
@@ -222,7 +222,7 @@ r.patch(
   ],
   validReq,
   redirectVer({
-    v1: updateProf,
+    v1: modProf,
   })
 );
 

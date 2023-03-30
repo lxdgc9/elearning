@@ -7,11 +7,16 @@ async function getUsers(_req, res, next) {
       .populate([
         {
           path: "role",
-          populate: [
-            {
-              path: "permissions",
+          select: "-perms -users",
+        },
+        {
+          path: "classes",
+          select: "-members -channels",
+          options: {
+            sort: {
+              createdAt: -1,
             },
-          ],
+          },
         },
       ])
       .sort({

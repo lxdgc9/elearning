@@ -1,7 +1,7 @@
 import { UnauthorizedErr } from "../../../err/unauthorized.js";
 import { User } from "../../../model/user.js";
 
-async function updateProf(req, res, next) {
+async function modProf(req, res, next) {
   const {
     fullName,
     gender,
@@ -34,11 +34,16 @@ async function updateProf(req, res, next) {
     ).populate([
       {
         path: "role",
-        populate: [
-          {
-            path: "permissions",
+        select: "-perms -users",
+      },
+      {
+        path: "classes",
+        select: "-members -channels",
+        options: {
+          sort: {
+            createdAt: -1,
           },
-        ],
+        },
       },
     ]);
     if (!user) {
@@ -54,4 +59,4 @@ async function updateProf(req, res, next) {
   }
 }
 
-export { updateProf };
+export { modProf };

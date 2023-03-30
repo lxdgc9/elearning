@@ -46,32 +46,37 @@ async function newUser(req, res, next) {
           street,
         },
       },
-      role: role.id,
+      role: role._id,
       hasAccess,
     });
     await newUser.save();
 
     await role.updateOne({
       $addToSet: {
-        users: newUser.id,
+        users: newUser._id,
       },
     });
 
-    const userDetail = await User.findById(
-      newUser.id
+    const detail = await User.findById(
+      newUser._id
     ).populate([
       {
         path: "role",
-        populate: [
-          {
-            path: "permissions",
+        select: "-perms -users",
+      },
+      {
+        path: "classes",
+        select: "-members -channels",
+        options: {
+          sort: {
+            createdAt: -1,
           },
-        ],
+        },
       },
     ]);
 
     res.status(201).json({
-      user: userDetail,
+      user: detail,
     });
   } catch (err) {
     console.log(err);
