@@ -18,6 +18,7 @@ const getSubmissions = require("../handler/test/get-submissions");
 const updateTest = require("../handler/test/update");
 const myTestById = require("../handler/test/my-test-by-id");
 const deleteTest = require("../handler/test/delete");
+const answer = require("../handler/test/answer");
 
 const r = express.Router();
 
@@ -135,6 +136,17 @@ r.put(
   access(),
   version({
     v1: updateTest,
+  })
+);
+
+r.patch(
+  "/api/test/answer/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: answer,
   })
 );
 
