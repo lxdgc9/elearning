@@ -24,6 +24,7 @@ const getByClass = require("../handler/channel/v1/get-by-class-id");
 const updateGroup = require("../handler/group/v1/update");
 const deleteGroup = require("../handler/group/v1/delete");
 const sendMsg = require("../handler/group/v1/send-msg");
+const me = require("../handler/group/v1/me");
 
 const r = express.Router();
 
@@ -36,6 +37,18 @@ r.get(
   access(),
   version({
     v1: getGroups,
+  })
+);
+
+// Lấy danh sách nhóm chứa bạn
+r.get(
+  "/api/groups/me",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: me,
   })
 );
 

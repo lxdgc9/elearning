@@ -6,7 +6,7 @@ async function myGroup(req, res, next) {
   try {
     const user = await User.findById(req.user.id).populate([
       {
-        path: "group",
+        path: "groups",
         populate: [
           {
             path: "owner",
