@@ -10,6 +10,9 @@ async function getSubmissions(req, res, next) {
           path: "test",
           select: "-questions",
         },
+        {
+          path: "user",
+        },
       ])
       .sort({ createdAt: -1 });
 
