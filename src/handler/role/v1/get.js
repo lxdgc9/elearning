@@ -6,10 +6,17 @@ async function getRoles(_req, res, next) {
     const roles = await Role.find({})
       .populate([
         {
-          path: "permissions",
+          path: "perms",
+          select: "-group -roles",
+        },
+        {
+          path: "users",
+          select: "-role -classes",
         },
       ])
-      .sort({ createdAt: -1 });
+      .sort({
+        createdAt: -1,
+      });
     if (!roles.length) {
       throw new NotFoundErr("Danh sách vai trò trống");
     }

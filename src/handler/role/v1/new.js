@@ -3,45 +3,51 @@ import { Perm } from "../../../model/perm.js";
 import { Role } from "../../../model/role.js";
 
 async function newRole(req, res, next) {
-  const { name, description, permissionIds } = req.body;
+  const { name, desc, permIds } = req.body;
 
   try {
-    if (permissionIds && permissionIds.length > 0) {
-      const perms = await Perm.find({ _id: permissionIds });
-      if (perms.length !== permissionIds.length) {
+    let role;
+    if (permIds) {
+      const perms = await Perm.find({ _id: permIds });
+      if (perms.length !== permIds.length) {
         throw new BadReqErr(
           "Có quyền hạn trong danh sách không tồn tại"
         );
       }
-    }
 
-    const role = new Role({
-      name,
-      description,
-      permissions: permissionIds,
-    });
-    await role.save();
+      role = new Role({
+        name,
+        desc,
+        perms: perms.map((p) => p.id),
+      });
 
-    if (permissionIds && permissionIds.length > 0) {
-      for await (const p of permissionIds) {
-        await Perm.findByIdAndUpdate(p, {
+      for await (const p of perms) {
+        await p.updateOne({
           $addToSet: {
             roles: role.id,
           },
         });
       }
+    } else {
+      role = new Role({
+        name,
+        desc,
+      });
     }
 
-    const roleDetail = await Role.findById(
-      role.id
-    ).populate([
+    if (role) {
+      await role.save();
+    }
+
+    const detail = await Role.findById(role.id).populate([
       {
-        path: "permissions",
+        path: "perms",
+        select: "-group -roles",
       },
     ]);
 
     res.status(201).json({
-      role: roleDetail,
+      role: detail,
     });
   } catch (err) {
     console.log(err);

@@ -7,7 +7,12 @@ async function getRole(req, res, next) {
       req.params.id
     ).populate([
       {
-        path: "permissions",
+        path: "perms",
+        select: "-group -roles",
+      },
+      {
+        path: "users",
+        select: "-role -classes",
       },
     ]);
     if (!role) {

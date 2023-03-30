@@ -6,53 +6,53 @@ async function applyUsers(req, res, next) {
   const { userIds } = req.body;
 
   try {
-    // Kiểm tra vai trò
     const role = await Role.findById(req.params.id);
     if (!role) {
       throw new BadReqErr("Vai trò không tồn tại");
     }
 
-    // Kiểm tra danh sách người dùng từ yêu cầu, thao tác
-    // sẽ nhưng nếu tồn tại bất kỳ người dùng không hợp lệ
-    let users = [];
-    if (userIds && userIds.length > 0) {
-      users = await User.find({ _id: permissionIds });
-      if (users.length !== userIds.length) {
-        throw new BadReqErr(
-          "Có người dùng trong danh sách không tồn tại"
-        );
-      }
+    const users = await User.find({ _id: permissionIds });
+    if (users.length !== userIds.length) {
+      throw new BadReqErr(
+        "Có người dùng trong danh sách không tồn tại"
+      );
     }
 
-    // Tiến hành thêm vào vai trò những người dùng đang có
-    // vai trò hiện tại, đồng thời gán vai trò cho những
-    // người dùng này
-    for await (const u of users) {
-      await role.updateOne({
-        $addToSet: {
-          users: u.id,
-        },
-      });
-      await User.findByIdAndUpdate(u.id, {
+    const userList = users
+      .filter((u) => u.role !== role.id)
+      .map((u) => u.id);
+    for await (const u of userList) {
+      const user = await User.findByIdAndUpdate(u, {
         $set: {
           role: role.id,
         },
       });
+      await Role.findByIdAndUpdate(user.role, {
+        $pull: {
+          users: user.id,
+        },
+      });
     }
 
-    const roleDetail = await Role.findById(
-      role.id
-    ).populate([
+    await role.updateOne({
+      $addToSet: {
+        users: userList,
+      },
+    });
+
+    const detail = await Role.findById(role.id).populate([
       {
-        path: "permissions",
+        path: "perms",
+        select: "-group -roles",
       },
       {
         path: "users",
+        select: "-role -classes",
       },
     ]);
 
     res.json({
-      role: roleDetail,
+      role: detail,
     });
   } catch (err) {
     console.log(err);

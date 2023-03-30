@@ -70,16 +70,16 @@ const schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "role",
     },
+    hasAccess: {
+      type: Boolean,
+      default: true,
+    },
     classes: [
       {
         type: Schema.Types.ObjectId,
         ref: "class",
       },
     ],
-    hasAccess: {
-      type: Boolean,
-      default: true,
-    },
   },
   {
     collection: "User",
@@ -100,7 +100,6 @@ schema.index({
   createdAt: -1,
 });
 
-// Mã hóa mật khẩu
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
     this.password = await Password.toHash(this.password);
@@ -108,7 +107,6 @@ schema.pre("save", async function (fn) {
   fn();
 });
 
-// Chuẩn hóa khoảng trắng
 schema.pre("save", function (next) {
   let { fullName, bio } = this.profile;
   if (fullName) {

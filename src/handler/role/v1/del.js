@@ -1,8 +1,9 @@
 import { BadReqErr } from "../../../err/bad-req.js";
 import { Perm } from "../../../model/perm.js";
 import { Role } from "../../../model/role.js";
+import { User } from "../../../model/user.js";
 
-async function deleteRole(req, res, next) {
+async function delRole(req, res, next) {
   try {
     const role = await Role.findByIdAndDelete(
       req.params.id
@@ -11,10 +12,18 @@ async function deleteRole(req, res, next) {
       throw new BadReqErr("Vai trò không tồn tại");
     }
 
-    for await (const p of role.permissions) {
+    for await (const p of role.perms) {
       await Perm.findByIdAndUpdate(p, {
         $pull: {
           roles: role.id,
+        },
+      });
+    }
+
+    for await (const u of role.users) {
+      await User.findByIdAndUpdate(u, {
+        $unset: {
+          role: 1,
         },
       });
     }
@@ -26,4 +35,4 @@ async function deleteRole(req, res, next) {
   }
 }
 
-export { deleteRole };
+export { delRole };
