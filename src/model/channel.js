@@ -45,7 +45,9 @@ const schema = new Schema(
   }
 );
 
-schema.index({ createdAt: -1 });
+schema.index({
+  createdAt: -1,
+});
 
 schema.pre("save", function (next) {
   let { name, description } = this;

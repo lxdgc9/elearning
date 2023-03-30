@@ -37,8 +37,11 @@ const schema = new Schema(
   }
 );
 
-schema.index({ createdAt: -1 });
+schema.index({
+  createdAt: -1,
+});
 
+// Chuẩn hóa khoảng trắng
 schema.pre("save", function (next) {
   let { name, description } = this;
   name = name.replace(/\s+/g, " ").trim();

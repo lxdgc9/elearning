@@ -2,14 +2,14 @@ import { model, Schema } from "mongoose";
 
 const schema = new Schema(
   {
-    action: {
+    act: {
       type: String,
       enum: ["GET", "NEW", "MOD", "DEL"],
       required: true,
       uppercase: true,
       trim: true,
     },
-    modifiedBy: {
+    modBy: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
@@ -28,7 +28,9 @@ const schema = new Schema(
   }
 );
 
-schema.index({ createdAt: -1 });
+schema.index({
+  createdAt: -1,
+});
 
 const Log = model("log", schema);
 

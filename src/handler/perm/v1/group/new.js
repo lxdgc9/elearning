@@ -1,16 +1,16 @@
-import { GPerm } from "../../../../model/gperm.js";
+import { PermGr } from "../../../../model/perm-gr.js";
 
-async function newGPerm(req, res, next) {
+async function newPermGr(req, res, next) {
   const { name } = req.body;
 
   try {
-    const gPerm = new GPerm({
+    const permGr = new PermGr({
       name,
     });
-    await gPerm.save();
+    await permGr.save();
 
     res.status(201).json({
-      group: gPerm,
+      group: permGr,
     });
   } catch (err) {
     console.log(err);
@@ -18,4 +18,4 @@ async function newGPerm(req, res, next) {
   }
 }
 
-export { newGPerm };
+export { newPermGr };

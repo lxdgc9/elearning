@@ -1,8 +1,8 @@
 import { BadReqErr } from "../../../err/bad-req.js";
-import { GPerm } from "../../../model/gperm.js";
+import { PermGr } from "../../../model/perm-gr.js";
 import { Perm } from "../../../model/perm.js";
 
-async function deletePerm(req, res, next) {
+async function delPerm(req, res, next) {
   try {
     const perm = await Perm.findByIdAndDelete(
       req.params.id
@@ -11,9 +11,9 @@ async function deletePerm(req, res, next) {
       throw new BadReqErr("Quyền hạn không tồn tại");
     }
 
-    await GPerm.findByIdAndUpdate(perm.group, {
+    await PermGr.findByIdAndUpdate(perm.group, {
       $pull: {
-        permissions: perm.id,
+        perms: perm.id,
       },
     });
 
@@ -24,4 +24,4 @@ async function deletePerm(req, res, next) {
   }
 }
 
-export { deletePerm };
+export { delPerm };

@@ -14,7 +14,9 @@ async function getUsers(_req, res, next) {
           ],
         },
       ])
-      .sort({ createdAt: -1 });
+      .sort({
+        createdAt: -1,
+      });
     if (!users.length) {
       throw new NotFoundErr("Danh sách người dùng trống");
     }

@@ -6,7 +6,7 @@ import path from "path";
 import { NotFoundErr } from "./err/not-found.js";
 import { errHandler } from "./middleware/err-handler.js";
 import { authRouter } from "./router/auth.js";
-import { classRouter } from "./router/class.js";
+import { roomRouter } from "./router/class.js";
 import { permRouter } from "./router/perm.js";
 import { roleRouter } from "./router/role.js";
 import { userRouter } from "./router/user.js";
@@ -27,7 +27,7 @@ app.use(authRouter);
 app.use(userRouter);
 app.use(roleRouter);
 app.use(permRouter);
-app.use(classRouter);
+app.use(roomRouter);
 
 app.all("*", (_req, _res) => {
   throw new NotFoundErr("Yêu cầu không tồn tại");

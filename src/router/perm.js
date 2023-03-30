@@ -1,17 +1,15 @@
 import { Router } from "express";
 import { check, param } from "express-validator";
-import { Types } from "mongoose";
 
-import { BadReqErr } from "../err/bad-req.js";
-import { deletePerm } from "../handler/perm/v1/delete.js";
-import { getPerm } from "../handler/perm/v1/get-by-id.js";
+import { delPerm } from "../handler/perm/v1/del.js";
+import { getPerm } from "../handler/perm/v1/get-id.js";
 import { getPerms } from "../handler/perm/v1/get.js";
-import { deleteGPerm } from "../handler/perm/v1/group/delete.js";
-import { getGPerms } from "../handler/perm/v1/group/get.js";
-import { newGPerm } from "../handler/perm/v1/group/new.js";
-import { updateGPerm } from "../handler/perm/v1/group/update.js";
+import { delPermGr } from "../handler/perm/v1/group/del.js";
+import { getPermGr } from "../handler/perm/v1/group/get.js";
+import { newPermGr } from "../handler/perm/v1/group/new.js";
+import { modPermGr } from "../handler/perm/v1/group/mod.js";
 import { newPerm } from "../handler/perm/v1/new.js";
-import { updatePerm } from "../handler/perm/v1/update.js";
+import { modPerm } from "../handler/perm/v1/mod.js";
 import { accessCtrl } from "../middleware/access-ctrl.js";
 import { checkUser } from "../middleware/check-user.js";
 import { decodeJwt } from "../middleware/decode-jwt.js";
@@ -21,21 +19,19 @@ import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
-// Lấy danh sách quyền hạn theo nhóm
 r.get(
-  "/api/permissions/group",
+  "/api/perms",
   decodeJwt,
   requireAuth,
   checkUser,
   accessCtrl(),
   redirectVer({
-    v1: getGPerms,
+    v1: getPerms,
   })
 );
 
-// Lấy chi tiết thông tin quyền hạn
 r.get(
-  "/api/permissions/:id",
+  "/api/perms/:id",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -51,21 +47,95 @@ r.get(
   })
 );
 
-// Lấy danh sách quyền hạn
+r.post(
+  "/api/perms",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    check("code")
+      .notEmpty()
+      .withMessage("Yêu cầu mã quyền hạn"),
+    check("desc")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+    check("groupId")
+      .notEmpty()
+      .withMessage("Yêu cầu nhóm quyền")
+      .isMongoId()
+      .withMessage("Nhóm quyền không hợp lệ"),
+  ],
+  validReq,
+  redirectVer({
+    v1: newPerm,
+  })
+);
+
+r.put(
+  "/api/perms/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Quyền hạn không hợp lệ"),
+    check("code")
+      .isLength({ min: 1 })
+      .withMessage("Mã quyền hạn không hợp lệ")
+      .isLength({ max: 255 })
+      .withMessage(
+        "Mã quyền hạn quá dài, vượt quá 255 ký tự"
+      )
+      .optional({ nullable: true }),
+    check("desc")
+      .isLength({ max: 255 })
+      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .optional({ nullable: true }),
+    check("groupId")
+      .isMongoId()
+      .withMessage("Nhóm quyền không hợp lệ")
+      .optional({ nullable: true }),
+  ],
+  validReq,
+  redirectVer({
+    v1: modPerm,
+  })
+);
+
+r.delete(
+  "/api/perms/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Quyền hạn không hợp lệ"),
+  ],
+  validReq,
+  redirectVer({
+    v1: delPerm,
+  })
+);
+
 r.get(
-  "/api/permissions",
+  "/api/perm-gr",
   decodeJwt,
   requireAuth,
   checkUser,
   accessCtrl(),
   redirectVer({
-    v1: getPerms,
+    v1: getPermGr,
   })
 );
 
-// Tạo mới nhóm quyền
 r.post(
-  "/api/permissions/group",
+  "/api/perm-gr",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -77,40 +147,12 @@ r.post(
   ],
   validReq,
   redirectVer({
-    v1: newGPerm,
+    v1: newPermGr,
   })
 );
 
-// Tạo mới quyền hạn
-r.post(
-  "/api/permissions",
-  decodeJwt,
-  requireAuth,
-  checkUser,
-  accessCtrl(),
-  [
-    check("code")
-      .notEmpty()
-      .withMessage("Yêu cầu mã quyền hạn"),
-    check("groupId")
-      .notEmpty()
-      .withMessage("Yêu cầu nhóm quyền")
-      .isMongoId()
-      .withMessage("Nhóm quyền không hợp lệ"),
-    check("description")
-      .isLength({ max: 255 })
-      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
-      .optional({ nullable: true }),
-  ],
-  validReq,
-  redirectVer({
-    v1: newPerm,
-  })
-);
-
-// Cập nhật thông tin nhóm quyền
-r.patch(
-  "/api/permissions/group/:id",
+r.put(
+  "/api/perm-gr/:id",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -119,73 +161,23 @@ r.patch(
     param("id")
       .isMongoId()
       .withMessage("Nhóm quyền không hợp lệ"),
-    check("name").optional({ nullable: true }),
-    check("permissionIds")
-      .isArray()
-      .withMessage("Danh sách quyền hạn không hợp lệ")
-      .custom((v) => {
-        if (v.length > 0) {
-          const isValid = v.every((id) =>
-            Types.ObjectId.isValid(id)
-          );
-          if (!isValid) {
-            throw new BadReqErr(
-              "Tồn tại quyền hạn không hợp lệ trong danh sách"
-            );
-          }
-        }
-        return true;
-      })
-      .optional({ nullable: true }),
-  ],
-  validReq,
-  redirectVer({
-    v1: updateGPerm,
-  })
-);
-
-// Cập nhật thông tin quyền hạn
-r.patch(
-  "/api/permissions/:id",
-  decodeJwt,
-  requireAuth,
-  checkUser,
-  accessCtrl(),
-  [
-    param("id")
-      .isMongoId()
-      .withMessage("Quyền hạn không hợp lệ"),
-    check("code").optional({ nullable: true }),
-    check("groupId")
-      .isMongoId()
-      .withMessage("Nhóm quyền không hợp lệ")
-      .optional({ nullable: true }),
-    check("description")
+    check("name")
+      .isLength({ min: 1 })
+      .withMessage("Tên nhóm quyền không hợp lệ")
       .isLength({ max: 255 })
-      .withMessage("Mô tả quá dài, vượt quá 255 ký tự")
+      .withMessage(
+        "Tên nhóm quyền quá dài, vượt quá 255 ký tự"
+      )
       .optional({ nullable: true }),
   ],
   validReq,
   redirectVer({
-    v1: updatePerm,
+    v1: modPermGr,
   })
 );
 
-// Xóa nhóm quyền
 r.delete(
-  "/api/permissions/group/:id",
-  decodeJwt,
-  requireAuth,
-  checkUser,
-  accessCtrl(),
-  redirectVer({
-    v1: deleteGPerm,
-  })
-);
-
-// Xóa quyền hạn
-r.delete(
-  "/api/permissions/:id",
+  "/api/perm-gr/:id",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -193,11 +185,11 @@ r.delete(
   [
     param("id")
       .isMongoId()
-      .withMessage("Quyền hạn không hợp lệ"),
+      .withMessage("Nhóm quyền không hợp lệ"),
   ],
   validReq,
   redirectVer({
-    v1: deletePerm,
+    v1: delPermGr,
   })
 );
 

@@ -43,19 +43,24 @@ const schema = new Schema(
       address: {
         province: {
           type: String,
+          trim: true,
         },
         district: {
           type: String,
+          trim: true,
         },
         ward: {
           type: String,
+          trim: true,
         },
         street: {
           type: String,
+          trim: true,
         },
       },
       bio: {
         type: String,
+        trim: true,
       },
       avatar: {
         type: String,
@@ -90,9 +95,12 @@ const schema = new Schema(
   }
 );
 
-schema.index({ username: -1 });
-schema.index({ createdAt: -1 });
+schema.index({
+  username: -1,
+  createdAt: -1,
+});
 
+// Mã hóa mật khẩu
 schema.pre("save", async function (fn) {
   if (this.isModified("password")) {
     this.password = await Password.toHash(this.password);
@@ -100,6 +108,7 @@ schema.pre("save", async function (fn) {
   fn();
 });
 
+// Chuẩn hóa khoảng trắng
 schema.pre("save", function (next) {
   let { fullName, bio } = this.profile;
   if (fullName) {

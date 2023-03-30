@@ -16,7 +16,7 @@ const uploader = multer({
     },
   }),
   limits: {
-    fileSize: 1048576000,
+    fileSize: 1048576000, // Giới hạn 1G
   },
 });
 

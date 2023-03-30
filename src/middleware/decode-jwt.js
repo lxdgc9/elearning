@@ -3,6 +3,10 @@ import jwt from "jsonwebtoken";
 import { UnauthorizedErr } from "../err/unauthorized.js";
 
 function decodeJwt(req, _res, next) {
+  if (process.env.NODE_ENV === "dev") {
+    return next();
+  }
+
   try {
     const token =
       req.headers["authorization"]?.split("Bearer ")[1];

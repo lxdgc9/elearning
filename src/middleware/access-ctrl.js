@@ -2,6 +2,10 @@ import { FobiddenErr } from "../err/forbidden.js";
 
 function accessCtrl(...perms) {
   return async (req, _res, next) => {
+    if (process.env.NODE_ENV === "dev") {
+      return next();
+    }
+
     try {
       if (
         !perms ||

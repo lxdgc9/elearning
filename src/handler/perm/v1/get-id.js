@@ -8,6 +8,10 @@ async function getPerm(req, res, next) {
     ).populate([
       {
         path: "group",
+        select: "-perms",
+      },
+      {
+        path: "roles",
       },
     ]);
     if (!perm) {
@@ -15,7 +19,7 @@ async function getPerm(req, res, next) {
     }
 
     res.json({
-      permission: perm,
+      perm,
     });
   } catch (err) {
     console.log(err);

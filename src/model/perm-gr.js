@@ -7,7 +7,7 @@ const schema = new Schema(
       required: true,
       trim: true,
     },
-    permissions: [
+    perms: [
       {
         type: Schema.Types.ObjectId,
         ref: "perm",
@@ -15,8 +15,7 @@ const schema = new Schema(
     ],
   },
   {
-    collection: "Group Permission",
-    timestamps: true,
+    collection: "Permission Group",
     toJSON: {
       virtuals: true,
       transform(_doc, ret, _options) {
@@ -32,6 +31,6 @@ schema.pre("save", function (next) {
   next();
 });
 
-const GPerm = model("gperm", schema);
+const PermGr = model("perm-gr", schema);
 
-export { GPerm };
+export { PermGr };

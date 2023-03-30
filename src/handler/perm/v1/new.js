@@ -1,18 +1,16 @@
 import { BadReqErr } from "../../../err/bad-req.js";
-import { GPerm } from "../../../model/gperm.js";
+import { PermGr } from "../../../model/perm-gr.js";
 import { Perm } from "../../../model/perm.js";
 
 async function newPerm(req, res, next) {
-  const { code, groupId, description } = req.body;
+  const { code, desc, groupId } = req.body;
 
   try {
-    // Kiểm tra nhóm quyền
-    const gPerm = await GPerm.findById(groupId);
-    if (!gPerm) {
+    const permGr = await PermGr.findById(groupId);
+    if (!permGr) {
       throw new BadReqErr("Nhóm quyền không tồn tại");
     }
 
-    // Kiểm tra mã quyền hạn
     const perm = await Perm.findOne({ code });
     if (perm) {
       throw new BadReqErr("Mã quyền hạn đã tồn tại");
@@ -20,29 +18,28 @@ async function newPerm(req, res, next) {
 
     const newPerm = new Perm({
       code,
-      description,
+      desc,
       group: groupId,
     });
     await newPerm.save();
 
-    // Cập nhật danh sách quyền hạn từ nhóm quyền
-    await gPerm.updateOne({
+    await permGr.updateOne({
       $addToSet: {
-        permissions: newPerm.id,
+        perms: newPerm.id,
       },
     });
 
-    // Lấy chi tiết thông tin quyền hạn vừa tạo
-    const permDetail = await Perm.findById(
-      newPerm.id
-    ).populate([
-      {
-        path: "group",
-      },
-    ]);
+    const detail = await Perm.findById(newPerm.id).populate(
+      [
+        {
+          path: "group",
+          select: "-perms",
+        },
+      ]
+    );
 
     res.status(201).json({
-      permission: permDetail,
+      detail,
     });
   } catch (err) {
     console.log(err);

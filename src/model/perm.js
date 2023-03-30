@@ -7,14 +7,15 @@ const schema = new Schema(
       required: true,
       unique: true,
       trim: true,
+      uppercase: true,
     },
-    description: {
+    desc: {
       type: String,
       trim: true,
     },
     group: {
       type: Schema.Types.ObjectId,
-      ref: "gperm",
+      ref: "perm-gr",
       required: true,
     },
     roles: [
@@ -26,7 +27,6 @@ const schema = new Schema(
   },
   {
     collection: "Permission",
-    timestamps: true,
     toJSON: {
       virtuals: true,
       transform(_doc, ret, _options) {
@@ -37,14 +37,16 @@ const schema = new Schema(
   }
 );
 
-schema.index({ code: -1 });
-schema.index({ createdAt: -1 });
+schema.index({
+  code: -1,
+  createdAt: -1,
+});
 
 schema.pre("save", function (next) {
-  let { code, description } = this;
+  let { code, desc } = this;
   code = code.replace(/\s+/g, " ").trim();
-  if (description) {
-    description = description.replace(/\s+/g, " ").trim();
+  if (desc) {
+    desc = desc.replace(/\s+/g, " ").trim();
   }
   next();
 });

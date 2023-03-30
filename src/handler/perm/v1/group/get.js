@@ -1,15 +1,20 @@
-import { GPerm } from "../../../../model/gperm.js";
+import { NotFoundErr } from "../../../../err/not-found.js";
+import { PermGr } from "../../../../model/perm-gr.js";
 
-async function getGPerms(_req, res, next) {
+async function getPermGr(_req, res, next) {
   try {
-    const gperms = await GPerm.find({}).populate([
+    const permGr = await PermGr.find({}).populate([
       {
-        path: "permissions",
+        path: "perms",
+        select: "-group -roles",
       },
     ]);
+    if (!permGr.length) {
+      throw new NotFoundErr("Danh sách nhóm quyền trống");
+    }
 
     res.json({
-      group: gperms,
+      group: permGr,
     });
   } catch (err) {
     console.log(err);
@@ -17,4 +22,4 @@ async function getGPerms(_req, res, next) {
   }
 }
 
-export { getGPerms };
+export { getPermGr };

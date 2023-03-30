@@ -207,4 +207,4 @@ r.delete(
   })
 );
 
-export { r as classRouter };
+export { r as roomRouter };
