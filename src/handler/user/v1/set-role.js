@@ -11,7 +11,7 @@ async function setRole(req, res, next) {
     const extUsers = await User.find({
       _id: { $in: userIds },
     });
-    if (extUsers.length > 0) {
+    if (extUsers.length !== userIds.length) {
       throw new BadReqErr("Người dùng không hợp lệ");
     }
 
@@ -23,12 +23,10 @@ async function setRole(req, res, next) {
 
     // cập nhật role cho users
     for await (const u of userIds) {
-    }
-    userIds.forEach(async (u) => {
       await User.findByIdAndUpdate(u, {
         role: roleId,
       });
-    });
+    }
 
     res.json({});
   } catch (err) {
