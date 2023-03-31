@@ -26,6 +26,9 @@ async function newTest(req, res, next) {
     });
     await newTest.save();
 
+    console.log(questions);
+    console.log(questions.length);
+
     for await (const m of newTest.members) {
       const newSubmission = new Submission({
         user: m,
