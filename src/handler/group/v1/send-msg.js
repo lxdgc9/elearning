@@ -21,7 +21,10 @@ async function sendMsg(req, res, next) {
     const msg = new Msg({
       content,
       sender: req.user.id,
-      attachment: file,
+      attachment: {
+        name: file,
+        size: req.file.size,
+      },
       resourceType,
     });
     await msg.save();
@@ -34,11 +37,18 @@ async function sendMsg(req, res, next) {
     });
 
     // get detail
-    const msgDetail = await Msg.findById(msg.id).populate([
+    let msgDetail = await Msg.findById(msg.id).populate([
       {
         path: "sender",
       },
     ]);
+    if (msgDetail.attachment) {
+      msgDetail.attachment.name = `${
+        req.protocol
+      }://${req.get("host")}/upload/${
+        msgDetail.attachment.name
+      }`;
+    }
 
     getIO().to(group.id).emit("new-msg", msgDetail);
 

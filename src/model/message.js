@@ -14,9 +14,6 @@ const schema = new mongoose.Schema(
       size: {
         type: Number,
       },
-      path: {
-        type: String,
-      },
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
