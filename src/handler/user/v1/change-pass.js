@@ -15,7 +15,7 @@ async function changePass(req, res, next) {
       user.password,
       password
     );
-    if (passMatch) {
+    if (!passMatch) {
       throw new UnauthorizedErr("Sai mật khẩu");
     }
 

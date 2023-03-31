@@ -2,9 +2,10 @@ import { Router } from "express";
 import { check, param } from "express-validator";
 
 import { changePass } from "../handler/user/v1/change-pass.js";
+import { delUser } from "../handler/user/v1/del.js";
 import { getUser } from "../handler/user/v1/get-id.js";
 import { getUsers } from "../handler/user/v1/get.js";
-import { grantAccessUser } from "../handler/user/v1/grant-access.js";
+import { grantAccess } from "../handler/user/v1/grant-access.js";
 import { me } from "../handler/user/v1/me.js";
 import { modProf } from "../handler/user/v1/mod-prof.js";
 import { newManyUser } from "../handler/user/v1/new-many.js";
@@ -271,8 +272,26 @@ r.patch(
       .isBoolean()
       .withMessage("Trạng thái truy cập không hợp lệ"),
   ],
+  validReq,
   redirectVer({
-    v1: grantAccessUser,
+    v1: grantAccess,
+  })
+);
+
+r.delete(
+  "/api/users/:id",
+  decodeJwt,
+  requireAuth,
+  checkUser,
+  accessCtrl(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Người dùng không hợp lệ"),
+  ],
+  validReq,
+  redirectVer({
+    v1: delUser,
   })
 );
 

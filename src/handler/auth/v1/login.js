@@ -51,7 +51,7 @@ async function login(req, res, next) {
     const accessToken = jwt.sign(
       {
         id: user._id,
-        perms: user.role.perms.map((p) => p.code),
+        perms: user.role?.perms.map((p) => p.code) || [],
         hasAccess: user.hasAccess,
       },
       process.env.ACCESS_TOKEN_SECRET,
