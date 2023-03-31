@@ -18,6 +18,7 @@ async function sendMsg(req, res, next) {
       file = req.file.filename;
     }
 
+    console.log(req.file);
     const msg = new Msg({
       content,
       sender: req.user.id,
@@ -33,6 +34,11 @@ async function sendMsg(req, res, next) {
     await group.updateOne({
       $addToSet: {
         messages: msg.id,
+      },
+      $set: {
+        unread: group.members.filter(
+          (m) => !m.equals(req.user.id)
+        ),
       },
     });
 

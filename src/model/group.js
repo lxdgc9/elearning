@@ -31,6 +31,12 @@ const schema = new mongoose.Schema(
         ref: "msg",
       },
     ],
+    unread: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   {
     collection: "Group",
