@@ -180,7 +180,9 @@ r.post(
       .withMessage("Vai trò không hợp lệ"),
   ],
   validReq,
-  newManyUser
+  redirectVer({
+    v1: newManyUser,
+  })
 );
 
 r.put(
