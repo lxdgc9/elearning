@@ -23,6 +23,7 @@ async function sendMsg(req, res, next) {
 
     const msg = new Msg({
       content,
+      group: group.id,
       sender: req.user.id,
       attachment: atm || undefined,
       resourceType,
