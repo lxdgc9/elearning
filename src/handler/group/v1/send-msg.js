@@ -47,19 +47,8 @@ async function sendMsg(req, res, next) {
         path: "sender",
       },
     ]);
-    // if (msgDetail.attachment) {
-    //   msgDetail.attachment.name = `${
-    //     req.protocol
-    //   }://${req.get("host")}/upload/${
-    //     msgDetail.attachment.name
-    //   }`;
-    // }
-    //
 
-    console.log(getIO().sockets.adapter.rooms);
-    getIO()
-      .to(group.id.toString())
-      .emit("new-msg", msgDetail);
+    getIO().to(group.id).emit("new-msg", msgDetail);
 
     res.json({
       message: msgDetail,
