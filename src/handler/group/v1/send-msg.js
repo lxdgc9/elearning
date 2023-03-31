@@ -57,6 +57,9 @@ async function sendMsg(req, res, next) {
     //
 
     console.log(group.id);
+    console.log(
+      getIO().sockets.adapter.rooms.get(group.id)
+    );
     getIO().to(group.id).emit("new-msg", msgDetail);
 
     res.json({
