@@ -196,41 +196,13 @@ r.patch(
   })
 );
 
-// Xóa thành viên khỏi kênh
 r.patch(
-  "/api/channels/delete-members/:id",
+  "/api/groups/mark-as-seen",
   currUser,
   requireAuth,
   active,
   access(),
-  [
-    valid
-      .param("id")
-      .isMongoId()
-      .withMessage("Lớp học không hợp lệ"),
-    valid
-      .check("memberIds")
-      .isArray()
-      .withMessage("Danh sách thành viên không hợp lệ")
-      .custom((v) => {
-        if (v.length > 0) {
-          const isValid = v.every((id) =>
-            mongoose.Types.ObjectId.isValid(id)
-          );
-          if (!isValid) {
-            throw new BadReqErr(
-              "Tồn tại thành viên không hợp lệ trong danh sách"
-            );
-          }
-          return true;
-        }
-        throw new BadReqErr("Danh sách thành viên rỗng");
-      }),
-  ],
-  validReq,
-  version({
-    v1: deleteMembers,
-  })
+  version({})
 );
 
 // Cập nhật thông tin nhóm

@@ -13,19 +13,18 @@ async function sendMsg(req, res, next) {
       throw new BadReqErr("Nhóm không tồn tại");
     }
 
-    let file;
+    let atm;
     if (req.file) {
-      file = req.file.filename;
+      atm = {
+        name: req.file.filename,
+        size: req.file.size,
+      };
     }
 
-    console.log(req.file);
     const msg = new Msg({
       content,
       sender: req.user.id,
-      attachment: {
-        name: file,
-        size: req.file.size,
-      },
+      attachment: atm || undefined,
       resourceType,
     });
     await msg.save();
