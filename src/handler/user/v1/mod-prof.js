@@ -1,3 +1,4 @@
+import { BadReqErr } from "../../../err/bad-req.js";
 import { UnauthorizedErr } from "../../../err/unauthorized.js";
 import { User } from "../../../model/user.js";
 
@@ -12,12 +13,18 @@ async function modProf(req, res, next) {
     bio,
   } = req.body;
 
-  let avatar;
-  if (req.file) {
-    avatar = req.file.filename;
-  }
-
   try {
+    if (!Object.keys(req.body).length && !req.file) {
+      throw new BadReqErr("Yêu cầu không hợp lệ");
+    }
+
+    let avatar;
+    if (req.file) {
+      avatar = req.file.filename;
+    }
+
+    console.log(req.file);
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
       {

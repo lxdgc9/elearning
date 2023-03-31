@@ -3,7 +3,7 @@ import { check, param } from "express-validator";
 import { Types } from "mongoose";
 
 import { BadReqErr } from "../err/bad-req.js";
-import { applyUsers } from "../handler/role/v1/apply-users.js";
+import { apply } from "../handler/role/v1/apply-users.js";
 import { delRole } from "../handler/role/v1/del.js";
 import { getRole } from "../handler/role/v1/get-id.js";
 import { getRoles } from "../handler/role/v1/get.js";
@@ -131,7 +131,7 @@ r.put(
 );
 
 r.patch(
-  "/api/roles/apply-users/:id",
+  "/api/roles/apply/:id",
   decodeJwt,
   requireAuth,
   checkUser,
@@ -160,7 +160,7 @@ r.patch(
   ],
   validReq,
   redirectVer({
-    v1: applyUsers,
+    v1: apply,
   })
 );
 

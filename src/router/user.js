@@ -6,9 +6,9 @@ import { getUser } from "../handler/user/v1/get-id.js";
 import { getUsers } from "../handler/user/v1/get.js";
 import { grantAccessUser } from "../handler/user/v1/grant-access.js";
 import { me } from "../handler/user/v1/me.js";
+import { modProf } from "../handler/user/v1/mod-prof.js";
 import { newManyUser } from "../handler/user/v1/new-many.js";
 import { newUser } from "../handler/user/v1/new.js";
-import { modProf } from "../handler/user/v1/mod-prof.js";
 import { uploader } from "../helper/uploader.js";
 import { accessCtrl } from "../middleware/access-ctrl.js";
 import { checkUser } from "../middleware/check-user.js";
@@ -188,7 +188,7 @@ r.put(
   requireAuth,
   checkUser,
   accessCtrl(),
-  uploader.single("avt"),
+  uploader("avt"),
   [
     check("fullName")
       .isAlpha("vi-VN", { ignore: " " })
@@ -226,9 +226,8 @@ r.put(
   })
 );
 
-// Đổi mật khẩu
 r.patch(
-  "/api/users/password",
+  "/api/users/pass",
   decodeJwt,
   requireAuth,
   checkUser,

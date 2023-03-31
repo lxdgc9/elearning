@@ -13,9 +13,8 @@ import { userRouter } from "./router/user.js";
 
 const app = express();
 
-// Thư mục chứa avatar
 app.use(
-  "/avt",
+  "/public",
   express.static(path.join(path.resolve(), "upload"))
 );
 

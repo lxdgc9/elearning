@@ -2,7 +2,7 @@ import { BadReqErr } from "../../../err/bad-req.js";
 import { Role } from "../../../model/role.js";
 import { User } from "../../../model/user.js";
 
-async function applyUsers(req, res, next) {
+async function apply(req, res, next) {
   const { userIds } = req.body;
 
   try {
@@ -11,7 +11,7 @@ async function applyUsers(req, res, next) {
       throw new BadReqErr("Vai trò không tồn tại");
     }
 
-    const users = await User.find({ _id: permissionIds });
+    const users = await User.find({ _id: userIds });
     if (users.length !== userIds.length) {
       throw new BadReqErr(
         "Có người dùng trong danh sách không tồn tại"
@@ -70,4 +70,4 @@ async function applyUsers(req, res, next) {
   }
 }
 
-export { applyUsers };
+export { apply };
