@@ -47,13 +47,14 @@ async function sendMsg(req, res, next) {
         path: "sender",
       },
     ]);
-    if (msgDetail.attachment) {
-      msgDetail.attachment.name = `${
-        req.protocol
-      }://${req.get("host")}/upload/${
-        msgDetail.attachment.name
-      }`;
-    }
+    // if (msgDetail.attachment) {
+    //   msgDetail.attachment.name = `${
+    //     req.protocol
+    //   }://${req.get("host")}/upload/${
+    //     msgDetail.attachment.name
+    //   }`;
+    // }
+    //
 
     getIO().to(group.id).emit("new-msg", msgDetail);
 
