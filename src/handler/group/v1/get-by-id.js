@@ -1,3 +1,4 @@
+const BadReqErr = require("../../../error/bad-req");
 const NotFoundErr = require("../../../error/not-found");
 const Group = require("../../../model/group");
 
@@ -10,26 +11,38 @@ async function getGroup(req, res, next) {
         path: "owner",
       },
       {
+        path: "messages",
+        populate: [
+          {
+            path: "sender",
+          },
+        ],
+      },
+      {
         path: "channel",
+        populate: [
+          {
+            path: "class",
+          },
+        ],
       },
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
-            populate: [
-              {
-                path: "permissions",
-                select: "name description",
-              },
-            ],
           },
         ],
       },
     ]);
     if (!group) {
       throw new NotFoundErr("Không tìm thấy nhóm");
+    }
+
+    if (!group.members.includes(req.user.id)) {
+      throw new BadReqErr(
+        "Bạn không phải là thành viên của nhóm này"
+      );
     }
 
     res.json({

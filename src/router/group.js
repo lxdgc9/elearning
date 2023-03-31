@@ -9,13 +9,7 @@ const access = require("../middleware/access");
 const version = require("../middleware/version");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
-const getClasses = require("../handler/class/v1/get");
-const getClass = require("../handler/class/v1/get-by-id");
-const newClass = require("../handler/class/v1/new");
 const addMembers = require("../handler/class/v1/add-members");
-const updateClass = require("../handler/class/v1/update");
-const deleteClass = require("../handler/class/v1/delete");
-const deleteMembers = require("../handler/class/v1/delete-members");
 const validReq = require("../middleware/valid-req");
 const getGroups = require("../handler/group/v1/get");
 const newGroup = require("../handler/group/v1/new");
@@ -71,7 +65,6 @@ r.get(
   })
 );
 
-// Lấy chi tiết thông tin kênh
 r.get(
   "/api/groups/:id",
   currUser,
