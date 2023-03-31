@@ -16,6 +16,7 @@ const me = require("../handler/user/v1/me");
 const newUser = require("../handler/user/v1/new");
 const newManyUser = require("../handler/user/v1/new-many");
 const updateProf = require("../handler/user/v1/update-prof");
+const setRole = require("../handler/user/v1/set-role");
 
 const r = express.Router();
 
@@ -107,6 +108,17 @@ r[CHANGE_PASSWORD.METHOD](
   access(CHANGE_PASSWORD.ACCESS),
   version({
     v1: changePass,
+  })
+);
+
+r.patch(
+  "/api/users/role",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: setRole,
   })
 );
 
