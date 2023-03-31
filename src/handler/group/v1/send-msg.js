@@ -56,7 +56,7 @@ async function sendMsg(req, res, next) {
     // }
     //
 
-    getIO().to(group.id).emit("new-msg", msgDetail);
+    getIO().emit("new-msg", msgDetail);
 
     res.json({
       message: msgDetail,
