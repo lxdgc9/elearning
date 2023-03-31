@@ -39,20 +39,26 @@ async function newGroup(req, res, next) {
         path: "owner",
       },
       {
+        path: "messages",
+        populate: [
+          {
+            path: "sender",
+          },
+        ],
+      },
+      {
         path: "channel",
+        populate: [
+          {
+            path: "class",
+          },
+        ],
       },
       {
         path: "members",
-        select: "profile role",
         populate: [
           {
             path: "role",
-            populate: [
-              {
-                path: "permissions",
-                select: "name description",
-              },
-            ],
           },
         ],
       },
@@ -60,7 +66,7 @@ async function newGroup(req, res, next) {
 
     // Thông báo có group mới
     memberIds.forEach((m) => {
-      getIO().to(m).emit("new-group", groupDetail.id);
+      getIO().to(m).emit("new-group", groupDetail);
     });
 
     res.status(201).json({

@@ -7,6 +7,11 @@ async function myGroup(req, res, next) {
     const user = await User.findById(req.user.id).populate([
       {
         path: "groups",
+        options: {
+          sort: {
+            createdAt: -1,
+          },
+        },
         populate: [
           {
             path: "owner",
