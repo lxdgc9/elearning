@@ -8,7 +8,10 @@ async function updateProf(req, res, next) {
     dob,
     email,
     phone,
-    address,
+    provinceId,
+    districtId,
+    wardId,
+    street,
     bio,
   } = req.body;
 
