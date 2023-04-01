@@ -17,6 +17,8 @@ const newUser = require("../handler/user/v1/new");
 const newManyUser = require("../handler/user/v1/new-many");
 const updateProf = require("../handler/user/v1/update-prof");
 const setRole = require("../handler/user/v1/set-role");
+const { default: mongoose } = require("mongoose");
+const BadReqErr = require("../error/bad-req");
 
 const r = express.Router();
 
@@ -117,6 +119,31 @@ r.patch(
   requireAuth,
   active,
   access(),
+  [
+    valid
+      .check("roleId")
+      .isMongoId()
+      .withMessage("Vai trò không hợp lệ"),
+    valid
+      .check("userIds")
+      .isArray()
+      .withMessage("Danh sách thành viên không hợp lệ")
+      .custom((v) => {
+        if (v.length > 0) {
+          const isValid = v.every((id) =>
+            mongoose.Types.ObjectId.isValid(id)
+          );
+          if (!isValid) {
+            throw new BadReqErr(
+              "Tồn tại thành viên không hợp lệ trong danh sách"
+            );
+          }
+          return true;
+        }
+        throw BadReqErr("Yêu cầu danh sách người dùng");
+      }),
+  ],
+  validReq,
   version({
     v1: setRole,
   })
