@@ -1,7 +1,7 @@
 const User = require("../../../model/user");
 const NotFoundErr = require("../../../error/not-found");
 
-async function getUsers(req, res, next) {
+async function getUsers(_req, res, next) {
   try {
     const users = await User.find({})
       .select("-logs -classes")
