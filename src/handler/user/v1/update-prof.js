@@ -9,15 +9,8 @@ async function updateProf(req, res, next) {
     email,
     phone,
     address,
-    city,
-    district,
-    ward,
     bio,
   } = req.body;
-
-  console.log(req.body.city);
-  console.log(req.body.district);
-  console.log(req.body.ward);
 
   let avatar;
   if (req.file) {
@@ -33,10 +26,10 @@ async function updateProf(req, res, next) {
         "profile.dob": dob,
         "profile.email": email,
         "profile.phone": phone,
-        "profile.address.provinceId": city.code,
-        "profile.address.districtId": district.code,
-        "profile.address.wardId": ward.code,
-        "profile.address.street": address,
+        "profile.address.provinceId": provinceId,
+        "profile.address.districtId": districtId,
+        "profile.address.wardId": wardId,
+        "profile.address.street": street,
         "profile.bio": bio,
         "profile.avatar": avatar,
       },
