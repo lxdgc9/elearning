@@ -12,19 +12,23 @@ async function updateProf(req, res, next) {
     bio,
   } = req.body;
 
+  let avatar;
+  if (req.file) {
+    avatar = req.file.filename;
+  }
+
   try {
     const user = await User.findByIdAndUpdate(
       req.user.id,
       {
-        profile: {
-          fullName,
-          gender,
-          dob,
-          email,
-          phone,
-          address,
-          bio,
-        },
+        "profile.fullName": fullName,
+        "profile.gender": gender,
+        "profile.dob": dob,
+        "profile.email": email,
+        "profile.phone": phone,
+        "profile.address": address,
+        "profile.bio": bio,
+        "profile.avatar": avatar,
       },
       { new: true }
     ).populate([
