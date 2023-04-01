@@ -4,12 +4,15 @@ const Submission = require("../../model/submission");
 
 async function deleteTest(req, res, next) {
   try {
-    const test = await Test.findByIdAndDelete(
-      req.params.id
-    );
-    if (!test) {
-      throw new BadReqErr("Không tồn tại bài thi");
+    // kiểm tra người tạo
+    const test = await Test.findById(req.params.id);
+    if (!test.createdBy.equals(req.user.id)) {
+      throw new BadReqErr(
+        "Bạn không phải người tạo bài thi"
+      );
     }
+
+    await Test.findByIdAndDelete(test._id);
 
     for await (const s of test.submissions) {
       await Submission.findByIdAndUpdate(s, {

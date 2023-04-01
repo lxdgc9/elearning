@@ -1,5 +1,5 @@
 const express = require("express");
-const { check } = require("express-validator");
+const { check, param } = require("express-validator");
 
 const active = require("../middleware/active");
 const access = require("../middleware/access");
@@ -145,6 +145,13 @@ r.patch(
   requireAuth,
   active,
   access(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Bài làm không hợp lệ"),
+    check("token").notEmpty().withMessage("Yêu cầu token"),
+  ],
+  validReq,
   version({
     v1: answer,
   })
