@@ -28,7 +28,7 @@ async function newUser(req, res, next) {
 
     // kiểm tra roleId
     const role = await Role.findById(roleId);
-    if (role) {
+    if (!role) {
       throw new BadReqErr("Vai Trò Không Hợp Lệ");
     }
 

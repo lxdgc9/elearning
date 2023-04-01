@@ -33,7 +33,7 @@ const schema = new mongoose.Schema(
 
 // Xóa khoảng trắng thừa trong tên và mô tả
 schema.pre("save", function (next) {
-  const { name, description } = this;
+  let { name, description } = this;
   name = name.replace(/\s+/g, " ").trim();
   if (description) {
     description = description.replace(/\s+/g, " ").trim();
