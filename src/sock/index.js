@@ -19,6 +19,10 @@ function createSock(ws) {
       socket.join(roomId);
     });
 
+    socket.on("leave-room", (roomId) => {
+      socket.leave(roomId);
+    });
+
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);
     });
