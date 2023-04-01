@@ -35,7 +35,6 @@ async function newManyUser(req, res, next) {
       districtId,
       wardId,
       street,
-      roleId,
       hasAccess,
     } of users) {
       try {
@@ -55,7 +54,7 @@ async function newManyUser(req, res, next) {
               street,
             },
           },
-          role: roleId,
+          role: role._id,
           hasAccess,
         });
         userList.push(user);
@@ -64,6 +63,7 @@ async function newManyUser(req, res, next) {
         flag = false;
       }
     }
+
     // Tiến hành tạo lưu những user đã tạo
     if (flag) {
       for await (const u of userList) {
