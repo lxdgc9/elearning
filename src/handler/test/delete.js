@@ -13,8 +13,8 @@ async function deleteTest(req, res, next) {
 
     for await (const s of test.submissions) {
       await Submission.findByIdAndUpdate(s, {
-        $set: {
-          test: null,
+        $unset: {
+          test: 1,
         },
       });
     }
