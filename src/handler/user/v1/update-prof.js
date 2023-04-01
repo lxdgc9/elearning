@@ -15,8 +15,6 @@ async function updateProf(req, res, next) {
     bio,
   } = req.body;
 
-  console.log(req.body);
-
   let avatar;
   if (req.file) {
     avatar = req.file.filename;

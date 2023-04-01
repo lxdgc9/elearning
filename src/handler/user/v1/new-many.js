@@ -3,7 +3,7 @@ const Role = require("../../../model/role");
 const User = require("../../../model/user");
 
 async function newManyUser(req, res, next) {
-  const { users } = req.body;
+  const { users, roleId } = req.body;
 
   try {
     // Kiểm tra username
@@ -15,11 +15,9 @@ async function newManyUser(req, res, next) {
     }
 
     // Kiểm tra roleId
-    const roles = await Role.find({}).select("_id");
-    const extRoleIds = roles.map((r) => r.id);
-    const roleIds = users.map((u) => u.roleId);
-    if (roleIds.some((r) => !extRoleIds.includes(r))) {
-      throw new BadReqErr("Không Tìm Thấy Vai Trò");
+    const role = await Role.findById(roleId);
+    if (!role) {
+      throw new BadReqErr("Vai trò không tồn tại");
     }
 
     // Tạo nhiều user
