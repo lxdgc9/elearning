@@ -19,6 +19,7 @@ const updateGroup = require("../handler/group/v1/update");
 const deleteGroup = require("../handler/group/v1/delete");
 const sendMsg = require("../handler/group/v1/send-msg");
 const me = require("../handler/group/v1/me");
+const markSeen = require("../handler/group/v1/mark-seen");
 
 const r = express.Router();
 
@@ -190,12 +191,14 @@ r.patch(
 );
 
 r.patch(
-  "/api/groups/mark-as-seen",
+  "/api/groups/mark-as-seen/:id",
   currUser,
   requireAuth,
   active,
   access(),
-  version({})
+  version({
+    v1: markSeen,
+  })
 );
 
 // Cập nhật thông tin nhóm

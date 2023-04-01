@@ -68,10 +68,9 @@ async function newManyUser(req, res, next) {
     }
     // Tiến hành tạo lưu những user đã tạo
     if (flag) {
-      userList.forEach(async (u) => {
-        console.log(u);
+      for await (const u of userList) {
         await u.save();
-      });
+      }
     } else {
       throw new BadReqErr("Tạo Nhiều Người Dùng Thất Bại");
     }
