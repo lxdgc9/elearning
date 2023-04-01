@@ -9,6 +9,9 @@ async function updateProf(req, res, next) {
     email,
     phone,
     address,
+    city,
+    district,
+    ward,
     bio,
   } = req.body;
 
@@ -28,7 +31,12 @@ async function updateProf(req, res, next) {
         "profile.dob": dob,
         "profile.email": email,
         "profile.phone": phone,
-        "profile.address": address,
+        "profile.address": {
+          provinceId: city.code,
+          districtId: district.code,
+          wardId: ward.code,
+          street: address,
+        },
         "profile.bio": bio,
         "profile.avatar": avatar,
       },
