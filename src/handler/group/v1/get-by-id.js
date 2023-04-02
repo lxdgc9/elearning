@@ -39,7 +39,9 @@ async function getGroup(req, res, next) {
       throw new NotFoundErr("Không tìm thấy nhóm");
     }
 
-    if (!group.members.includes(req.user.id)) {
+    if (
+      !group.members.map((m) => m._id).includes(req.user.id)
+    ) {
       throw new BadReqErr(
         "Bạn không phải là thành viên của nhóm này"
       );
