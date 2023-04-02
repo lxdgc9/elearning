@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
+const { check, param } = require("express-validator");
 const access = require("../middleware/access");
 const active = require("../middleware/active");
 const currUser = require("../middleware/current-user");
@@ -8,6 +8,8 @@ const validReq = require("../middleware/valid-req");
 const version = require("../middleware/version");
 const newGame = require("../handler/game/new.js");
 const myGames = require("../handler/game/my-games");
+const getGame = require("../handler/game/get-id");
+const getGames = require("../handler/game/get");
 
 const r = Router();
 
@@ -21,6 +23,11 @@ r.post(
     check("name")
       .notEmpty()
       .withMessage("Yêu cầu tên trò chơi"),
+    check("classId")
+      .notEmpty()
+      .withMessage("Yêu cầu lớp học")
+      .isMongoId()
+      .withMessage("Lớp học không hợp lệ"),
     check("type")
       .notEmpty()
       .withMessage("Yêu cầu loại trò chơi")
@@ -43,8 +50,32 @@ r.get(
   requireAuth,
   active,
   access(),
+  [
+    param("classId")
+      .isMongoId()
+      .withMessage("Lớp học không lợp lệ"),
+  ],
+  validReq,
   version({
     v1: myGames,
+  })
+);
+
+r.get(
+  "/api/games/detail/:id",
+
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Không tìm thấy trò chơi"),
+  ],
+  validReq,
+  version({
+    v1: getGame,
   })
 );
 
@@ -54,8 +85,14 @@ r.get(
   requireAuth,
   active,
   access(),
+  [
+    param("classId")
+      .isMongoId()
+      .withMessage("Lớp học không lợp lệ"),
+  ],
+  validReq,
   version({
-    v1: "dsa",
+    v1: getGames,
   })
 );
 

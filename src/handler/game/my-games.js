@@ -5,6 +5,7 @@ async function myGames(req, res, next) {
   try {
     const games = await Game.find({
       owner: req.user.id,
+      class: req.params.classId,
     }).populate([
       {
         path: "owner",
