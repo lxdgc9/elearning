@@ -17,7 +17,7 @@ async function getGame(req, res, next) {
     if (!game) {
       throw new NotFoundErr("Không tìm thấy trò chơi");
     }
-    if (game.members.some((m) => m.equals(req.user.id))) {
+    if (!game.members.some((m) => m.equals(req.user.id))) {
       throw new BadReqErr(
         "Bạn không được phép tham gia trò chơi này"
       );

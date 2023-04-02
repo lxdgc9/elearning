@@ -2,11 +2,23 @@ const Class = require("../../model/class");
 const Game = require("../../model/game");
 const BadReqErr = require("../../error/bad-req.js");
 
-async function newGame(req, res, next) {
+async function modGame(req, res, next) {
   const { classId, name, type, time, questionNum, quiz } =
     req.body;
 
   try {
+    // Kiểm tra người tạo
+    const game = await Game.findById(req.params.id);
+    if (!game) {
+      throw new BadReqErr("Trò chơi không tồn tại");
+    }
+
+    if (!game.owner.equals(req.user.id)) {
+      throw new BadReqErr(
+        "Bạn không phải người tạo trò chơi này"
+      );
+    }
+
     // Kiểm tra người dùng có thuộc lớp này không
     const _class = await Class.findById(classId);
     if (!_class) {
@@ -18,26 +30,21 @@ async function newGame(req, res, next) {
       throw new BadReqErr("Bạn không thuộc lớp này");
     }
 
-    const game = new Game({
-      name,
-      type,
-      time,
-      class: _class._id,
-      owner: req.user.id,
-      members: _class.members,
-      questionNum,
-      quiz,
-    });
-    await game.save();
-
-    const detail = await Game.findById(game._id).populate([
+    const detail = await Game.findOneAndUpdate(
+      game._id,
       {
-        path: "owner",
+        class: _class._id,
+        members: _class.members,
+        name,
+        type,
+        time,
+        questionNum,
+        quiz,
       },
       {
-        path: "members",
-      },
-    ]);
+        new: true,
+      }
+    );
 
     res.status(201).json({
       game: detail,
@@ -48,4 +55,4 @@ async function newGame(req, res, next) {
   }
 }
 
-module.exports = newGame;
+module.exports = modGame;

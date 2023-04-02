@@ -5,11 +5,12 @@ const active = require("../middleware/active");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
 const validReq = require("../middleware/valid-req");
-const version = require("../middleware/version");
-const newGame = require("../handler/game/new.js");
+const newGame = require("../handler/game/new");
 const myGames = require("../handler/game/my-games");
 const getGame = require("../handler/game/get-id");
 const getGames = require("../handler/game/get");
+const modGame = require("../handler/game/mod");
+const delGame = require("../handler/game/del");
 
 const r = Router();
 
@@ -38,9 +39,7 @@ r.post(
       .withMessage("Yêu cầu số lượng câu hỏi"),
   ],
   validReq,
-  version({
-    v1: newGame,
-  })
+  newGame
 );
 
 // Lấy danh sách trò chơi do chính mình tạo ra
@@ -56,9 +55,7 @@ r.get(
       .withMessage("Lớp học không lợp lệ"),
   ],
   validReq,
-  version({
-    v1: myGames,
-  })
+  myGames
 );
 
 r.get(
@@ -74,9 +71,7 @@ r.get(
       .withMessage("Không tìm thấy trò chơi"),
   ],
   validReq,
-  version({
-    v1: getGame,
-  })
+  getGame
 );
 
 r.get(
@@ -91,9 +86,37 @@ r.get(
       .withMessage("Lớp học không lợp lệ"),
   ],
   validReq,
-  version({
-    v1: getGames,
-  })
+  getGames
+);
+
+r.put(
+  "/api/games/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Trò chơi không hợp lệ"),
+  ],
+  validReq,
+  modGame
+);
+
+r.delete(
+  "/api/games/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  [
+    param("id")
+      .isMongoId()
+      .withMessage("Trò chơi không hợp lệ"),
+  ],
+  validReq,
+  delGame
 );
 
 module.exports = r;
