@@ -1,4 +1,5 @@
 const BadReqErr = require("../../error/bad-req");
+const Submission = require("../../model/submission");
 const Test = require("../../model/test");
 
 async function changeTest(req, res, next) {
@@ -12,6 +13,17 @@ async function changeTest(req, res, next) {
       ...req.body,
     });
     await test.save();
+
+    await Submission.updateMany(
+      {
+        test: test._id,
+      },
+      {
+        $set: {
+          totalQuestion: req.body.questions.length || 0,
+        },
+      }
+    );
 
     const detail = await Test.findById(req.params.id);
 
