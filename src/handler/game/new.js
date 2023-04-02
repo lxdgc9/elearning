@@ -1,12 +1,13 @@
 const Class = require("../../model/class");
 const Game = require("../../model/game");
-const BadReqErr = requires("../../error/bad-req.js");
+const BadReqErr = require("../../error/bad-req.js");
 
 async function newGame(req, res, next) {
-  const { name, type, time, questionNum, quiz } = req.body;
+  const { classId, name, type, time, questionNum, quiz } =
+    req.body;
   try {
     // Kiểm tra người dùng có thuộc lớp này không
-    const _class = await Class.findById(req.params.classId);
+    const _class = await Class.findById(classId);
     if (!_class) {
       throw new BadReqErr("Lớp không tồn tại");
     }
@@ -20,6 +21,7 @@ async function newGame(req, res, next) {
       name,
       type,
       time,
+      class: _class._id,
       owner: req.user.id,
       members: _class.members,
       questionNum,

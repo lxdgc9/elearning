@@ -279,7 +279,7 @@ r[NEW_MANY.METHOD](
       .withMessage("Số điện thoại không hợp lệ")
       .optional({ nullable: true }),
     valid
-      .check("users.*.roleId")
+      .check("roleId")
       .notEmpty()
       .withMessage("Yêu cầu vai trò người dùng"),
   ],

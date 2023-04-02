@@ -8,6 +8,11 @@ const schema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "class",
+      required: true,
+    },
     type: {
       type: String,
       enum: ["personal", "team"],
