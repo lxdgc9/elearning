@@ -39,6 +39,14 @@ async function getGroup(req, res, next) {
       throw new NotFoundErr("Không tìm thấy nhóm");
     }
 
+    console.log(group.members);
+    console.log(req.user.id);
+    console.log(
+      !group.members
+        .map((m) => m._id)
+        .some((m) => m.equals(req.user.id))
+    );
+
     if (
       !group.members
         .map((m) => m._id)
