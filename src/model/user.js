@@ -43,13 +43,13 @@ const schema = new mongoose.Schema(
         trim: true,
       },
       address: {
-        provinceId: {
+        province: {
           type: String,
         },
-        districtId: {
+        district: {
           type: String,
         },
-        wardId: {
+        ward: {
           type: String,
         },
         street: {
