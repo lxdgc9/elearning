@@ -176,10 +176,10 @@ r[NEW.METHOD](
       ),
     valid
       .check("fullName")
-      .isAlpha("vi-VN", { ignore: " " })
-      .withMessage(
-        "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
-      )
+      // .isAlpha("vi-VN", { ignore: " " })
+      // .withMessage(
+      //   "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
+      // )
       .optional({ nullable: true }),
     valid
       .check("dob")
@@ -246,10 +246,10 @@ r[NEW_MANY.METHOD](
       ),
     valid
       .check("users.*.fullName")
-      .isAlpha("vi-VN", { ignore: " " })
-      .withMessage(
-        "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
-      )
+      // .isAlpha("vi-VN", { ignore: " " })
+      // .withMessage(
+      //   "Họ và tên chỉ bao gồm ký tự trong bảng chữ cái Tiếng Việt"
+      // )
       .optional({ nullable: true }),
     valid
       .check("users.*.dob")
