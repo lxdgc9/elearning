@@ -44,7 +44,7 @@ r[NEW.METHOD](
   currUser,
   requireAuth,
   active,
-  access(NEW.ACCESS),
+  access(),
   version({
     v1: newPerm,
   })

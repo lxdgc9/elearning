@@ -29,6 +29,14 @@ r.post(
   requireAuth,
   active,
   access(),
+  [
+    check("questions")
+      .isArray()
+      .withMessage("Danh sách câu hỏi không hợp lệ")
+      .notEmpty()
+      .withMessage("Yêu câu danh sách câu hỏi"),
+  ],
+  validReq,
   version({
     v1: newTest,
   })
