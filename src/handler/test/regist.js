@@ -43,12 +43,14 @@ async function regist(req, res, next) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
-    await submission.updateOne({
-      $set: {
-        status: 2,
-        signedAt: Date.now(),
-      },
-    });
+    if (submission.status < 3) {
+      await submission.updateOne({
+        $set: {
+          status: 2,
+          signedAt: Date.now(),
+        },
+      });
+    }
 
     // Tạo token, token sẽ gửi lên kèm theo khi nộp bài
     const token = jwt.sign(

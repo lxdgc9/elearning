@@ -2,6 +2,7 @@
 
 const db = require("../db");
 const http = require("http");
+const https = require("https");
 const app = require("../app");
 const dotenv = require("dotenv");
 const { createSock } = require("../sock");
@@ -32,6 +33,21 @@ createSock(sv);
 sv.listen(port);
 sv.on("listening", onListening);
 sv.on("error", onError);
+
+// const httpsPort = normalizePort(
+//   process.env.HTTPS_PORT || 443
+// );
+//
+// const servs = https.createServer(
+//   {
+//     key: "",
+//     cert: "",
+//   },
+//   app
+// );
+// servs.listen(httpsPort, () => {
+//   console.log("Https running ...");
+// });
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
