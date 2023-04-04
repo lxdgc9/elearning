@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     signedAt: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
     },
     submitedAt: {
       type: Date,
