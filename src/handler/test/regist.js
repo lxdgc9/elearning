@@ -62,9 +62,21 @@ async function regist(req, res, next) {
       "oh-my-test"
     );
 
+    const detail = await Submission.findById(submission._id)
+      .populate([
+        {
+          path: "test",
+          select: "-questions",
+        },
+        {
+          path: "user",
+        },
+      ])
+      .sort({ createdAt: -1 });
+
     res.status(201).json({
       token,
-      submission,
+      submission: detail,
     });
   } catch (err) {
     console.log(err);
