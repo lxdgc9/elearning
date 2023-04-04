@@ -19,6 +19,7 @@ const updateTest = require("../handler/test/update");
 const myTestById = require("../handler/test/my-test-by-id");
 const deleteTest = require("../handler/test/delete");
 const answer = require("../handler/test/answer");
+const getAllResult = require("../handler/test/get-all-result");
 
 const r = express.Router();
 
@@ -68,7 +69,7 @@ r.get(
 
 // Lấy kết quả bài thi
 r.get(
-  "/api/test/result/:submissionId",
+  "/api/test/result/:id",
   currUser,
   requireAuth,
   active,
@@ -76,7 +77,7 @@ r.get(
   [],
   validReq,
   version({
-    v1: result,
+    v1: getAllResult,
   })
 );
 
