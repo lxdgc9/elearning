@@ -47,7 +47,7 @@ async function regist(req, res, next) {
       await submission.updateOne({
         $set: {
           status: 2,
-          signedAt: Date.now(),
+          signedAt: Date.now,
         },
       });
     }
