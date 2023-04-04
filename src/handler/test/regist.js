@@ -43,7 +43,7 @@ async function regist(req, res, next) {
       throw new BadReqErr("Sai mật khẩu");
     }
 
-    if (submission.status < 3) {
+    if (submission.status < 2) {
       await submission.updateOne({
         $set: {
           status: 2,
