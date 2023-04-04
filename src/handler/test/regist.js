@@ -64,6 +64,7 @@ async function regist(req, res, next) {
 
     res.status(201).json({
       token,
+      submission,
     });
   } catch (err) {
     console.log(err);
