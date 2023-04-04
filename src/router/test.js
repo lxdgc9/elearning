@@ -69,7 +69,7 @@ r.get(
 
 // Lấy kết quả bài thi
 r.get(
-  "/api/test/result/:id",
+  "/api/test/result",
   currUser,
   requireAuth,
   active,
