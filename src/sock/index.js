@@ -30,7 +30,7 @@ function createSock(ws) {
           roomId,
           {
             $set: {
-              status: true,
+              isStream: true,
             },
           }
         );
@@ -38,7 +38,7 @@ function createSock(ws) {
           socket.emit("error", "Nhóm không tồn tại");
         }
 
-        if (group.status) {
+        if (group.isStream) {
           io.to(group._id.toString()).emit(
             "join-video",
             group

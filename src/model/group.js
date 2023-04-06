@@ -37,7 +37,7 @@ const schema = new mongoose.Schema(
         ref: "user",
       },
     ],
-    status: {
+    isStream: {
       type: Boolean,
       default: false,
     },
