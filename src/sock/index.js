@@ -1,4 +1,5 @@
 const socketio = require("socket.io");
+const Group = require("../model/group");
 
 let io;
 
@@ -21,6 +22,29 @@ function createSock(ws) {
 
     socket.on("leave-room", (roomId) => {
       socket.leave(roomId);
+    });
+
+    socket.on("new-video", async (roomId) => {
+      try {
+        const group = await Group.findByIdAndUpdate(
+          roomId,
+          {
+            $set: {
+              status: true,
+            },
+          }
+        );
+        if (!group) {
+          socket.emit("error", "Nhóm không tồn tại");
+        }
+
+        if (group.status) {
+          socket.to(roomId).emit("join-video", group);
+        }
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", "Có lỗi xảy ra");
+      }
     });
 
     socket.on("disconnect", () => {

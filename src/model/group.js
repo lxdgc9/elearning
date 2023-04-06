@@ -37,6 +37,10 @@ const schema = new mongoose.Schema(
         ref: "user",
       },
     ],
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     collection: "Group",
