@@ -39,7 +39,8 @@ function createSock(ws) {
         }
 
         if (group.status) {
-          console.log("hello world");
+          console.log(socket.rooms);
+          console.log(group._id);
           io.emit("join-video", group);
         }
       } catch (err) {
