@@ -5,8 +5,8 @@ import http from "http";
 import dotenv from "dotenv";
 
 import { app } from "../app.js";
-import { connectDb } from "../db.js";
-import { createSock } from "../sock/index.js";
+import { connect } from "../db.js";
+import { runWs } from "../ws/main.js";
 
 dotenv.config();
 
@@ -25,9 +25,9 @@ app.set("port", port);
 
 const serv = http.createServer(app);
 
-connectDb(process.env.MONGO_URI);
+connect(process.env.MONGO_URI);
 
-createSock(serv);
+runWs(serv);
 
 serv.listen(port);
 serv.on("listening", onListening);

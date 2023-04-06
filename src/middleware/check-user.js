@@ -2,7 +2,8 @@ import { FobiddenErr } from "../err/forbidden.js";
 
 function checkUser(req, _res, next) {
   if (process.env.NODE_ENV === "dev") {
-    return next();
+    next();
+    return;
   }
 
   if (!req.user.hasAccess) {

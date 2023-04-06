@@ -55,9 +55,7 @@ async function login(req, res, next) {
         hasAccess: user.hasAccess,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "3d",
-      }
+      { expiresIn: "3d" }
     );
 
     res.json({

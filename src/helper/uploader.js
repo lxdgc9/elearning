@@ -12,6 +12,7 @@ function uploader(myPath) {
           "upload",
           myPath
         );
+
         if (!existsSync(dir)) {
           mkdirSync(dir, {
             recursive: true,

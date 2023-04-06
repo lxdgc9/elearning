@@ -3,7 +3,8 @@ import { FobiddenErr } from "../err/forbidden.js";
 function accessCtrl(...perms) {
   return async (req, _res, next) => {
     if (process.env.NODE_ENV === "dev") {
-      return next();
+      next();
+      return;
     }
 
     try {
@@ -19,7 +20,6 @@ function accessCtrl(...perms) {
 
       throw new FobiddenErr("Không có quyền truy cập");
     } catch (err) {
-      console.log(err);
       next(err);
     }
   };

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-async function connectDb(uri) {
+async function connect(uri) {
   mongoose
     .connect(uri)
     .then(() => console.log("MongoDB connected"))
@@ -10,4 +10,4 @@ async function connectDb(uri) {
     });
 }
 
-export { connectDb };
+export { connect };

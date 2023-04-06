@@ -7,7 +7,6 @@ import { validReq } from "../middleware/valid-req.js";
 
 const r = Router();
 
-// Đăng nhập
 r.post(
   "/api/auth/login",
   [
