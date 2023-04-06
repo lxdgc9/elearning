@@ -24,7 +24,7 @@ function createSock(ws) {
       socket.leave(roomId);
     });
 
-    socket.on("new-video", async (roomId) => {
+    socket.on("on-stream", async (roomId) => {
       try {
         const group = await Group.findByIdAndUpdate(
           roomId,
@@ -32,6 +32,9 @@ function createSock(ws) {
             $set: {
               isStream: true,
             },
+          },
+          {
+            new: true,
           }
         );
         if (!group) {
@@ -40,7 +43,36 @@ function createSock(ws) {
 
         if (group.isStream) {
           io.to(group._id.toString()).emit(
-            "join-video",
+            "on-stream",
+            group
+          );
+        }
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", "Có lỗi xảy ra");
+      }
+    });
+
+    socket.on("off-stream", async (roomId) => {
+      try {
+        const group = await Group.findByIdAndUpdate(
+          roomId,
+          {
+            $set: {
+              isStream: false,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+        if (!group) {
+          socket.emit("error", "Nhóm không tồn tại");
+        }
+
+        if (!group.isStream) {
+          io.to(group._id.toString()).emit(
+            "off-stream",
             group
           );
         }
