@@ -39,11 +39,10 @@ function createSock(ws) {
         }
 
         if (group.status) {
-          console.log(socket.rooms);
-          console.log(group._id);
-          socket
-            .to(group._id.toString())
-            .emit("join-video", group);
+          io.to(group._id.toString()).emit(
+            "join-video",
+            group
+          );
         }
       } catch (err) {
         console.log(err);
