@@ -40,7 +40,7 @@ function createSock(ws) {
 
         if (group.status) {
           console.log("hello world");
-          socket.to(group._id).emit("join-video", group);
+          io.emit("join-video", group);
         }
       } catch (err) {
         console.log(err);
