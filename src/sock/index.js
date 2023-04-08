@@ -15,6 +15,18 @@ function createSock(ws) {
   io.on("connection", (socket) => {
     console.log("a socket connected", socket.id);
 
+    socket.on("stream", (id) => {
+      socket.broadcast.emit("stream", { id });
+    });
+
+    socket.on("offer", (data) => {
+      io.to(data.id).emit("offer", data.offer);
+    });
+
+    socket.on("answer", (data) => {
+      io.to(data.id).emit("answer", data.answer);
+    });
+
     socket.on("join-room", (roomId) => {
       console.log("Join room event: ", socket.id, roomId);
       socket.join(roomId);
