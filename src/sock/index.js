@@ -82,6 +82,10 @@ function createSock(ws) {
       }
     });
 
+    socket.on("signal", (data) => {
+      socket.broadcast.emit("signal", data);
+    });
+
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);
     });
