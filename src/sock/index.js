@@ -2,6 +2,7 @@ const socketio = require("socket.io");
 const Group = require("../model/group");
 
 let io;
+const users = {};
 
 function createSock(ws) {
   io = new socketio.Server(ws, {
@@ -13,6 +14,24 @@ function createSock(ws) {
   console.log("Socket is starting!!!");
 
   io.on("connection", (socket) => {
+    socket.on("callUser", ({ signalData, from }) => {
+      io.emit("callUser", { signal: signalData, from });
+    });
+
+    socket.on("answerCall", (data) => {
+      io.to(data.to).emit("callAccepted", data.signal);
+    });
+
+    socket.on("callUser", ({ signalData, from }) => {
+      io.emit("callUser", { signal: signalData, from });
+    });
+
+    socket.on("answerCall", (data) => {
+      io.to(data.to).emit("callAccepted", data.signal);
+    });
+
+    //----------------------------------
+
     console.log("a socket connected", socket.id);
 
     socket.on("stream", (id) => {
@@ -100,6 +119,8 @@ function createSock(ws) {
 
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);
+      socket.broadcast.emit("callEnded");
+      delete users[socket.id];
     });
   });
 }
