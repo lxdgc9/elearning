@@ -16,6 +16,7 @@ function createSock(ws) {
     console.log("namespace /stream", socket.id);
 
     socket.on("join room", async (roomID, name) => {
+      console.log("Fix bug cua khua Luan");
       //  Lấy roomID và username
       socket.data.username = name;
 
