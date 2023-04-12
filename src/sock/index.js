@@ -13,6 +13,8 @@ function createSock(ws) {
 
   console.log("Socket is starting!!!");
 
+  let members = []; // danh sách user trong room
+
   io.on("connection", (socket) => {
     socket.on("join room", async (roomID, name) => {
       //  Lấy roomID và username
@@ -24,8 +26,6 @@ function createSock(ws) {
         socket.emit("room full");
         return;
       } // đặt giới hạn room
-
-      let members = []; // danh sách user trong room
 
       await peers.forEach((peer) => {
         members.push([peer.id, peer.data.username]);
