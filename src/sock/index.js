@@ -30,6 +30,7 @@ function createSock(ws) {
       members = await peers.map((peer) => {
         return [peer.id, peer.data.username];
       });
+      console.log(members);
 
       socket.join(roomID);
 
