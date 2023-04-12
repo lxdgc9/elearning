@@ -162,6 +162,7 @@ function createSock(ws) {
       console.log("a socket disconnected", socket.id);
       socket.broadcast.emit("callEnded");
       delete users[socket.id];
+      console.log(members);
       members = members.filter((m) => m[0] !== socket.id);
     });
   });
