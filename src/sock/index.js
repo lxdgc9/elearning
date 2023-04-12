@@ -69,9 +69,6 @@ function createSock(ws) {
 
     socket.on("disconnect", () => {
       console.log("a socket disconnected", socket.id);
-      socket.broadcast.emit("callEnded");
-      delete users[socket.id];
-      members = members.filter((m) => m[0] !== socket.id);
     });
   });
 }
