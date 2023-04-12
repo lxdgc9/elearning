@@ -30,7 +30,6 @@ function createSock(ws) {
       // members = await peers.map((peer) => {
       //   return [peer.id, peer.data.username];
       // });
-      members.push([socket.id, name]);
 
       socket.join(roomID);
 
@@ -45,6 +44,8 @@ function createSock(ws) {
       });
 
       socket.on("answer", (data) => {
+        members.push([socket.id, name]);
+        console.log("hello", members);
         socket.to(data.sender).emit("reconnect", {
           signal: data.signal,
           receiver: socket.id,
@@ -163,7 +164,6 @@ function createSock(ws) {
       console.log("a socket disconnected", socket.id);
       socket.broadcast.emit("callEnded");
       delete users[socket.id];
-      console.log(members);
       members = members.filter((m) => m[0] !== socket.id);
     });
   });
