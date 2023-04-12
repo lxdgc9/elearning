@@ -12,7 +12,9 @@ function createSock(ws) {
 
   console.log("Socket is starting!!!");
 
-  io.on("connection", (socket) => {
+  io.of("/stream").on("connection", (socket) => {
+    console.log("namespace /stream", socket.id);
+
     socket.on("join room", async (roomID, name) => {
       //  Lấy roomID và username
       socket.data.username = name;
@@ -60,8 +62,13 @@ function createSock(ws) {
       });
     });
 
-    //----------------------------------
+    socket.on("disconnect", () => {
+      console.log("/stream socket disconnected", socket.id);
+    });
+  });
 
+  io.on("connection", (socket) => {
+    //----------------------------------
     console.log("a socket connected", socket.id);
 
     socket.on("join-room", (roomId) => {
