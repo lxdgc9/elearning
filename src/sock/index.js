@@ -24,7 +24,7 @@ function createSock(ws) {
         return;
       } // đặt giới hạn room
 
-      let members = []; // danh sách user trong room
+      let members = []; // danh sách members trong room
 
       await peers.forEach((peer) => {
         members.push([peer.id, peer.data.username]);
@@ -49,8 +49,14 @@ function createSock(ws) {
         });
       });
 
-      socket.on("leave room", () => {
-        socket.disconnect();
+      socket.on("leave room", async () => {
+        const room = socket.rooms;
+        const roomID = [...room.keys()];
+
+        if (roomID.length === 1) {
+          return;
+        }
+        socket.to(roomID[1]).emit("user-left", socket.id);
       });
     });
 
