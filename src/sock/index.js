@@ -14,6 +14,8 @@ function createSock(ws) {
 
   const stream = io.of("/stream");
 
+  let members = []; // danh sách members trong room
+
   stream.on("connection", (socket) => {
     console.log("namespace /stream", socket.id);
 
@@ -29,11 +31,11 @@ function createSock(ws) {
         return;
       } // đặt giới hạn room
 
-      let members = []; // danh sách members trong room
+      members = peers.map((p) => [p.id, p.data.username]);
 
-      await peers.forEach((peer) => {
-        members.push([peer.id, peer.data.username]);
-      });
+      // await peers.forEach((peer) => {
+      //   members.push([peer.id, peer.data.username]);
+      // });
 
       socket.join(roomID);
 
@@ -67,6 +69,7 @@ function createSock(ws) {
 
     socket.on("disconnect", () => {
       console.log("/stream socket disconnected", socket.id);
+      members = members.filter((m) => m[0] !== socket.id);
     });
   });
 
