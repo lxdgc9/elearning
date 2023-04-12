@@ -23,7 +23,7 @@ function createSock(ws) {
       socket.data.username = name;
 
       // tạo peers với socket trong room
-      const peers = await io.in(roomID).fetchSockets();
+      const peers = await stream.in(roomID).fetchSockets();
       if (peers.length === 5) {
         socket.emit("room full");
         return;
@@ -71,7 +71,6 @@ function createSock(ws) {
   });
 
   io.on("connection", (socket) => {
-    //----------------------------------
     console.log("a socket connected", socket.id);
 
     socket.on("join-room", (roomId) => {
