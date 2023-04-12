@@ -2,7 +2,6 @@ const socketio = require("socket.io");
 const Group = require("../model/group");
 
 let io;
-const users = {};
 
 function createSock(ws) {
   io = new socketio.Server(ws, {
@@ -13,23 +12,23 @@ function createSock(ws) {
 
   console.log("Socket is starting!!!");
 
-  let members = []; // danh sách user trong room
-
   io.on("connection", (socket) => {
     socket.on("join room", async (roomID, name) => {
       //  Lấy roomID và username
       socket.data.username = name;
 
       // tạo peers với socket trong room
-      // const peers = await io.in(roomID).fetchSockets();
-      // if (peers.length === 5) {
-      //   socket.emit("room full");
-      //   return;
-      // } // đặt giới hạn room
+      const peers = await io.in(roomID).fetchSockets();
+      if (peers.length === 5) {
+        socket.emit("room full");
+        return;
+      } // đặt giới hạn room
 
-      // members = await peers.map((peer) => {
-      //   return [peer.id, peer.data.username];
-      // });
+      let members = []; // danh sách user trong room
+
+      await peers.forEach((peer) => {
+        members.push([peer.id, peer.data.username]);
+      });
 
       socket.join(roomID);
 
@@ -44,8 +43,6 @@ function createSock(ws) {
       });
 
       socket.on("answer", (data) => {
-        members.push([socket.id, name]);
-        console.log("hello", members);
         socket.to(data.sender).emit("reconnect", {
           signal: data.signal,
           receiver: socket.id,
@@ -57,37 +54,9 @@ function createSock(ws) {
       });
     });
 
-    socket.on("callUser", ({ signalData, from }) => {
-      io.emit("callUser", { signal: signalData, from });
-    });
-
-    socket.on("answerCall", (data) => {
-      io.to(data.to).emit("callAccepted", data.signal);
-    });
-
-    socket.on("callUser", ({ signalData, from }) => {
-      io.emit("callUser", { signal: signalData, from });
-    });
-
-    socket.on("answerCall", (data) => {
-      io.to(data.to).emit("callAccepted", data.signal);
-    });
-
     //----------------------------------
 
     console.log("a socket connected", socket.id);
-
-    socket.on("stream", (id) => {
-      socket.broadcast.emit("stream", { id });
-    });
-
-    socket.on("offer", (data) => {
-      io.to(data.id).emit("offer", data.offer);
-    });
-
-    socket.on("answer", (data) => {
-      io.to(data.id).emit("answer", data.answer);
-    });
 
     socket.on("join-room", (roomId) => {
       console.log("Join room event: ", socket.id, roomId);
@@ -96,68 +65,6 @@ function createSock(ws) {
 
     socket.on("leave-room", (roomId) => {
       socket.leave(roomId);
-    });
-
-    socket.on("on-stream", async (roomId) => {
-      try {
-        const group = await Group.findByIdAndUpdate(
-          roomId,
-          {
-            $set: {
-              isStream: true,
-            },
-          },
-          {
-            new: true,
-          }
-        );
-        if (!group) {
-          socket.emit("error", "Nhóm không tồn tại");
-        }
-
-        if (group.isStream) {
-          io.to(group._id.toString()).emit(
-            "on-stream",
-            group
-          );
-        }
-      } catch (err) {
-        console.log(err);
-        socket.emit("error", "Có lỗi xảy ra");
-      }
-    });
-
-    socket.on("off-stream", async (roomId) => {
-      try {
-        const group = await Group.findByIdAndUpdate(
-          roomId,
-          {
-            $set: {
-              isStream: false,
-            },
-          },
-          {
-            new: true,
-          }
-        );
-        if (!group) {
-          socket.emit("error", "Nhóm không tồn tại");
-        }
-
-        if (!group.isStream) {
-          io.to(group._id.toString()).emit(
-            "off-stream",
-            group
-          );
-        }
-      } catch (err) {
-        console.log(err);
-        socket.emit("error", "Có lỗi xảy ra");
-      }
-    });
-
-    socket.on("signal", (data) => {
-      socket.broadcast.emit("signal", data);
     });
 
     socket.on("disconnect", () => {
