@@ -27,8 +27,8 @@ function createSock(ws) {
         return;
       } // đặt giới hạn room
 
-      await peers.forEach((peer) => {
-        members.push([peer.id, peer.data.username]);
+      members = await peers.map((peer) => {
+        return [peer.id, peer.data.username];
       });
 
       socket.join(roomID);
