@@ -25,6 +25,8 @@ function createSock(ws) {
         return;
       } // đặt giới hạn room
 
+      console.log("log peers", peers);
+
       let members = []; // danh sách user trong room
 
       await peers.forEach((peer) => {
