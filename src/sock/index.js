@@ -12,7 +12,9 @@ function createSock(ws) {
 
   console.log("Socket is starting!!!");
 
-  io.of("/stream").on("connection", (socket) => {
+  const stream = io.of("/stream");
+
+  stream.on("connection", (socket) => {
     console.log("namespace /stream", socket.id);
 
     socket.on("join room", async (roomID, name) => {
@@ -61,6 +63,24 @@ function createSock(ws) {
         }
         socket.to(roomID[1]).emit("user-left", socket.id);
       });
+    });
+
+    socket.on("disconnect", () => {
+      console.log("/stream socket disconnected", socket.id);
+    });
+  });
+
+  io.on("connection", (socket) => {
+    //----------------------------------
+    console.log("a socket connected", socket.id);
+
+    socket.on("join-room", (roomId) => {
+      console.log("Join room event: ", socket.id, roomId);
+      socket.join(roomId);
+    });
+
+    socket.on("leave-room", (roomId) => {
+      socket.leave(roomId);
     });
 
     socket.on("on-stream", async (roomId) => {
@@ -119,24 +139,6 @@ function createSock(ws) {
         console.log(err);
         socket.emit("error", "Có lỗi xảy ra");
       }
-    });
-
-    socket.on("disconnect", () => {
-      console.log("/stream socket disconnected", socket.id);
-    });
-  });
-
-  io.on("connection", (socket) => {
-    //----------------------------------
-    console.log("a socket connected", socket.id);
-
-    socket.on("join-room", (roomId) => {
-      console.log("Join room event: ", socket.id, roomId);
-      socket.join(roomId);
-    });
-
-    socket.on("leave-room", (roomId) => {
-      socket.leave(roomId);
     });
 
     socket.on("disconnect", () => {
