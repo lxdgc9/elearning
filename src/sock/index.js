@@ -32,6 +32,7 @@ function createSock(ws) {
       } // đặt giới hạn room
 
       members = peers.map((p) => [p.id, p.data.username]);
+      console.log("log::: ", members);
 
       // await peers.forEach((peer) => {
       //   members.push([peer.id, peer.data.username]);
