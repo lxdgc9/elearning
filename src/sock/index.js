@@ -21,16 +21,16 @@ function createSock(ws) {
       socket.data.username = name;
 
       // tạo peers với socket trong room
-      const peers = await io.in(roomID).fetchSockets();
-      if (peers.length === 5) {
-        socket.emit("room full");
-        return;
-      } // đặt giới hạn room
+      // const peers = await io.in(roomID).fetchSockets();
+      // if (peers.length === 5) {
+      //   socket.emit("room full");
+      //   return;
+      // } // đặt giới hạn room
 
-      members = await peers.map((peer) => {
-        return [peer.id, peer.data.username];
-      });
-      console.log(members);
+      // members = await peers.map((peer) => {
+      //   return [peer.id, peer.data.username];
+      // });
+      members.push([socket.id, name]);
 
       socket.join(roomID);
 
