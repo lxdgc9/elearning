@@ -25,8 +25,6 @@ function createSock(ws) {
         return;
       } // đặt giới hạn room
 
-      console.log("log peers", peers);
-
       let members = []; // danh sách user trong room
 
       await peers.forEach((peer) => {
@@ -164,6 +162,7 @@ function createSock(ws) {
       console.log("a socket disconnected", socket.id);
       socket.broadcast.emit("callEnded");
       delete users[socket.id];
+      members = members.filter((m) => m[0] !== socket.id);
     });
   });
 }
