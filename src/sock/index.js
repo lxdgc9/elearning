@@ -26,7 +26,7 @@ function createSock(ws) {
 
       // tạo peers với socket trong room
       const peers = await stream.in(roomID).fetchSockets();
-      if (peers.length === 5) {
+      if (peers.length === 41) {
         socket.emit("room full");
         return;
       } // đặt giới hạn room
