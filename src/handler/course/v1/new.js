@@ -3,12 +3,14 @@ const Course = require("../../../model/course");
 const Subject = require("../../../model/subject");
 
 async function newCourse(req, res, next) {
-  console.log("body", req.body);
-  console.log("file", req.file);
-  console.log("files", req.files);
-
-  // const { title, description, classId, subjectId, lesson } =
-  //   req.body;
+  const {
+    title,
+    description,
+    classId,
+    subjectId,
+    lessons,
+    publish,
+  } = req.body;
 
   // try {
   //   const course = new Course({

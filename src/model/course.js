@@ -42,7 +42,6 @@ const schema = new mongoose.Schema(
         },
         resourceType: {
           type: String,
-          enum: ["video", "image", "draw"],
         },
       },
     ],
