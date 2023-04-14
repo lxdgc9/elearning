@@ -3,7 +3,13 @@ const Course = require("../../../model/course");
 
 async function getCourse(req, res, next) {
   try {
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(
+      req.params.id
+    ).populate([
+      {
+        path: "author",
+      },
+    ]);
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");
     }
