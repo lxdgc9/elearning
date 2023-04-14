@@ -6,6 +6,12 @@ async function getCourses(req, res, next) {
       {
         path: "author",
         select: "-classes -groups",
+        populate: [
+          {
+            path: "role",
+            select: "-permissions",
+          },
+        ],
       },
     ]);
 
