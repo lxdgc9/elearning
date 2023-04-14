@@ -29,6 +29,23 @@ const schema = new mongoose.Schema(
         required: true,
       },
     ],
+    lesson: [
+      {
+        title: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
+        resource: {
+          type: String,
+        },
+        resourceType: {
+          type: String,
+          enum: ["video", "image", "draw"],
+        },
+      },
+    ],
     content: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -39,10 +56,10 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    logs: [
+    comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "log",
+        ref: "user",
       },
     ],
   },
@@ -59,21 +76,6 @@ const schema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-// xóa khoảng trắng thừa trong tiêu đề và mô tả
-schema.pre("save", function (next) {
-  this.title = this.title.replace(/\s+/g, " ").trim();
-  if (this.description) {
-    this.description = this.description
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-  next();
-});
-
-schema.statics.build = (attrs) => {
-  return new Course(attrs);
-};
 
 const Course = mongoose.model("course", schema);
 

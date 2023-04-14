@@ -3,14 +3,17 @@ const Course = require("../../../model/course");
 const Subject = require("../../../model/subject");
 
 async function newCourse(req, res, next) {
-  const { title, description, subjectId } = req.body;
+  const { title, description, classId, subjectId, lesson } =
+    req.body;
 
   try {
-    const course = Course.build({
+    const course = new Course({
       title,
       description,
+      classId,
       author: req.user.id,
       subject: subjectId,
+      lesson,
     });
     await course.save();
 

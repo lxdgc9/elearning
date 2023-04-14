@@ -12,6 +12,7 @@ const getCourse = require("../handler/course/v1/get-by-id");
 const newCourse = require("../handler/course/v1/new");
 const updateCourse = require("../handler/course/v1/update");
 const deleteCourse = require("../handler/course/v1/delete");
+const uploader = require("../helper/uploader");
 
 const r = express.Router();
 
@@ -48,6 +49,7 @@ r[NEW.METHOD](
   requireAuth,
   active,
   access(NEW.ACCESS),
+  uploader("file"),
   version({
     v1: newCourse,
   })
