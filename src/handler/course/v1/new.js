@@ -22,7 +22,7 @@ async function newCourse(req, res, next) {
     const course = new Course({
       title,
       description,
-      classId,
+      classes: [classId],
       publish,
       author: req.user.id,
       subject: subjectId,
