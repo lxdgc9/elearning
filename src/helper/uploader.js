@@ -19,14 +19,9 @@ if (!fs.existsSync(path.join(path.resolve(), "upload"))) {
 const uploader = multer({
   storage: multer.diskStorage({
     destination(_req, _file, callback) {
-      console.log("khong luu file");
-
       callback(null, path.join(path.resolve(), "upload"));
     },
     filename(_req, file, callback) {
-      console.log("djlasjkdlsjd");
-
-      // Lưu tên với dạng utf8
       file.originalname = Buffer.from(
         file.originalname,
         "latin1"
