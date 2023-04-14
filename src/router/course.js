@@ -49,7 +49,7 @@ r[NEW.METHOD](
   requireAuth,
   active,
   access(NEW.ACCESS),
-  uploader.single("file"),
+  uploader.any(),
   version({
     v1: newCourse,
   })
