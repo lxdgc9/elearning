@@ -28,7 +28,7 @@ const schema = new mongoose.Schema(
         required: true,
       },
     ],
-    lesson: [
+    lessons: [
       {
         title: {
           type: String,

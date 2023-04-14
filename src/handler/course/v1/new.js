@@ -12,6 +12,8 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
+  console.log(req.files);
+
   try {
     const course = new Course({
       title,
