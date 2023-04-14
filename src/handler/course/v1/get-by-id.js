@@ -8,6 +8,7 @@ async function getCourse(req, res, next) {
     ).populate([
       {
         path: "author",
+        select: "-classes -groups",
       },
     ]);
     if (!course) {
