@@ -12,7 +12,7 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(lessons);
+  console.log(JSON.parse(JSON.stringify(lessons)));
   console.log(req.files);
 
   try {
