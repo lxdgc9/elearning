@@ -12,39 +12,40 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
-  // try {
-  //   const course = new Course({
-  //     title,
-  //     description,
-  //     classId,
-  //     author: req.user.id,
-  //     subject: subjectId,
-  //     lesson,
-  //   });
-  //   await course.save();
+  try {
+    const course = new Course({
+      title,
+      description,
+      classId,
+      publish,
+      author: req.user.id,
+      subject: subjectId,
+      lessons,
+    });
+    await course.save();
 
-  //   // kiểm tra giáo viên có trực thuộc môn học hay không
-  //   const subject = await Subject.findByIdAndUpdate(
-  //     subjectId,
-  //     {
-  //       $addToSet: {
-  //         teachers: course.id,
-  //       },
-  //     }
-  //   );
-  //   if (!subject) {
-  //     throw new BadReqErr(
-  //       "Môn học của khóa học không hợp lệ"
-  //     );
-  //   }
+    // kiểm tra giáo viên có trực thuộc môn học hay không
+    const subject = await Subject.findByIdAndUpdate(
+      subjectId,
+      {
+        $addToSet: {
+          teachers: course.id,
+        },
+      }
+    );
+    if (!subject) {
+      throw new BadReqErr(
+        "Môn học của khóa học không hợp lệ"
+      );
+    }
 
-  //   res.status(201).json({
-  //     course,
-  //   });
-  // } catch (err) {
-  //   console.log(err);
-  //   next(err);
-  // }
+    res.status(201).json({
+      course,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
 }
 
 module.exports = newCourse;
