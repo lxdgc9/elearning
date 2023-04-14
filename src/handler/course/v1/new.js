@@ -12,7 +12,6 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(JSON.parse(JSON.stringify(lessons)));
   console.log(req.files);
 
   try {
@@ -23,7 +22,7 @@ async function newCourse(req, res, next) {
       publish,
       author: req.user.id,
       subject: subjectId,
-      lessons,
+      lessons: JSON.parse(JSON.stringify(lessons)),
     });
     await course.save();
 
