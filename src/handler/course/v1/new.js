@@ -3,7 +3,7 @@ const Course = require("../../../model/course");
 const Subject = require("../../../model/subject");
 
 async function newCourse(req, res, next) {
-  const {
+  let {
     title,
     description,
     classId,
@@ -12,7 +12,11 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(req.files);
+  req.files.forEach((file, index) => {
+    if (lessons[index]) {
+      lessons[index].resource = file.filename;
+    }
+  });
 
   try {
     const course = new Course({
@@ -22,7 +26,7 @@ async function newCourse(req, res, next) {
       publish,
       author: req.user.id,
       subject: subjectId,
-      lessons: JSON.parse(JSON.stringify(lessons)),
+      lessons,
     });
     await course.save();
 
