@@ -48,6 +48,7 @@ async function newCourse(req, res, next) {
     lessons.forEach((l) => {
       l.course = course._id;
     });
+    console.log(lessons);
     await Lesson.updateMany(lessons);
 
     await subject.updateOne({
