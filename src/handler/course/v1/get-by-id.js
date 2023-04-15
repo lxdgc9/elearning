@@ -27,6 +27,17 @@ async function getCourse(req, res, next) {
       },
       {
         path: "ratings",
+        populate: [
+          {
+            path: "user",
+            populate: [
+              {
+                path: "role",
+                select: "-permissions",
+              },
+            ],
+          },
+        ],
       },
     ]);
     if (!course) {

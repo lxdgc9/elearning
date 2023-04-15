@@ -3,7 +3,7 @@ const BadReqErr = require("../../error/bad-req");
 const Course = require("../../model/course");
 
 async function rate(req, res, next) {
-  const { range, content } = req.body;
+  const { range, content, convert } = req.body;
 
   try {
     const doc = await Rating.findOneAndUpdate(
@@ -12,6 +12,7 @@ async function rate(req, res, next) {
         $set: {
           range,
           content,
+          convert,
         },
       },
       { upsert: true, new: true }
