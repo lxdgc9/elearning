@@ -27,8 +27,21 @@ async function rate(req, res, next) {
       },
     });
 
+    const rating = await Rating.findById(doc._id).populate([
+      {
+        path: "user",
+        select: "-classes -groups",
+        populate: [
+          {
+            path: "role",
+            select: "-permissions",
+          },
+        ],
+      },
+    ]);
+
     res.json({
-      rating: doc,
+      rating,
     });
   } catch (err) {
     console.log(err);
