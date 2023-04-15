@@ -13,6 +13,7 @@ const newCourse = require("../handler/course/v1/new");
 const updateCourse = require("../handler/course/v1/update");
 const deleteCourse = require("../handler/course/v1/delete");
 const uploader = require("../helper/uploader");
+const rate = require("../handler/rating/rate");
 
 const r = express.Router();
 
@@ -64,6 +65,17 @@ r[MOD.METHOD](
   access(MOD.ACCESS),
   version({
     v1: updateCourse,
+  })
+);
+
+r.patch(
+  "/api/course/rating/:courseId",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: rate,
   })
 );
 
