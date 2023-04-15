@@ -16,6 +16,10 @@ const schema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    publish: {
+      type: Boolean,
+      default: false,
+    },
     subject: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "subject",
@@ -25,35 +29,20 @@ const schema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "class",
-        required: true,
       },
     ],
     lessons: [
-      {
-        title: {
-          type: String,
-        },
-        description: {
-          type: String,
-        },
-        resource: {
-          type: String,
-        },
-        resourceType: {
-          type: String,
-        },
-      },
-    ],
-    content: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "lesson",
       },
     ],
-    publish: {
-      type: Boolean,
-      default: false,
-    },
+    ratings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "rating",
+      },
+    ],
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -64,10 +53,11 @@ const schema = new mongoose.Schema(
   {
     collection: "Course",
     toJSON: {
-      transform(_doc, ret, _options) {
+      transform(_doc, ret) {
         ret.id = ret._id;
+
         delete ret._id;
-        delete ret.groupId;
+        delete ret.course;
         delete ret.__v;
       },
     },
