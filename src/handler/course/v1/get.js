@@ -22,6 +22,9 @@ async function getCourses(req, res, next) {
       {
         path: "subject",
       },
+      {
+        path: "ratings",
+      },
     ]);
 
     res.json({

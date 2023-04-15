@@ -25,6 +25,9 @@ async function getCourse(req, res, next) {
       {
         path: "subject",
       },
+      {
+        path: "ratings",
+      },
     ]);
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");

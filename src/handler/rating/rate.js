@@ -26,8 +26,6 @@ async function rate(req, res, next) {
       },
     });
 
-    console.log(doc);
-
     res.json({
       rating: doc,
     });
