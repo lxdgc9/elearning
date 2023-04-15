@@ -19,7 +19,7 @@ const schema = new mongoose.Schema(
       max: 5,
       default: 0,
     },
-    convert: {
+    covert: {
       type: Boolean,
       default: false,
     },
