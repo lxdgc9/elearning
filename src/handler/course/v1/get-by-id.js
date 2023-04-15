@@ -16,6 +16,15 @@ async function getCourse(req, res, next) {
           },
         ],
       },
+      {
+        path: "lessons",
+      },
+      {
+        path: "classes",
+      },
+      {
+        path: "subject",
+      },
     ]);
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");

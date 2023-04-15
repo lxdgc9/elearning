@@ -13,6 +13,15 @@ async function getCourses(req, res, next) {
           },
         ],
       },
+      {
+        path: "lessons",
+      },
+      {
+        path: "classes",
+      },
+      {
+        path: "subject",
+      },
     ]);
 
     res.json({
