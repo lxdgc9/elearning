@@ -1,5 +1,6 @@
 const Rating = require("../../model/rating");
 const BadReqErr = require("../../error/bad-req");
+const Course = require("../../model/course");
 
 async function rate(req, res, next) {
   const { range, content } = req.body;
@@ -18,6 +19,12 @@ async function rate(req, res, next) {
     if (!doc) {
       throw new BadReqErr("Yêu cầu không hợp lệ");
     }
+
+    await Course.findByIdAndUpdate(doc.course, {
+      $addToSet: {
+        ratings: doc._id,
+      },
+    });
 
     console.log(doc);
 
