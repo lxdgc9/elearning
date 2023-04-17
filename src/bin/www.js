@@ -19,7 +19,7 @@ if (!process.env.REFRESH_TOKEN_SECRET) {
   throw new Error("REFRESH_TOKEN_SECRET must be defined");
 }
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3001");
 app.set("port", port);
 
 const sv = http.createServer(app);

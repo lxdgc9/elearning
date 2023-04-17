@@ -12,7 +12,7 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(req.files);
+  console.log("files:", req.files);
 
   if (req.files) {
     req.files.forEach((file, index) => {
@@ -22,7 +22,7 @@ async function updateCourse(req, res, next) {
     });
   }
 
-  console.log(lessons);
+  console.log("lessons:", lessons);
   res.json({});
   return;
 
