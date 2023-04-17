@@ -12,7 +12,10 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log("Luan sent request:", JSON.parse(req.body));
+  console.log(
+    "Luan sent request:",
+    JSON.parse(JSON.stringify(req.body))
+  );
 
   let idxFile = 0;
   lessons.forEach((l) => {
