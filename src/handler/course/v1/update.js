@@ -21,6 +21,9 @@ async function updateCourse(req, res, next) {
     console.log("after", l);
   });
 
+  res.json({});
+  return;
+
   try {
     const course = await Course.findById(req.params.id);
     if (!course) {
