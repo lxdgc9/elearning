@@ -53,13 +53,15 @@ async function updateCourse(req, res, next) {
 
     console.log("lessons:", lessons);
 
-    deleted.forEach(async (id) => {
-      await course.updateOne({
-        $pull: {
-          lessons: id,
-        },
+    if (deleted) {
+      deleted.forEach(async (id) => {
+        await course.updateOne({
+          $pull: {
+            lessons: id,
+          },
+        });
       });
-    });
+    }
 
     lessons.forEach(async (l) => {
       if (l.id) {
