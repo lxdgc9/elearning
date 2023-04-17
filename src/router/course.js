@@ -56,18 +56,6 @@ r[NEW.METHOD](
   })
 );
 
-// Cập nhật khóa học
-r[MOD.METHOD](
-  MOD.PATH,
-  currUser,
-  requireAuth,
-  active,
-  access(MOD.ACCESS),
-  version({
-    v1: updateCourse,
-  })
-);
-
 r.patch(
   "/api/course/rating/:courseId",
   currUser,
@@ -79,9 +67,22 @@ r.patch(
   })
 );
 
+// Cập nhật khóa học
+r.patch(
+  "/api/courses/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  uploader.any(),
+  version({
+    v1: updateCourse,
+  })
+);
+
 // Xóa khóa học
-r[DEL.METHOD](
-  DEL.PATH,
+r.delete(
+  "/api/courses/:id",
   currUser,
   requireAuth,
   active,

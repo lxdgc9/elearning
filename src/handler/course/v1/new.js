@@ -14,8 +14,6 @@ async function newCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(req.body);
-
   req.files.forEach((file, index) => {
     if (lessons[index]) {
       lessons[index].resource = file.filename;

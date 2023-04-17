@@ -13,7 +13,6 @@ const getTest = require("../handler/test/get");
 const getTestById = require("../handler/test/get-by-id");
 const regist = require("../handler/test/regist");
 const submit = require("../handler/test/submit");
-const result = require("../handler/test/result");
 const getSubmissions = require("../handler/test/get-submissions");
 const updateTest = require("../handler/test/update");
 const myTestById = require("../handler/test/my-test-by-id");
