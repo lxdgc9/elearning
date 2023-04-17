@@ -74,7 +74,7 @@ r.patch(
   requireAuth,
   active,
   access(),
-  uploader.array(),
+  uploader.array("lessons[][resource]"),
   version({
     v1: updateCourse,
   })
