@@ -14,7 +14,12 @@ async function updateCourse(req, res, next) {
 
   let idxFile = 0;
   lessons.forEach((l) => {
-    console.log("before", l, req.files[idxFile]);
+    console.log(
+      "before",
+      l,
+      req.files[idxFile],
+      typeof l.haveFile
+    );
     if (l.haveFile) {
       l.resource = req.files[idxFile]?.filename;
       idxFile = idxFile + 1;
