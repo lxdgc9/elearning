@@ -3,7 +3,7 @@ const Lesson = require("../../../model/lesson");
 const Subject = require("../../../model/subject");
 
 async function updateCourse(req, res, next) {
-  const {
+  let {
     title,
     description,
     classIds,
@@ -12,16 +12,17 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log("files:", req.files);
-
   let idxFile = 0;
   lessons.forEach((l) => {
-    console.log(l, req.files[idxFile]);
+    console.log("before", l, req.files[idxFile]);
     if (l.haveFile) {
       l.resource = req.files[idxFile]?.filename;
       idxFile = idxFile + 1;
     }
+    console.log("after", l);
   });
+
+  console.log("---------------");
 
   console.log("lessons:", lessons);
 
