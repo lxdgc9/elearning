@@ -22,6 +22,7 @@ const uploader = multer({
       callback(null, path.join(path.resolve(), "upload"));
     },
     fileFilter(req, file, cb) {
+      console.log("filter file:", file);
       if (!file) {
         req.files.push(undefined);
         cb(null, false);
