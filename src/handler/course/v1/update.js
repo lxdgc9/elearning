@@ -20,7 +20,7 @@ async function updateCourse(req, res, next) {
       req.files[idxFile],
       typeof l.haveFile
     );
-    if (l.haveFile) {
+    if (l.haveFile === "true") {
       l.resource = req.files[idxFile]?.filename;
       idxFile = idxFile + 1;
     }
