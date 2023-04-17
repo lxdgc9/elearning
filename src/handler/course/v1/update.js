@@ -17,7 +17,8 @@ async function updateCourse(req, res, next) {
   let idxFile = 0;
   lessons.forEach((l) => {
     if (l.haveFile) {
-      l.resource = req.files[idxFile++].filename;
+      l.resource = req.files[idxFile]?.filename;
+      idxFile = idxFile + 1;
     }
   });
 
