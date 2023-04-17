@@ -14,7 +14,7 @@ async function updateCourse(req, res, next) {
 
   console.log("files:", req.files);
 
-  const idxFile = 0;
+  let idxFile = 0;
   lessons.forEach((l) => {
     if (l.haveFile) {
       l.resource = req.files[idxFile++].filename;
