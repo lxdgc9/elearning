@@ -50,7 +50,7 @@ r[NEW.METHOD](
   requireAuth,
   active,
   access(NEW.ACCESS),
-  uploader.any(),
+  uploader.array(),
   version({
     v1: newCourse,
   })
@@ -74,7 +74,7 @@ r.patch(
   requireAuth,
   active,
   access(),
-  uploader.any(),
+  uploader.array(),
   version({
     v1: updateCourse,
   })
