@@ -21,8 +21,15 @@ const uploader = multer({
     destination(_req, _file, callback) {
       callback(null, path.join(path.resolve(), "upload"));
     },
+    fileFilter(req, file, cb) {
+      if (!file) {
+        req.files.push(undefined);
+        cb(null, false);
+      } else {
+        cb(null, true);
+      }
+    },
     filename(_req, file, callback) {
-      console.log("log", file);
       file.originalname = Buffer.from(
         file.originalname,
         "latin1"

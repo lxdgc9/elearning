@@ -20,13 +20,6 @@ async function updateCourse(req, res, next) {
     });
   }
 
-  console.log(req.files);
-  console.log(lessons);
-  res.json({
-    msg: "vl",
-  });
-  return;
-
   try {
     const course = await Course.findById(req.params.id);
     if (!course) {
