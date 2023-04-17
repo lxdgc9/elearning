@@ -22,6 +22,7 @@ const uploader = multer({
       callback(null, path.join(path.resolve(), "upload"));
     },
     filename(_req, file, callback) {
+      console.log("log", file);
       file.originalname = Buffer.from(
         file.originalname,
         "latin1"
@@ -30,7 +31,7 @@ const uploader = multer({
     },
   }),
   limits: {
-    fileSize: 1200 * 1024 * 1024, // Giới hạn: 1G
+    fileSize: 1200 * 1024 * 1024, // Giới hạn: 1.2G
   },
 });
 
