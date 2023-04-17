@@ -12,13 +12,14 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
+  console.log("Luan sent request:", req.body);
+
   let idxFile = 0;
   lessons.forEach((l) => {
     if (l.haveFile === "true") {
       l.resource = req.files[idxFile]?.filename;
       idxFile = idxFile + 1;
     }
-    console.log("after", l);
   });
 
   res.json({});
