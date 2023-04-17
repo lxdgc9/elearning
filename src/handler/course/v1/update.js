@@ -12,6 +12,8 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
+  console.log(req.body);
+
   if (req.files) {
     req.files.forEach((file, index) => {
       if (lessons[index]) {
