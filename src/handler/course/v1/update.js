@@ -22,14 +22,6 @@ async function updateCourse(req, res, next) {
     }
   });
 
-  if (req.files) {
-    req.files.forEach((file, index) => {
-      if (lessons[index]) {
-        lessons[index].resource = file.filename;
-      }
-    });
-  }
-
   console.log("lessons:", lessons);
 
   try {
