@@ -14,22 +14,12 @@ async function updateCourse(req, res, next) {
 
   let idxFile = 0;
   lessons.forEach((l) => {
-    console.log(
-      "before",
-      l,
-      req.files[idxFile],
-      typeof l.haveFile
-    );
     if (l.haveFile === "true") {
       l.resource = req.files[idxFile]?.filename;
       idxFile = idxFile + 1;
     }
     console.log("after", l);
   });
-
-  console.log("---------------");
-
-  console.log("lessons:", lessons);
 
   try {
     const course = await Course.findById(req.params.id);
@@ -60,6 +50,8 @@ async function updateCourse(req, res, next) {
         publish,
       },
     });
+
+    console.log("lessons:", lesssons);
 
     lessons.forEach(async (l) => {
       if (l.isDeleted) {
