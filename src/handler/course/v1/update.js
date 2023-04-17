@@ -10,6 +10,7 @@ async function updateCourse(req, res, next) {
     subjectId,
     lessons,
     publish,
+    deleted,
   } = req.body;
 
   let idxFile = 0;
@@ -52,34 +53,32 @@ async function updateCourse(req, res, next) {
 
     console.log("lessons:", lessons);
 
+    deleted.forEach(async (id) => {
+      await course.updateOne({
+        $pull: {
+          lessons: id,
+        },
+      });
+    });
+
     lessons.forEach(async (l) => {
-      if (l.isDeleted) {
-        // Xóa bài học
-        const lesson = await Lesson.findByIdAndDelete(l.id);
-        await course.updateOne({
-          $pull: {
-            lessons: lesson._id,
-          },
+      if (l.id) {
+        // Cập nhật bài học
+        await Lesson.findByIdAndUpdate(l.id, {
+          ...l,
         });
       } else {
-        if (l.id) {
-          // Cập nhật bài học
-          await Lesson.findByIdAndUpdate(l.id, {
-            ...l,
-          });
-        } else {
-          // Tạo mới bài học trong khóa học đang cập nhật
-          const newLesson = new Lesson({
-            ...l,
-            course: course._id,
-          });
-          await newLesson.save();
-          await course.updateOne({
-            $addToSet: {
-              lessons: newLesson._id,
-            },
-          });
-        }
+        // Tạo mới bài học trong khóa học đang cập nhật
+        const newLesson = new Lesson({
+          ...l,
+          course: course._id,
+        });
+        await newLesson.save();
+        await course.updateOne({
+          $addToSet: {
+            lessons: newLesson._id,
+          },
+        });
       }
     });
 
