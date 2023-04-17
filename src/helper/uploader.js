@@ -32,9 +32,11 @@ const uploader = multer({
   limits: {
     fileSize: 1200 * 1024 * 1024, // Giới hạn: 1.2G
   },
-  fileFilter: function (_req, file, cb) {
+  fileFilter: function (req, file, cb) {
+    console.log("log:", file);
     // Ignore null files
     if (!file) {
+      req.files.push(undefined);
       cb(null, false);
     } else {
       cb(null, true);
