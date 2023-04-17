@@ -13,6 +13,7 @@ async function updateCourse(req, res, next) {
   } = req.body;
 
   console.log(req.body);
+  return;
 
   if (req.files) {
     req.files.forEach((file, index) => {
