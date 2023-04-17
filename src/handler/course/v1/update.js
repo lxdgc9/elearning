@@ -20,6 +20,7 @@ async function updateCourse(req, res, next) {
     });
   }
 
+  console.log(req.files);
   console.log(lessons);
   res.json({
     msg: "vl",
