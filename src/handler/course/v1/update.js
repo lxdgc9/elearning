@@ -14,6 +14,13 @@ async function updateCourse(req, res, next) {
 
   console.log("files:", req.files);
 
+  const idxFile = 0;
+  lessons.forEach((l) => {
+    if (l.haveFile) {
+      l.resource = req.files[idxFile++].filename;
+    }
+  });
+
   if (req.files) {
     req.files.forEach((file, index) => {
       if (lessons[index]) {
@@ -23,8 +30,6 @@ async function updateCourse(req, res, next) {
   }
 
   console.log("lessons:", lessons);
-  res.json({});
-  return;
 
   try {
     const course = await Course.findById(req.params.id);
