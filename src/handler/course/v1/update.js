@@ -51,7 +51,7 @@ async function updateCourse(req, res, next) {
       },
     });
 
-    console.log("lessons:", lesssons);
+    console.log("lessons:", lessons);
 
     lessons.forEach(async (l) => {
       if (l.isDeleted) {
