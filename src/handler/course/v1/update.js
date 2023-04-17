@@ -12,9 +12,6 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(req.body);
-  return;
-
   if (req.files) {
     req.files.forEach((file, index) => {
       if (lessons[index]) {
@@ -22,6 +19,12 @@ async function updateCourse(req, res, next) {
       }
     });
   }
+
+  console.log(lessons);
+  res.json({
+    msg: "vl",
+  });
+  return;
 
   try {
     const course = await Course.findById(req.params.id);
