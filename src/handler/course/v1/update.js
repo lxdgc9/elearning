@@ -12,11 +12,6 @@ async function updateCourse(req, res, next) {
     publish,
   } = req.body;
 
-  console.log(
-    "Luan sent request:",
-    JSON.parse(JSON.stringify(req.body))
-  );
-
   let idxFile = 0;
   lessons.forEach((l) => {
     if (l.haveFile === "true") {
@@ -24,9 +19,6 @@ async function updateCourse(req, res, next) {
       idxFile = idxFile + 1;
     }
   });
-
-  res.json({});
-  return;
 
   try {
     const course = await Course.findById(req.params.id);
