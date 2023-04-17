@@ -21,15 +21,6 @@ const uploader = multer({
     destination(_req, _file, callback) {
       callback(null, path.join(path.resolve(), "upload"));
     },
-    fileFilter(req, file, cb) {
-      console.log("filter file:", file);
-      if (!file) {
-        req.files.push(undefined);
-        cb(null, false);
-      } else {
-        cb(null, true);
-      }
-    },
     filename(_req, file, callback) {
       file.originalname = Buffer.from(
         file.originalname,
@@ -40,6 +31,14 @@ const uploader = multer({
   }),
   limits: {
     fileSize: 1200 * 1024 * 1024, // Giới hạn: 1.2G
+  },
+  fileFilter: function (_req, file, cb) {
+    // Ignore null files
+    if (!file) {
+      cb(null, false);
+    } else {
+      cb(null, true);
+    }
   },
 });
 
