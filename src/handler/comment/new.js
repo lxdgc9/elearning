@@ -31,16 +31,11 @@ async function newCmt(req, res, next) {
       newCmt._id
     ).populate([
       {
-        path: "comments",
+        path: "sender",
         populate: [
           {
-            path: "sender",
-            populate: [
-              {
-                path: "role",
-                select: "-permissions",
-              },
-            ],
+            path: "role",
+            select: "-permissions",
           },
         ],
       },
