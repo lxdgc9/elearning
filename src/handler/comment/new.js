@@ -1,4 +1,5 @@
 const BadReqErr = require("../../error/bad-req");
+const Comment = require("../../model/comment");
 const Course = require("../../model/course");
 
 async function newCmt(req, res, next) {
