@@ -36,6 +36,20 @@ async function getCourses(req, res, next) {
           },
         ],
       },
+      {
+        path: "comments",
+        populate: [
+          {
+            path: "user",
+            populate: [
+              {
+                path: "role",
+                select: "-permissions",
+              },
+            ],
+          },
+        ],
+      },
     ]);
 
     res.json({

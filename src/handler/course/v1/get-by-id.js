@@ -39,6 +39,20 @@ async function getCourse(req, res, next) {
           },
         ],
       },
+      {
+        path: "comments",
+        populate: [
+          {
+            path: "user",
+            populate: [
+              {
+                path: "role",
+                select: "-permissions",
+              },
+            ],
+          },
+        ],
+      },
     ]);
     if (!course) {
       throw new NotFoundErr("Không tìm thấy khóa học");
