@@ -27,13 +27,32 @@ async function newCmt(req, res, next) {
       },
     });
 
+    const detail = await Comment.findById(
+      newCmt._id
+    ).populate([
+      {
+        path: "comments",
+        populate: [
+          {
+            path: "sender",
+            populate: [
+              {
+                path: "role",
+                select: "-permissions",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+
     getIO()
       .of("/course")
       .to(course._id.toString())
-      .emit("cmt", newCmt);
+      .emit("cmt", detail);
 
     res.json({
-      comment: newCmt,
+      comment: detail,
     });
   } catch (err) {
     console.log(err);
