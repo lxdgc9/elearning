@@ -17,6 +17,7 @@ function createSock(ws) {
     console.log("con namespace /course", socket.id);
 
     socket.on("join", (id) => {
+      console.log("join namespace /course", id);
       socket.join(id);
     });
 

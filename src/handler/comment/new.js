@@ -32,6 +32,8 @@ async function newCmt(req, res, next) {
       .to(course._id)
       .emit("cmt", newCmt);
 
+    getIO().to(course._id).emit("cmt", newCmt);
+
     res.json({
       comment: newCmt,
     });
