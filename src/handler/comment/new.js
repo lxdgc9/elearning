@@ -29,10 +29,8 @@ async function newCmt(req, res, next) {
 
     getIO()
       .of("/course")
-      .to(course._id)
+      .to(course._id.toString())
       .emit("cmt", newCmt);
-
-    getIO().emit("cmt", newCmt);
 
     res.json({
       comment: newCmt,
