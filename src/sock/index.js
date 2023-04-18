@@ -19,6 +19,7 @@ function createSock(ws) {
     socket.on("join", (id) => {
       console.log("join namespace /course", id);
       socket.join(id);
+      course.to(id).emit("cmt", "vl", "dm");
     });
 
     socket.on("disconnect", () => {
