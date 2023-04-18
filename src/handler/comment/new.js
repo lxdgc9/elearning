@@ -20,11 +20,11 @@ async function newCmt(req, res, next) {
     });
     await newCmt.save();
 
-    // await course.updateOne({
-    //   $addToSet: {
-    //     comments: newCmt._id,
-    //   },
-    // });
+    await course.updateOne({
+      $addToSet: {
+        comments: newCmt._id,
+      },
+    });
 
     res.json({
       comment: newCmt,
