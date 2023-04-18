@@ -57,6 +57,17 @@ r[NEW.METHOD](
 );
 
 r.patch(
+  "/api/courses/lessons/compeleted/:lessonId",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: rate,
+  })
+);
+
+r.patch(
   "/api/course/rating/:courseId",
   currUser,
   requireAuth,
