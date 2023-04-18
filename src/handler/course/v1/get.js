@@ -40,7 +40,7 @@ async function getCourses(req, res, next) {
         path: "comments",
         populate: [
           {
-            path: "user",
+            path: "sender",
             populate: [
               {
                 path: "role",
