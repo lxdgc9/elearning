@@ -57,7 +57,7 @@ r[NEW.METHOD](
 );
 
 r.patch(
-  "/api/courses/lessons/compeleted/:lessonId",
+  "/api/courses/lesson-completed/:lessonId",
   currUser,
   requireAuth,
   active,
