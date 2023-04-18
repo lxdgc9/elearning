@@ -1,6 +1,7 @@
 const BadReqErr = require("../../error/bad-req");
 const Comment = require("../../model/comment");
 const Course = require("../../model/course");
+const { getIO } = require("../../sock");
 
 async function newCmt(req, res, next) {
   const { content } = req.body;
@@ -25,6 +26,11 @@ async function newCmt(req, res, next) {
         comments: newCmt._id,
       },
     });
+
+    getIO()
+      .of("/course")
+      .to(course._id)
+      .emit("cmt", newCmt);
 
     res.json({
       comment: newCmt,

@@ -12,6 +12,19 @@ function createSock(ws) {
 
   console.log("Socket is starting!!!");
 
+  const course = io.of("/course");
+  course.on("connection", (socket) => {
+    console.log("con namespace /course", socket.id);
+
+    socket.on("join", (id) => {
+      socket.join(id);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("dis namespace /course", socket.id);
+    });
+  });
+
   const stream = io.of("/stream");
 
   let members = []; // danh sách members trong room
