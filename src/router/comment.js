@@ -9,7 +9,7 @@ const newCmt = require("../handler/comment/new");
 const r = Router();
 
 r.post(
-  "/api/coments/:courseId",
+  "/api/comments/:courseId",
   currUser,
   requireAuth,
   active,
