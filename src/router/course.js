@@ -14,6 +14,7 @@ const updateCourse = require("../handler/course/v1/update");
 const deleteCourse = require("../handler/course/v1/delete");
 const uploader = require("../helper/uploader");
 const rate = require("../handler/rating/rate");
+const complete = require("../handler/course/v1/complete");
 
 const r = express.Router();
 
@@ -63,7 +64,7 @@ r.patch(
   active,
   access(),
   version({
-    v1: rate,
+    v1: complete,
   })
 );
 
