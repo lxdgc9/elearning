@@ -46,7 +46,7 @@ const schema = new mongoose.Schema(
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "comments",
+        ref: "comment",
       },
     ],
   },
