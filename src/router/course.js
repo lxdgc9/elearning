@@ -15,6 +15,7 @@ const deleteCourse = require("../handler/course/v1/delete");
 const uploader = require("../helper/uploader");
 const rate = require("../handler/rating/rate");
 const complete = require("../handler/course/v1/complete");
+const setProcess = require("../handler/course/v1/set-process");
 
 const r = express.Router();
 
@@ -65,6 +66,17 @@ r.patch(
   access(),
   version({
     v1: complete,
+  })
+);
+
+r.patch(
+  "/api/courses/process/:id",
+  currUser,
+  requireAuth,
+  active,
+  access(),
+  version({
+    v1: setProcess,
   })
 );
 

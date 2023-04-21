@@ -17,6 +17,7 @@ const userRouter = require("./router/user");
 const gameRouter = require("./router/game");
 const testRouter = require("./router/test");
 const cmtRouter = require("./router/comment");
+const notiRouter = require("./router/noti");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(courseRouter);
 app.use(testRouter);
 app.use(gameRouter);
 app.use(cmtRouter);
+app.use(notiRouter);
 
 app.all("*", (req, res) => {
   throw new NotFoundErr("Yêu cầu không tồn tại");

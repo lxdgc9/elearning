@@ -49,6 +49,12 @@ const schema = new mongoose.Schema(
         ref: "comment",
       },
     ],
+    process: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "process",
+      },
+    ],
   },
   {
     collection: "Course",

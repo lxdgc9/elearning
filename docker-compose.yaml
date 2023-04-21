@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  serv:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 8000:3000
+    env_file:
+      - .env
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET}
+    volumes:
+      - .:/usr/app:rw
