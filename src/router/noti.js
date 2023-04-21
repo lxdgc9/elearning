@@ -6,6 +6,7 @@ const seenNoti = require("../handler/noti/seen");
 const active = require("../middleware/active");
 const currUser = require("../middleware/current-user");
 const requireAuth = require("../middleware/require-auth");
+const access = require("../middleware/access");
 
 const r = Router();
 
