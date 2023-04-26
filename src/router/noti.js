@@ -11,7 +11,7 @@ const access = require("../middleware/access");
 const r = Router();
 
 r.get(
-  "/api/notis",
+  "/api/notifications",
   currUser,
   requireAuth,
   active,
@@ -20,7 +20,7 @@ r.get(
 );
 
 r.post(
-  "/api/notis",
+  "/api/notifications",
   currUser,
   requireAuth,
   active,
@@ -29,7 +29,7 @@ r.post(
 );
 
 r.patch(
-  "/api/notis/seen/:id",
+  "/api/notifications/seen/:id",
   currUser,
   requireAuth,
   active,
@@ -38,7 +38,7 @@ r.patch(
 );
 
 r.delete(
-  "/api/notis/:id",
+  "/api/notifications/:id",
   currUser,
   requireAuth,
   active,
