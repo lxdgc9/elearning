@@ -6,7 +6,8 @@ let io;
 function createSock(ws) {
   io = new socketio.Server(ws, {
     cors: {
-      origin: "*",
+      // origin: "*",
+      origin: ["*", "https://e-learning-gd.netlify.app"],
     },
   });
 
