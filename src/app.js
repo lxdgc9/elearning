@@ -23,7 +23,11 @@ const app = express();
 
 app.use("/upload", express.static("upload"));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://e-learning-gd.netlify.app/",
+  })
+);
 app.use(helmet());
 app.use(express.json());
 
