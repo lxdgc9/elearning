@@ -25,7 +25,7 @@ app.use("/upload", express.static("upload"));
 
 app.use(
   cors({
-    origin: "https://e-learning-gd.netlify.app",
+    // origin: ["*", "https://e-learning-gd.netlify.app"],
   })
 );
 app.use(helmet());
