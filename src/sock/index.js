@@ -8,7 +8,7 @@ function createSock(ws) {
     cors: {
       origin: ["*", "https://e-learning-gd.netlify.app"],
     },
-    transports: ["websocket"],
+    // transports: ["websocket"],
   });
 
   console.log("Socket is starting!!!");
