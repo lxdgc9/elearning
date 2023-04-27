@@ -5,7 +5,7 @@ let io;
 function createSock(ws) {
   io = new socketio.Server(ws, {
     cors: {
-      origin: "*",
+      origin: ["https://elearning.gdvietnam.com"],
     },
   });
 
